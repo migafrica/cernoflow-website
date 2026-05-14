@@ -5,17 +5,11 @@
 (function () {
   var KEY = 'cernoflow_theme';
 
-  function osPrefersDark() {
-    try {
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    } catch (e) { return true; }
-  }
-
   function get() {
     var stored = null;
     try { stored = localStorage.getItem(KEY); } catch (e) {}
     if (stored === 'light' || stored === 'dark') return stored;
-    return osPrefersDark() ? 'dark' : 'light';
+    return 'dark';
   }
 
   function set(theme) {
