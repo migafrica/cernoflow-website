@@ -53,9 +53,9 @@
      background. Specific elements with hardcoded dark backgrounds (topbar,
      grain pattern, panel cards) get explicit overrides further down. */
   html[data-theme="light"] {
-    --bg-0: #ffffff;
-    --bg-1: #f8fafc;
-    --bg-2: #f1f5f9;
+    --bg-0: #f1f5fb;
+    --bg-1: #e7ecf4;
+    --bg-2: #dbe2ed;
     --bg-elev: #ffffff;
     --panel: rgba(255, 255, 255, 0.72);
     --panel-strong: rgba(255, 255, 255, 0.92);
@@ -68,6 +68,44 @@
     --ink-3: #64748b;
     --ink-4: #94a3b8;
     --brand-blue-soft: #4F7DE0;
+  }
+  /* Image panels (.row-visual) stay dark in light mode so the SVGs and
+     panel chrome read as designed. The hover glow is retuned to read
+     well against a light page background. Dark mode is unaffected. */
+  html[data-theme="light"] .row-visual {
+    background:
+      radial-gradient(ellipse 600px 280px at 25% 0%, rgba(91,138,236,0.07), transparent 60%),
+      radial-gradient(ellipse 500px 260px at 100% 100%, rgba(63,185,204,0.05), transparent 60%),
+      #161e2a;
+    border-color: rgba(184, 196, 220, 0.18);
+  }
+  html[data-theme="light"] .row-visual .visual-chrome {
+    border-bottom-color: rgba(184, 196, 220, 0.10);
+  }
+  html[data-theme="light"] .row-visual.platform-card {
+    background:
+      radial-gradient(ellipse 700px 360px at 50% 50%, rgba(91,138,236,0.10), transparent 60%),
+      radial-gradient(ellipse 400px 200px at 50% 100%, rgba(196,132,255,0.08), transparent 60%),
+      #161e2a;
+  }
+  html[data-theme="light"] a.row-visual:hover {
+    border-color: rgba(123, 165, 255, 0.55);
+    background:
+      radial-gradient(ellipse 600px 280px at 25% 0%, rgba(91,138,236,0.14), transparent 60%),
+      radial-gradient(ellipse 500px 260px at 100% 100%, rgba(63,185,204,0.09), transparent 60%),
+      #161e2a;
+    box-shadow:
+      0 0 0 1px rgba(123,165,255,0.20),
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 22px 50px -18px rgba(15, 23, 42, 0.28),
+      0 10px 26px -10px rgba(91,138,236,0.40);
+    transform: translateY(-2px);
+  }
+  html[data-theme="light"] a.row-visual.platform-card:hover {
+    background:
+      radial-gradient(ellipse 700px 360px at 50% 50%, rgba(91,138,236,0.16), transparent 60%),
+      radial-gradient(ellipse 400px 200px at 50% 100%, rgba(196,132,255,0.12), transparent 60%),
+      #161e2a;
   }
   html[data-theme="light"] body::before {
     /* Grain pattern is designed for dark; mute it on light. */
@@ -724,11 +762,14 @@
     margin-bottom: 40px;
   }
   .agent-card {
+    display: block;
     text-align: left;
     padding: 26px 24px;
     background: var(--panel-strong);
     border: 1px solid var(--hairline-strong);
     border-radius: 12px;
+    color: inherit;
+    text-decoration: none;
     transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
   }
   .agent-card:hover {
@@ -1161,29 +1202,41 @@
 
   /* ——— Theme toggle ——— */
   .theme-toggle {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 34px; height: 34px;
-    margin-left: 6px;
-    border: 0;
-    background: transparent;
-    color: var(--ink-2);
+    display: inline-flex !important; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    margin-right: 4px;
+    padding: 0;
+    border: 1px solid var(--hairline-strong);
+    background: rgba(255,255,255,0.04);
+    color: var(--ink-1);
     cursor: pointer;
     border-radius: 8px;
-    transition: color 180ms ease, background 180ms ease;
+    transition: color 180ms ease, background 180ms ease, border-color 180ms ease;
   }
   .theme-toggle:hover {
-    color: var(--ink-0);
-    background: rgba(184, 196, 220, 0.10);
+    color: #fff;
+    border-color: rgba(109, 155, 255, 0.45);
+    background: rgba(91, 138, 236, 0.12);
+  }
+  html[data-theme="light"] .theme-toggle {
+    border-color: rgba(15, 23, 42, 0.18);
+    background: rgba(15, 23, 42, 0.03);
+    color: var(--ink-1);
   }
   html[data-theme="light"] .theme-toggle:hover {
+    color: #0a0e14;
+    border-color: rgba(79, 125, 224, 0.45);
     background: rgba(91, 138, 236, 0.10);
   }
   .theme-toggle .theme-icon-sun  { display: none; }
   .theme-toggle .theme-icon-moon { display: block; }
   html[data-theme="light"] .theme-toggle .theme-icon-sun  { display: block; }
   html[data-theme="light"] .theme-toggle .theme-icon-moon { display: none; }
+  /* Toggle disabled for now — see assets/js/theme.js. Remove this line
+     and re-enable theme.js to bring the toggle back. */
+  .theme-toggle { display: none !important; }
 </style>
-<script src="./assets/js/theme.js"></script>
+<script src="./assets/js/theme.js?v=2"></script>
 <script src="./assets/js/i18n.js"></script>
 </head>
 <body>
@@ -1394,7 +1447,7 @@
           </p>
           <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore the entity model" data-pt="Explorar o modelo de entidades">Explore the entity model</span> <span class="arrow">→</span></a>
         </div>
-        <div class="row-visual">
+        <a class="row-visual" href="./platform.html" aria-label="Explore the entity model">
           <div class="visual-chrome">
             <div class="dots"><span></span><span></span><span></span></div>
             <span class="label i18n" data-en="Field propagation · entity_field_added" data-pt="Propagação de campo · entity_field_added">Field propagation &middot; entity_field_added</span>
@@ -1418,7 +1471,7 @@
               <div class="stop">mobile<span class="stop-label">capture</span></div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -1444,7 +1497,7 @@
           </p>
           <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore the lifecycle model" data-pt="Explorar o modelo de ciclo de vida">Explore the lifecycle model</span> <span class="arrow">→</span></a>
         </div>
-        <div class="row-visual">
+        <a class="row-visual" href="./platform.html" aria-label="Explore the lifecycle model">
           <div class="visual-chrome">
             <div class="dots"><span></span><span></span><span></span></div>
             <span class="label i18n" data-en="Lifecycle canvas · Approval entity" data-pt="Tela de ciclo de vida · entidade Aprovação">Lifecycle canvas &middot; Approval entity</span>
@@ -1478,7 +1531,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -1504,7 +1557,7 @@
           </p>
           <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore the audit model" data-pt="Explorar o modelo de auditoria">Explore the audit model</span> <span class="arrow">→</span></a>
         </div>
-        <div class="row-visual">
+        <a class="row-visual" href="./platform.html" aria-label="Explore the audit model">
           <div class="visual-chrome">
             <div class="dots"><span></span><span></span><span></span></div>
             <span class="label i18n" data-en="Audit trail · Approval/REQ-2026-0142" data-pt="Trilho de auditoria · Aprovação/REQ-2026-0142">Audit trail &middot; Approval/REQ-2026-0142</span>
@@ -1540,7 +1593,7 @@
               <span class="csum-hash i18n" data-en="sha256: 9f4a…c81e · verified · depth: 5" data-pt="sha256: 9f4a…c81e · verificado · profundidade: 5">sha256: 9f4a&hellip;c81e &middot; verified &middot; depth: 5</span>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -1566,7 +1619,7 @@
           </p>
           <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore Studio" data-pt="Explorar o Studio">Explore Studio</span> <span class="arrow">→</span></a>
         </div>
-        <div class="row-visual">
+        <a class="row-visual" href="./platform.html" aria-label="Explore Studio">
           <div class="visual-chrome">
             <div class="dots"><span></span><span></span><span></span></div>
             <span class="label i18n" data-en="Studio Co-designer · build trace" data-pt="Co-designer do Studio · trace de construção">Studio Co-designer &middot; build trace</span>
@@ -1610,7 +1663,7 @@
               <span class="meta-value i18n" data-en="2.6 seconds · ready to refine" data-pt="2,6 segundos · pronto para refinar">2.6 seconds &middot; ready to refine</span>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -1629,27 +1682,27 @@
       </p>
 
       <div class="agents-grid">
-        <div class="agent-card">
+        <a class="agent-card" href="./platform.html" aria-label="Attended AI Agents — explore the platform">
           <span class="agent-mode"><span class="dot"></span><span class="i18n" data-en="Attended" data-pt="Assistido">Attended</span></span>
           <h4 class="i18n" data-en="Acts inside your session." data-pt="Atua dentro da sua sessão.">Acts inside your session.</h4>
           <p class="i18n"
              data-en="The Studio Co-designer building entities with the implementer. The Case Agent helping a worker compare prior cases. You see and approve every step."
              data-pt="O Co-designer do Studio a desenhar entidades com o implementador. O Agente de Caso a ajudar um analista a comparar casos anteriores. Vê e aprova cada passo.">The Studio Co-designer building entities with the implementer. The Case Agent helping a worker compare prior cases. You see and approve every step.</p>
-        </div>
-        <div class="agent-card delegated">
+        </a>
+        <a class="agent-card delegated" href="./platform.html" aria-label="Delegated AI Agents — explore the platform">
           <span class="agent-mode"><span class="dot"></span><span class="i18n" data-en="Delegated" data-pt="Delegado">Delegated</span></span>
           <h4 class="i18n" data-en="Acts on your authorisation." data-pt="Atua sob a sua autorização.">Acts on your authorisation.</h4>
           <p class="i18n"
              data-en="“Triage this batch by policy.” “Draft the response and queue it for review.” You authorise the scope, the Agent acts within it, the platform records every action."
              data-pt="«Faz triagem deste lote segundo a política.» «Escreve a resposta e coloca-a em fila para revisão.» Você autoriza o âmbito, o Agente atua dentro dele, a plataforma regista cada ação.">"Triage this batch by policy." "Draft the response and queue it for review." You authorise the scope, the Agent acts within it, the platform records every action.</p>
-        </div>
-        <div class="agent-card autonomous">
+        </a>
+        <a class="agent-card autonomous" href="./platform.html" aria-label="Autonomous AI Agents — explore the platform">
           <span class="agent-mode"><span class="dot"></span><span class="i18n" data-en="Autonomous" data-pt="Autónomo">Autonomous</span></span>
           <h4 class="i18n" data-en="Acts on schedule or trigger." data-pt="Atua por agendamento ou trigger.">Acts on schedule or trigger.</h4>
           <p class="i18n"
              data-en="An SLA monitor that escalates when a case stalls. A reconciliation agent that fires nightly. Opt-in per Actor and per transition — both flags must be set before an Agent acts unattended."
              data-pt="Um monitor de SLA que escala quando um caso estagna. Um agente de reconciliação que corre durante a noite. Opt-in por Ator e por transição — ambas as marcas têm de estar ativas antes de um Agente atuar sem supervisão.">An SLA monitor that escalates when a case stalls. A reconciliation agent that fires nightly. Opt-in per Actor and per transition &mdash; both flags must be set before an Agent acts unattended.</p>
-        </div>
+        </a>
       </div>
 
       <p class="governed-note">
