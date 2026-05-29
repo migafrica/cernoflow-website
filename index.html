@@ -339,7 +339,7 @@
     padding-top: 80px;
     padding-bottom: 0;
   }
-  .section-hero .h-display { max-width: 980px; margin-bottom: 24px; }
+  .section-hero .h-display { margin-bottom: 0; }
   .section-hero .lead-italic { max-width: 780px; margin-bottom: 48px; }
   .pillars { display: flex; flex-wrap: wrap; gap: 28px 44px; margin-bottom: 48px; }
   .pillars .pillar { display: flex; align-items: center; gap: 12px; }
@@ -352,9 +352,7 @@
   .pillars .pillar:nth-child(3) .pillar-dot { background: var(--green); box-shadow: 0 0 8px rgba(74,222,128,0.45); }
   .pillars .pillar:nth-child(4) .pillar-dot { background: var(--ai-purple); box-shadow: 0 0 8px rgba(196,132,255,0.55); }
   .cta-row { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
-  .hero-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-  .hero-copy { display: flex; flex-direction: column; }
-  .hero-image-wrap { }
+  .hero-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-bottom: 40px; }
   .hero-image-wrap img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
 
   /* ——— Capability row ——— */
@@ -1294,36 +1292,34 @@
   <section class="section-hero" data-section="A">
     <div class="container">
       <div class="hero-layout">
-        <div class="hero-copy">
-          <h1 class="h-display i18n"
-              data-en="Govern every transactional process your business runs."
-              data-pt="Governe todos os processos transacionais do seu negócio.">Govern every transactional process your business runs.</h1>
-
-          <p class="lead-italic i18n"
-             data-en="Approvals, onboarding, applications, exceptions, lifecycle changes — the operational stuff that has a beginning, a middle, and an end, and that someone, somewhere, will eventually ask you to prove. CernoFlow tracks it, governs it, and produces the audit trail by construction."
-             data-pt="Aprovações, onboarding, candidaturas, exceções, alterações de ciclo de vida — o trabalho operacional com princípio, meio e fim, que alguém, algures, vos pedirá um dia para provar. O CernoFlow regista, governa e produz o trilho de auditoria por construção.">
-            Approvals, onboarding, applications, exceptions, lifecycle changes &mdash; the operational stuff that has a beginning, a middle, and an end, and that someone, somewhere, will eventually ask you to prove. CernoFlow tracks it, governs it, and produces the audit trail by construction.
-          </p>
-
-          <div class="pillars">
-            <div class="pillar"><span class="pillar-dot"></span><span class="mono-eyebrow i18n" data-en="Configure once · inherit everywhere" data-pt="Configurar uma vez · herdar em todo o lado">Configure once &middot; inherit everywhere</span></div>
-            <div class="pillar"><span class="pillar-dot"></span><span class="mono-eyebrow i18n" data-en="Rich lifecycle · governed transitions" data-pt="Ciclo de vida completo · transições governadas">Rich lifecycle &middot; governed transitions</span></div>
-            <div class="pillar"><span class="pillar-dot"></span><span class="mono-eyebrow i18n" data-en="Audit trail · by construction" data-pt="Trilho de auditoria · por construção">Audit trail &middot; by construction</span></div>
-            <div class="pillar"><span class="pillar-dot"></span><span class="mono-eyebrow i18n" data-en="AI Agents · participants, not bolt-ons" data-pt="Agentes de IA · participantes, não acessórios">AI Agents &middot; participants, not bolt-ons</span></div>
-          </div>
-
-          <div class="cta-row">
-            <a class="btn-primary" href="#cta-partnership" id="cta-partnership">
-              <span class="i18n" data-en="Talk to us about partnership" data-pt="Fale connosco sobre parceria">Talk to us about partnership</span>
-              <span class="arrow">→</span>
-            </a>
-            <a class="link-muted i18n" data-en="Or explore the platform →" data-pt="Ou explore a plataforma →" href="./platform.html">Or explore the platform →</a>
-          </div>
-        </div>
+        <h1 class="h-display i18n"
+            data-en="Govern every transactional process your business runs."
+            data-pt="Governe todos os processos transacionais do seu negócio.">Govern every transactional process your business runs.</h1>
 
         <div class="hero-image-wrap">
           <img src="./assets/js/cernoflow-hero.png" alt="CernoFlow platform screenshot" loading="eager">
         </div>
+      </div>
+
+      <p class="lead-italic i18n"
+         data-en="Approvals, onboarding, applications, exceptions, lifecycle changes — the operational stuff that has a beginning, a middle, and an end, and that someone, somewhere, will eventually ask you to prove. CernoFlow tracks it, governs it, and produces the audit trail by construction."
+         data-pt="Aprovações, onboarding, candidaturas, exceções, alterações de ciclo de vida — o trabalho operacional com princípio, meio e fim, que alguém, algures, vos pedirá um dia para provar. O CernoFlow regista, governa e produz o trilho de auditoria por construção.">
+        Approvals, onboarding, applications, exceptions, lifecycle changes &mdash; the operational stuff that has a beginning, a middle, and an end, and that someone, somewhere, will eventually ask you to prove. CernoFlow tracks it, governs it, and produces the audit trail by construction.
+      </p>
+
+      <div class="pillars">
+        <div class="pillar"><span class="pillar-dot"></span><span class="mono-eyebrow i18n" data-en="Configure once · inherit everywhere" data-pt="Configurar uma vez · herdar em todo o lado">Configure once &middot; inherit everywhere</span></div>
+        <div class="pillar"><span class="pillar-dot"></span><span class="mono-eyebrow i18n" data-en="Rich lifecycle · governed transitions" data-pt="Ciclo de vida completo · transições governadas">Rich lifecycle &middot; governed transitions</span></div>
+        <div class="pillar"><span class="pillar-dot"></span><span class="mono-eyebrow i18n" data-en="Audit trail · by construction" data-pt="Trilho de auditoria · por construção">Audit trail &middot; by construction</span></div>
+        <div class="pillar"><span class="pillar-dot"></span><span class="mono-eyebrow i18n" data-en="AI Agents · participants, not bolt-ons" data-pt="Agentes de IA · participantes, não acessórios">AI Agents &middot; participants, not bolt-ons</span></div>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn-primary" href="#cta-partnership" id="cta-partnership">
+          <span class="i18n" data-en="Talk to us about partnership" data-pt="Fale connosco sobre parceria">Talk to us about partnership</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="link-muted i18n" data-en="Or explore the platform →" data-pt="Ou explore a plataforma →" href="./platform.html">Or explore the platform →</a>
       </div>
     </div>
   </section>
