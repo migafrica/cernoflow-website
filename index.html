@@ -352,8 +352,8 @@
   .pillars .pillar:nth-child(3) .pillar-dot { background: var(--green); box-shadow: 0 0 8px rgba(74,222,128,0.45); }
   .pillars .pillar:nth-child(4) .pillar-dot { background: var(--ai-purple); box-shadow: 0 0 8px rgba(196,132,255,0.55); }
   .cta-row { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
-  .hero-image-wrap { margin-top: 56px; padding: 0 32px; max-width: 1280px; margin-left: auto; margin-right: auto; }
-  .hero-image-wrap img { display: block; width: 100%; height: auto; border-radius: 12px 12px 0 0; border: 1px solid rgba(255,255,255,0.08); border-bottom: none; box-shadow: 0 -4px 40px rgba(0,0,0,0.4); }
+  .hero-image-wrap { margin: 32px 0 40px; }
+  .hero-image-wrap img { display: block; width: 100%; max-width: 760px; height: auto; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
 
   /* ——— Capability row ——— */
   .row {
@@ -1293,6 +1293,11 @@
       <h1 class="h-display i18n"
           data-en="Govern every transactional process your business runs."
           data-pt="Governe todos os processos transacionais do seu negócio.">Govern every transactional process your business runs.</h1>
+
+      <div class="hero-image-wrap">
+        <img src="./assets/js/cernoflow-hero.png" alt="CernoFlow platform screenshot" loading="eager">
+      </div>
+
       <p class="lead-italic i18n"
          data-en="Approvals, onboarding, applications, exceptions, lifecycle changes — the operational stuff that has a beginning, a middle, and an end, and that someone, somewhere, will eventually ask you to prove. CernoFlow tracks it, governs it, and produces the audit trail by construction."
          data-pt="Aprovações, onboarding, candidaturas, exceções, alterações de ciclo de vida — o trabalho operacional com princípio, meio e fim, que alguém, algures, vos pedirá um dia para provar. O CernoFlow regista, governa e produz o trilho de auditoria por construção.">
@@ -1314,9 +1319,6 @@
         <a class="link-muted i18n" data-en="Or explore the platform →" data-pt="Ou explore a plataforma →" href="./platform.html">Or explore the platform →</a>
       </div>
 
-    </div>
-    <div class="hero-image-wrap">
-      <img src="./assets/js/cernoflow-hero.png" alt="CernoFlow platform screenshot" loading="eager">
     </div>
   </section>
 
