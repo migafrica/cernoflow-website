@@ -1019,7 +1019,7 @@
     position: absolute;
     top: 40%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 720px; height: 720px;
+    width: clamp(300px, 80vw, 720px); height: clamp(300px, 80vw, 720px);
     border-radius: 50%;
     background: radial-gradient(circle at center,
       rgba(91,138,236,0.10) 0%,
@@ -1116,10 +1116,14 @@
     .price-table .pt-cell.us.row-bottom { border-color: rgba(123,165,255,0.30); }
   }
   @media (max-width: 640px) {
+    .topbar { padding: 0 20px; }
     .container { padding: 0 20px; }
     section { padding: 48px 0; }
     .usecase-grid { grid-template-columns: 1fr; }
     .pillars { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .propagation-strip { grid-template-columns: 1fr; gap: 4px; }
+    .propagation-strip .stop::after { display: none; }
+    .wordmark-lg { width: clamp(260px, 80vw, 600px); }
   }
 
   /* ——— Language dropdown ——— */
