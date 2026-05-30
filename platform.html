@@ -2,7 +2,7 @@
 <html lang="en" data-reload-on-lang>
 <head>
 <script src="./assets/js/theme.js"></script>
-<script src="./assets/js/i18n.js?v=3"></script>
+<script src="./assets/js/i18n.js?v=4"></script>
 <meta charset="utf-8" />
 <title>CernoFlow - Platform</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -1140,6 +1140,182 @@ const STRINGS = {
       "connectors": {
         eyebrow: "Integrações",
         body: "Onde a plataforma se articula com os restantes sistemas. Sage e M365 de origem, com orquestração via Power Automate e n8n. Recebe dados, publica eventos e mantém os sistemas alinhados."
+      },
+    },
+  },
+  es: {
+    headline: "Una solución. Una conversación.",
+    subtitle: "Define el modelo de entidad una vez — cada formulario, permiso, vista, registro y rastro de auditoría deriva de él.",
+    emLabel: "EL MODELO DE ENTIDADES",
+    sideExploreEyebrow: "Explorar",
+    sideExploreBody: "Pase el cursor sobre cualquier sección para ver qué configura.",
+    sideDesignEyebrow: "Diseño por conversación",
+    timecodePrefix: "CERNOFLOW · escena 06 ·",
+    replay: "↻ Repetir",
+    userPrompt: "Crea una solución de contratación pública que cumpla con la normativa de la UE y las mejores prácticas.",
+    aiOpener: "¡Me encargo!",
+    aiResearch: "Revisando las directivas de contratación pública de la UE",
+    aiEntities: "Añadiendo entidades",
+    aiLifecycle: "Añadiendo ciclos de vida",
+    aiViews: "Añadiendo vistas",
+    aiFinal: "Finalizando la configuración",
+    aiFinalCompliance: "Finalizando el cumplimiento normativo",
+    aiDeploying: "Desplegando en sandbox",
+    aiReadyForReview: "Listo para revisión humana :)",
+    wedge: {
+      "structure": "Estructura",
+      "lifecycle": "Ciclo de vida",
+      "records": "Registros",
+      "workflows": "Flujos de trabajo",
+      "views": "Vistas",
+      "starting-points": "Puntos de partida",
+      "actors": "Actores",
+      "surfaces": "Superficies",
+      "ai-agents": "Agentes de IA",
+      "connectors": "Conectores",
+    },
+    compliance: [
+      { key: "ISO15489", label: "ISO 15489", center: -90 },
+      { key: "eIDAS",    label: "eIDAS",     center:   0 },
+      { key: "MoReq",    label: "MoReq",     center:  90 },
+      { key: "GDPR",     label: "RGPD",      center: 180 },
+    ],
+    tips: {
+      "ai-center": {
+        eyebrow: "Co-diseñador IA",
+        body: "Hable en lenguaje natural. El Co-diseñador convierte su descripción en entidades, ciclos de vida, flujos de trabajo, superficies — la solución completa. Usted permanece en la conversación, nunca en la configuración."
+      },
+      "compliance": {
+        eyebrow: "Marco de cumplimiento",
+        body: "RGPD, eIDAS, MoReq e ISO 15489 no son funcionalidades añadidas posteriormente. Son restricciones estructurales aplicadas a cada capa — clasificación de datos, rastros de auditoría, retención, firmas electrónicas y líneas base de seguridad."
+      },
+      "structure": {
+        eyebrow: "Estructura",
+        body: "Defina entidades, campos y cómo se relacionan entre sí. La fuente única de verdad de la que todo lo demás hereda — formularios, validaciones, búsqueda, todo."
+      },
+      "lifecycle": {
+        eyebrow: "Ciclo de vida",
+        body: "Los estados por los que pasa una entidad y las transiciones entre ellos. Configure una vez y cada pantalla, búsqueda y flujo de trabajo sabe en qué punto del recorrido se encuentra cada instancia."
+      },
+      "views": {
+        eyebrow: "Vistas",
+        body: "Pantallas para trabajar con instancias de entidades. Formularios, listas, paneles. Generadas automáticamente desde el modelo de entidad, refinadas donde importa."
+      },
+      "workflows": {
+        eyebrow: "Flujos de trabajo",
+        body: "Donde los humanos necesitan actuar — revisar, aprobar, decidir. Tareas enrutadas por rol, escaladas por SLA, cada acción capturada en el rastro de auditoría."
+      },
+      "records": {
+        eyebrow: "Registros",
+        body: "Cuando un proceso produce algo que debe conservarse — una decisión, un contrato, un permiso — se convierte en registro. ISO 15489 desde la declaración hasta la eliminación."
+      },
+      "starting-points": {
+        eyebrow: "Puntos de partida",
+        body: "Cómo comienza una nueva instancia. Un formulario en un portal, una conversación de chat, un correo entrante, una llamada a la API, un disparador programado. Defina las vías de entrada; la plataforma gestiona el resto."
+      },
+      "actors": {
+        eyebrow: "Actores",
+        body: "Los participantes en el proceso. Usuarios internos, externos, servicios del sistema, agentes de IA — todos con la misma estructura. Cada Actor se asigna a uno o más roles; los permisos en el modelo de entidad determinan qué puede ver y hacer cada rol."
+      },
+      "surfaces": {
+        eyebrow: "Superficies",
+        body: "Donde aparece la solución — un Espacio de trabajo interno para el personal, Portales externos para las personas a las que sirve. Las vistas de entidad se generan automáticamente; los formularios multi-entidad compuestos se crean aquí cuando el proceso los necesita. El mismo modelo, distintas audiencias."
+      },
+      "ai-agents": {
+        eyebrow: "Agentes de IA",
+        body: "Asistentes que ayudan a un usuario, agentes delegados que actúan en su nombre, agentes autónomos que procesan la cola. Todos gobernados por los mismos permisos y reglas de auditoría que los humanos."
+      },
+      "connectors": {
+        eyebrow: "Conectores",
+        body: "Donde la plataforma se conecta con el resto de su stack. Sage y M365 de serie, más orquestación vía Power Automate y n8n. Importe datos, publique eventos, mantenga los sistemas alineados."
+      },
+    },
+  },
+  fr: {
+    headline: "Une solution. Une conversation.",
+    subtitle: "Définissez le modèle d'entité une fois — chaque formulaire, permission, vue, enregistrement et piste d'audit en dérive.",
+    emLabel: "LE MODÈLE D'ENTITÉ",
+    sideExploreEyebrow: "Explorer",
+    sideExploreBody: "Survolez n'importe quel secteur pour voir ce qu'il configure.",
+    sideDesignEyebrow: "Conception par conversation",
+    timecodePrefix: "CERNOFLOW · scène 06 ·",
+    replay: "↻ Rejouer",
+    userPrompt: "Crée une solution d'achat public conforme aux réglementations de l'UE et aux meilleures pratiques.",
+    aiOpener: "Je m'en occupe !",
+    aiResearch: "Examen des directives européennes sur les marchés publics",
+    aiEntities: "Ajout des entités",
+    aiLifecycle: "Ajout des cycles de vie",
+    aiViews: "Ajout des vues",
+    aiFinal: "Finalisation de la configuration",
+    aiFinalCompliance: "Finalisation de la conformité",
+    aiDeploying: "Déploiement en sandbox",
+    aiReadyForReview: "Prêt pour révision humaine :)",
+    wedge: {
+      "structure": "Structure",
+      "lifecycle": "Cycle de vie",
+      "records": "Enregistrements",
+      "workflows": "Flux de travail",
+      "views": "Vues",
+      "starting-points": "Points de départ",
+      "actors": "Acteurs",
+      "surfaces": "Surfaces",
+      "ai-agents": "Agents IA",
+      "connectors": "Connecteurs",
+    },
+    compliance: [
+      { key: "ISO15489", label: "ISO 15489", center: -90 },
+      { key: "eIDAS",    label: "eIDAS",     center:   0 },
+      { key: "MoReq",    label: "MoReq",     center:  90 },
+      { key: "GDPR",     label: "RGPD",      center: 180 },
+    ],
+    tips: {
+      "ai-center": {
+        eyebrow: "Co-concepteur IA",
+        body: "Parlez en langage naturel. Le Co-concepteur transforme votre description en entités, cycles de vie, flux de travail, surfaces — la solution complète. Vous restez dans la conversation, jamais dans la configuration."
+      },
+      "compliance": {
+        eyebrow: "Cadre de conformité",
+        body: "RGPD, eIDAS, MoReq et ISO 15489 ne sont pas des fonctionnalités ajoutées après coup. Ce sont des contraintes structurelles appliquées à chaque couche — classification des données, pistes d'audit, rétention, signatures électroniques et bases de sécurité."
+      },
+      "structure": {
+        eyebrow: "Structure",
+        body: "Définissez les entités, les champs et leurs relations. La source unique de vérité dont tout le reste hérite — formulaires, validations, recherche, le tout."
+      },
+      "lifecycle": {
+        eyebrow: "Cycle de vie",
+        body: "Les états par lesquels passe une entité et les transitions entre eux. Configurez une fois et chaque écran, recherche et flux de travail sait où se trouve chaque instance dans son parcours."
+      },
+      "views": {
+        eyebrow: "Vues",
+        body: "Écrans pour travailler avec les instances d'entités. Formulaires, listes, tableaux de bord. Générés automatiquement depuis le modèle d'entité, raffinés là où cela compte."
+      },
+      "workflows": {
+        eyebrow: "Flux de travail",
+        body: "Là où les humains doivent intervenir — examiner, approuver, décider. Tâches acheminées par rôle, escaladées par SLA, chaque action capturée dans la piste d'audit."
+      },
+      "records": {
+        eyebrow: "Enregistrements",
+        body: "Quand un processus produit quelque chose qui doit être conservé — une décision, un contrat, un permis — cela devient un enregistrement. ISO 15489 de la déclaration jusqu'à l'élimination."
+      },
+      "starting-points": {
+        eyebrow: "Points de départ",
+        body: "Comment débute une nouvelle instance. Un formulaire sur un portail, une conversation par chat, un e-mail entrant, un appel API, un déclencheur planifié. Définissez les voies d'entrée ; la plateforme gère le reste."
+      },
+      "actors": {
+        eyebrow: "Acteurs",
+        body: "Les participants au processus. Utilisateurs internes, externes, services système, agents IA — tous de même structure. Chaque Acteur est associé à un ou plusieurs rôles ; les permissions sur le modèle d'entité définissent ce que chaque rôle peut voir et faire."
+      },
+      "surfaces": {
+        eyebrow: "Surfaces",
+        body: "Là où la solution se manifeste — un Espace de travail interne pour le personnel, des Portails externes pour les personnes que vous servez. Les vues d'entité sont générées automatiquement ; les formulaires multi-entités composés sont créés ici quand un processus en a besoin. Le même modèle, des audiences différentes."
+      },
+      "ai-agents": {
+        eyebrow: "Agents IA",
+        body: "Des assistants qui aident un utilisateur, des agents délégués qui agissent en son nom, des agents autonomes qui traitent la file d'attente. Tous gouvernés par les mêmes permissions et règles d'audit que les humains."
+      },
+      "connectors": {
+        eyebrow: "Connecteurs",
+        body: "Là où la plateforme rencontre le reste de votre stack. Sage et M365 d'emblée, plus l'orchestration via Power Automate et n8n. Importez des données, publiez des événements, maintenez les systèmes alignés."
       },
     },
   },
