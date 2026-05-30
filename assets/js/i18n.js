@@ -5,7 +5,7 @@
    load and whenever the dropdown changes language. Bundled apps read
    window.cernoflowI18n.get() at boot and reload on switch. */
 (function () {
-  var SUPPORTED = ['en', 'pt', 'es']; // extend with 'fr', 'de' as translations land
+  var SUPPORTED = ['en', 'pt', 'es', 'fr']; // extend with 'de' as translations land
   var DEFAULT = 'en';
   var KEY = 'cernoflow_lang';
   var FLAGS = { en: '🇬🇧', pt: '🇵🇹', fr: '🇫🇷', es: '🇪🇸', de: '🇩🇪' };
