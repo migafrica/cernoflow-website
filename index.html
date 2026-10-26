@@ -1203,6 +1203,7 @@
   }
   .lang-option:hover { color: #fff; background: rgba(91, 138, 236, 0.10); }
   .lang-option[aria-pressed="true"] { color: var(--brand-blue-soft); }
+  .lang-code { min-width: 22px; font-weight: 600; opacity: 0.6; }
 
   /* ——— Theme toggle ——— */
   .theme-toggle {
@@ -1278,10 +1279,10 @@
         </svg>
       </button>
       <ul class="lang-menu" role="listbox" aria-label="Language">
-        <li><button class="lang-option" data-lang="en" role="option"><span>EN</span></button></li>
-        <li><button class="lang-option" data-lang="pt" role="option"><span>PT</span></button></li>
-        <li><button class="lang-option" data-lang="es" role="option"><span>ES</span></button></li>
-        <li><button class="lang-option" data-lang="fr" role="option"><span>FR</span></button></li>
+        <li><button class="lang-option" data-lang="en" role="option"><span class="lang-code">EN</span><span>English</span></button></li>
+        <li><button class="lang-option" data-lang="pt" role="option"><span class="lang-code">PT</span><span>Português</span></button></li>
+        <li><button class="lang-option" data-lang="es" role="option"><span class="lang-code">ES</span><span>Español</span></button></li>
+        <li><button class="lang-option" data-lang="fr" role="option"><span class="lang-code">FR</span><span>Français</span></button></li>
       </ul>
     </div>
   </div>
