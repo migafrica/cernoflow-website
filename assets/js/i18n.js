@@ -8,7 +8,6 @@
   var SUPPORTED = ['en', 'pt', 'es', 'fr']; // extend with 'de' as translations land
   var DEFAULT = 'en';
   var KEY = 'cernoflow_lang';
-  var FLAGS = { en: '🇬🇧', pt: '🇵🇹', fr: '🇫🇷', es: '🇪🇸', de: '🇩🇪' };
 
   function getLang() {
     var stored = null;
@@ -39,8 +38,6 @@
     // Update dropdown surfaces.
     var labels = document.querySelectorAll('.lang-current');
     for (var j = 0; j < labels.length; j++) labels[j].textContent = lang.toUpperCase();
-    var flagEls = document.querySelectorAll('.lang-current-flag');
-    for (var f = 0; f < flagEls.length; f++) flagEls[f].textContent = FLAGS[lang] || '';
     var options = document.querySelectorAll('.lang-option');
     for (var k = 0; k < options.length; k++) {
       options[k].setAttribute('aria-pressed', options[k].getAttribute('data-lang') === lang ? 'true' : 'false');
