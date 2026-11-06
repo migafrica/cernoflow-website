@@ -921,22 +921,22 @@ function isBottomHalf(angleDeg) {
 // Inner ring: 5 entity-level concerns. Wedge centred at top (-90°).
 // Boundaries: -126°, -54°, 18°, 90°, 162° (each wedge spans 72°).
 // Going clockwise from top:
-//   Structure  centre -90° (top)
-//   Lifecycle  centre -18° (top-right)
-//   Views      centre  54° (bottom-right)
-//   Workflows  centre 126° (bottom-left)
-//   Records    centre 198° = -162° (top-left)
+//   Structure        centre -90° (top)
+//   Lifecycle        centre -18° (top-right)
+//   Records          centre  54° (bottom-right)
+//   Starting Points  centre 126° (bottom-left)
+//   Views            centre 198° = -162° (top-left)
 
 const INNER_WEDGES = [
   { key: "structure", center: -90, span: [-126, -54], tint: "blue1" }, // sky
   { key: "lifecycle", center: -18, span: [-54, 18],   tint: "blue2" }, // azure
   { key: "records",   center: 54,  span: [18, 90],    tint: "blue5" }, // violet (swapped from Views)
-  { key: "workflows", center: 126, span: [90, 162],   tint: "blue4" }, // indigo
+  { key: "starting-points", center: 126, span: [90, 162], tint: "blue4" }, // indigo
   { key: "views",     center: 198, span: [162, 234],  tint: "blue3" }, // brand blue (swapped from Declared Records)
 ];
 
 const OUTER_WEDGES = [
-  { key: "starting-points", center: -90, span: [-126, -54], tint: "coral" },
+  { key: "workflows",       center: -90, span: [-126, -54], tint: "coral" },
   { key: "actors",          center: -18, span: [-54, 18],   tint: "orange" },
   { key: "surfaces",        center: 54,  span: [18, 90],    tint: "amber" },
   { key: "ai-agents",       center: 126, span: [90, 162],   tint: "purple" }, // AI exception
@@ -1022,7 +1022,7 @@ const STRINGS = {
       },
       "workflows": {
         eyebrow: "Workflows",
-        body: "Where humans need to do something — review, approve, decide. Tasks routed by role, escalated by SLA, every action captured in the audit trail."
+        body: "Orchestration across steps: what happens next, branches, parallel work, loops back and timers. Each step is a task for an Actor and moves the record by firing its lifecycle transitions. Today orchestration runs through connectors such as Power Automate and n8n."
       },
       "records": {
         eyebrow: "Records",
@@ -1030,7 +1030,7 @@ const STRINGS = {
       },
       "starting-points": {
         eyebrow: "Starting Points",
-        body: "How a new instance begins. A form on a portal, a chat conversation, an inbound email, an API call, a scheduled trigger. Define the pathways, the platform handles the rest."
+        body: "How a new record enters: through a form, an API endpoint or an integration. Each Starting Point belongs to its entity and sets the stage the record starts in and who may create it."
       },
       "actors": {
         eyebrow: "Actors",
@@ -1072,14 +1072,14 @@ const STRINGS = {
     wedge: {
       "structure": "Estrutura",
       "lifecycle": "Ciclo de vida",
-      "records": "Arquivo",
+      "records": "Gestão documental",
       "workflows": "Workflows",
       "views": "Vistas",
-      "starting-points": "Pontos de entrada",
+      "starting-points": "Pontos de partida",
       "actors": "Atores",
-      "surfaces": "Canais",
-      "ai-agents": "Agentes IA",
-      "connectors": "Integrações",
+      "surfaces": "Superfícies",
+      "ai-agents": "Agentes de IA",
+      "connectors": "Conectores",
     },
     // RGPD is the standard PT-PT label for GDPR
     compliance: [
@@ -1111,15 +1111,15 @@ const STRINGS = {
       },
       "workflows": {
         eyebrow: "Workflows",
-        body: "Onde é necessária a intervenção humana — apreciar, aprovar, decidir. Tarefas distribuídas por papel, escaladas por SLA, com cada ação inscrita no registo de auditoria."
+        body: "A orquestração entre passos: o que acontece a seguir, ramificações, trabalho em paralelo, retrocessos e temporizadores. Cada passo é uma tarefa atribuída a um ator e faz avançar o processo através das transições do ciclo de vida. Hoje, a orquestração é feita através de conectores como o Power Automate e o n8n."
       },
       "records": {
-        eyebrow: "Arquivo",
+        eyebrow: "Gestão documental",
         body: "Quando um processo produz algo que tem de ser preservado — uma decisão, um contrato, uma licença — torna-se documento de arquivo. ISO 15489, da produção e classificação à conservação e eliminação."
       },
       "starting-points": {
-        eyebrow: "Pontos de entrada",
-        body: "Como se inicia uma nova instância: um formulário num portal, uma conversa por chat, um email recebido, uma chamada à API, um agendamento automático. Definem-se as vias de entrada — o resto cabe à plataforma."
+        eyebrow: "Pontos de partida",
+        body: "Como entra cada novo registo: por formulário, por endpoint de API ou por integração. Cada ponto de partida pertence à sua entidade e define o estado inicial e quem o pode criar."
       },
       "actors": {
         eyebrow: "Atores",
@@ -1199,7 +1199,7 @@ const STRINGS = {
       },
       "workflows": {
         eyebrow: "Flujos de trabajo",
-        body: "Donde los humanos necesitan actuar — revisar, aprobar, decidir. Tareas enrutadas por rol, escaladas por SLA, cada acción capturada en el rastro de auditoría."
+        body: "La orquestación entre pasos: qué ocurre después, ramificaciones, trabajo en paralelo, retrocesos y temporizadores. Cada paso es una tarea para un Actor y hace avanzar el registro activando las transiciones de su ciclo de vida. Hoy la orquestación se realiza a través de conectores como Power Automate y n8n."
       },
       "records": {
         eyebrow: "Registros",
@@ -1207,7 +1207,7 @@ const STRINGS = {
       },
       "starting-points": {
         eyebrow: "Puntos de partida",
-        body: "Cómo comienza una nueva instancia. Un formulario en un portal, una conversación de chat, un correo entrante, una llamada a la API, un disparador programado. Defina las vías de entrada; la plataforma gestiona el resto."
+        body: "Cómo entra cada nuevo registro: a través de un formulario, un endpoint de API o una integración. Cada punto de partida pertenece a su entidad y define la etapa en la que empieza el registro y quién puede crearlo."
       },
       "actors": {
         eyebrow: "Actores",
@@ -1287,7 +1287,7 @@ const STRINGS = {
       },
       "workflows": {
         eyebrow: "Flux de travail",
-        body: "Là où les humains doivent intervenir — examiner, approuver, décider. Tâches acheminées par rôle, escaladées par SLA, chaque action capturée dans la piste d'audit."
+        body: "L'orchestration entre les étapes : ce qui se passe ensuite, les branchements, le travail en parallèle, les retours en arrière et les minuteries. Chaque étape est une tâche pour un Acteur et fait avancer l'enregistrement en déclenchant les transitions de son cycle de vie. Aujourd'hui, l'orchestration passe par des connecteurs comme Power Automate et n8n."
       },
       "records": {
         eyebrow: "Enregistrements",
@@ -1295,7 +1295,7 @@ const STRINGS = {
       },
       "starting-points": {
         eyebrow: "Points de départ",
-        body: "Comment débute une nouvelle instance. Un formulaire sur un portail, une conversation par chat, un e-mail entrant, un appel API, un déclencheur planifié. Définissez les voies d'entrée ; la plateforme gère le reste."
+        body: "Comment un nouvel enregistrement entre : via un formulaire, un endpoint d'API ou une intégration. Chaque point de départ appartient à son entité et définit l'étape à laquelle l'enregistrement commence et qui peut le créer."
       },
       "actors": {
         eyebrow: "Acteurs",
@@ -1366,7 +1366,7 @@ function Conversation({ active, onWinkTrigger, onPhase, T }) {
   //                     -> onPhase('frame') after the line settles
   //   "Adding entities"           -> onPhase('structure') as line completes
   //   "Adding lifecycles"         -> onPhase('lifecycle')
-  //   "Adding views"              -> onPhase('views')   (Workflows/Records appear silently shortly after)
+  //   "Adding views"              -> onPhase('views')   (Starting Points/Records appear silently shortly after)
   //   "Finalising configuration"  -> onPhase('outer')   (outer ring wedges stagger in)
   //   "Finalising compliance"     -> onPhase('compliance') (compliance ring-fence sweeps in)
   //   "Deploying to sandbox..."   (closing status; no visual trigger)
@@ -1426,7 +1426,7 @@ function Conversation({ active, onWinkTrigger, onPhase, T }) {
   const lineVStart    = lineLStart + lineLMs + PAUSE_AFTER_LINE;
   const lineVMs       = AI_LINE_VIEWS.length * AI_CHAR_MS;
   const viewPhaseAt   = lineVStart + Math.floor(lineVMs * 0.6);
-  const innerRestAt   = lineVStart + lineVMs + 400;  // Workflows + Records appear silently shortly after Views
+  const innerRestAt   = lineVStart + lineVMs + 400;  // Starting Points + Records appear silently shortly after Views
 
   const lineFStart    = lineVStart + lineVMs + PAUSE_AFTER_LINE + 300;
   const lineFMs       = AI_LINE_FINAL.length * AI_CHAR_MS;
@@ -1679,8 +1679,8 @@ function App() {
       setInnerIn(prev => { const n = new Set(prev); n.add('views'); return n; });
       flashWedge('views');
     } else if (phase === 'innerRest') {
-      // Workflows + Records appear silently — no flash
-      setInnerIn(prev => { const n = new Set(prev); n.add('workflows'); n.add('records'); return n; });
+      // Starting Points + Records appear silently — no flash
+      setInnerIn(prev => { const n = new Set(prev); n.add('starting-points'); n.add('records'); return n; });
     } else if (phase === 'outer') {
       // Outer wedges fade in one at a time as Co-designer says "Finalising configuration".
       // Each wedge appears + flashes ~250ms after the previous one — same per-wedge
