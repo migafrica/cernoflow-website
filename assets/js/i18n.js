@@ -3,20 +3,26 @@
    bundled React app. Static pages mark translatable elements with
    `class="i18n" data-en="..." data-pt="..."`; the script swaps textContent on
    load and whenever the dropdown changes language. Bundled apps read
-   window.cernoflowI18n.get() at boot and reload on switch. */
+   window.cernoflowI18n.get() at boot and reload on switch.
+
+   SUPPORTED lists the languages translated in the markup. PUBLISHED lists the
+   ones offered to visitors: only these can be selected, and the switcher drops
+   the rest on load. A stored language that is not published falls back to
+   DEFAULT. */
 (function () {
   var SUPPORTED = ['en', 'pt', 'es', 'fr']; // extend with 'de' as translations land
+  var PUBLISHED = ['en', 'pt']; // add a language only after native review — see docs/translation-review.md
   var DEFAULT = 'en';
   var KEY = 'cernoflow_lang';
 
   function getLang() {
     var stored = null;
     try { stored = localStorage.getItem(KEY); } catch (e) {}
-    return SUPPORTED.indexOf(stored) >= 0 ? stored : DEFAULT;
+    return PUBLISHED.indexOf(stored) >= 0 ? stored : DEFAULT;
   }
 
   function setLang(lang) {
-    if (SUPPORTED.indexOf(lang) < 0) return;
+    if (PUBLISHED.indexOf(lang) < 0) return;
     try { localStorage.setItem(KEY, lang); } catch (e) {}
     apply(lang);
     // Bundled React pages can't be hot-swapped — they read the lang at boot.
@@ -49,6 +55,14 @@
   try { document.documentElement.lang = getLang(); } catch (e) {}
 
   document.addEventListener('DOMContentLoaded', function () {
+    var allOptions = document.querySelectorAll('.lang-option');
+    for (var o = 0; o < allOptions.length; o++) {
+      if (PUBLISHED.indexOf(allOptions[o].getAttribute('data-lang')) < 0) {
+        var item = allOptions[o].parentNode;
+        item.parentNode.removeChild(item);
+      }
+    }
+
     apply(getLang());
 
     var toggles = document.querySelectorAll('.lang-toggle');
