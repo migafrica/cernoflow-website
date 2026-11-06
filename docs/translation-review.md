@@ -90,3 +90,6 @@ The tips in `platform.html` still use "Co-diseñador" and "Co-concepteur" in the
 | Comparison, enterprise platforms: Usually replaces it | Normalmente lo sustituye | Le remplace généralement |
 | Comparison, CernoFlow: Yes — runs alongside your ERP and Microsoft 365… | Sí — funciona junto a su ERP y Microsoft 365, sin sustituirlos | Oui — fonctionne aux côtés de votre ERP et de Microsoft 365, sans les remplacer |
 | platform.html tips.connectors.body | Donde la plataforma se encuentra con el resto de sus sistemas. CernoFlow funciona junto a su ERP y Microsoft 365, sin sustituirlos; herramientas de automatización como Power Automate y n8n traen los datos y sacan los eventos. | Là où la plateforme rencontre le reste de vos systèmes. CernoFlow fonctionne aux côtés de votre ERP et de Microsoft 365, sans les remplacer ; des outils d'automatisation tels que Power Automate et n8n font entrer les données et sortir les événements. |
+| Nav: Why CernoFlow | Por qué CernoFlow | Pourquoi CernoFlow |
+| Comparison header: Built for SMEs, municipalities and their partners | Pensado para pymes, ayuntamientos y sus socios | Conçu pour les PME, les collectivités locales et leurs partenaires |
+| Pilot CTA: Talk to us about a pilot | Hable con nosotros sobre un proyecto piloto | Parlez-nous d'un projet pilote |

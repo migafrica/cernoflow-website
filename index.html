@@ -1047,7 +1047,7 @@
   }
   .editorial-graphic svg { width: 100%; height: 100%; display: block; }
 
-  /* ——— Differentiation (price-led) ——— */
+  /* ——— Differentiation ——— */
   .diff-head { margin-bottom: 48px; }
   .diff-head .h-section { max-width: 760px; margin-bottom: 16px; }
   .diff-head .lead-italic { max-width: 760px; }
@@ -1089,18 +1089,6 @@
   }
   .price-table .pt-cell:last-child { border-right: 0; }
   .price-table .row-bottom { border-bottom: 0; }
-  .price-table .price-figure {
-    font-family: "Syne", "Inter", sans-serif;
-    font-weight: 700; font-size: 18px;
-    color: #fff; display: block;
-    margin-bottom: 4px;
-  }
-  .price-table .price-sub {
-    font-family: "Inter", sans-serif;
-    font-size: 12px; color: var(--ink-3);
-    letter-spacing: 0.01em;
-  }
-  .price-table .us .price-figure { color: var(--brand-blue-soft); }
 
   .diff-closer {
     margin-top: 56px;
@@ -1118,6 +1106,7 @@
   .diff-closer p em {
     font-style: italic; color: var(--brand-blue-soft);
   }
+  .diff-closer .btn-primary { margin-top: 24px; }
 
   /* ——— Brand close ——— */
   .section-close {
@@ -1219,9 +1208,6 @@
     }
     .price-table .pt-cell.us:not(.pt-row-label)::before {
       color: var(--brand-blue-soft);
-    }
-    .price-table .price-figure {
-      font-size: 17px;
     }
     /* Group each 4-cell row into a card via spacing — gap above does the visual work */
     .price-table .pt-cell.row-bottom { border-bottom: 1px solid var(--hairline); }
@@ -1383,7 +1369,7 @@
       <a class="i18n" data-en="Platform"  data-pt="Plataforma" data-es="Plataforma" data-fr="Plateforme"     href="#section-platform">Platform</a>
       <a class="i18n" data-en="Use cases" data-pt="Casos de utilização" data-es="Casos de uso" data-fr="Cas d'usage" href="#section-usecases">Use cases</a>
       <a class="i18n" data-en="Customers" data-pt="Clientes" data-es="Clientes" data-fr="Clients"       href="#section-customers">Customers</a>
-      <a class="i18n" data-en="Pricing"   data-pt="Preços" data-es="Precios" data-fr="Tarifs"         href="#section-pricing">Pricing</a>
+      <a class="i18n" data-en="Why CernoFlow" data-pt="Porquê o CernoFlow" data-es="Por qué CernoFlow" data-fr="Pourquoi CernoFlow" href="#section-why">Why CernoFlow</a>
     </nav>
   </div>
   <div class="topbar-right">
@@ -2069,8 +2055,8 @@
     </div>
   </section>
 
-  <!-- ——— J — Differentiation (price-led) ——— -->
-  <section data-section="J" id="section-pricing">
+  <!-- ——— J — Differentiation ——— -->
+  <section data-section="J" id="section-why">
     <div class="container">
       <div class="diff-head">
         <p class="kicker i18n" data-en="Why CernoFlow" data-pt="Porquê o CernoFlow" data-es="Por qué CernoFlow" data-fr="Pourquoi CernoFlow">Why CernoFlow</p>
@@ -2095,21 +2081,7 @@
         <div class="pt-cell pt-row-label i18n" data-en="Typical comparator" data-pt="Comparador típico" data-es="Comparador típico" data-fr="Comparateur typique">Typical comparator</div>
         <div class="pt-cell" data-col="Enterprise case platforms">ServiceNow, Pega, Appian</div>
         <div class="pt-cell" data-col="No-code app builders">Power Apps, Mendix, OutSystems</div>
-        <div class="pt-cell us" data-col="CernoFlow"><strong class="i18n" data-en="Built for SME implementers" data-pt="Construído para implementadores PME" data-es="Construido para implementadores pyme" data-fr="Conçu pour les implémenteurs PME">Built for SME implementers</strong></div>
-
-        <div class="pt-cell pt-row-label i18n" data-en="Indicative cost" data-pt="Custo indicativo" data-es="Coste indicativo" data-fr="Coût indicatif">Indicative cost</div>
-        <div class="pt-cell" data-col="Enterprise case platforms">
-          <span class="price-figure i18n" data-en="€100k+ / year" data-pt="100 000 €+ / ano" data-es="100.000 €+ / año" data-fr="100 000 €+ / an">€100k+ / year</span>
-          <span class="price-sub i18n" data-en="per process · minimum commit" data-pt="por processo · compromisso mínimo" data-es="por proceso · compromiso mínimo" data-fr="par processus · engagement minimum">per process &middot; minimum commit</span>
-        </div>
-        <div class="pt-cell" data-col="No-code app builders">
-          <span class="price-figure i18n" data-en="€5–20k / year" data-pt="5–20 000 € / ano" data-es="5.000–20.000 € / año" data-fr="5 000–20 000 € / an">€5–20k / year</span>
-          <span class="price-sub i18n" data-en="per app · governance bolt-on extra" data-pt="por aplicação · governação paga à parte" data-es="por aplicación · gobernanza como extra añadido" data-fr="par application · gouvernance en supplément">per app &middot; governance bolt-on extra</span>
-        </div>
-        <div class="pt-cell us" data-col="CernoFlow">
-          <span class="price-figure i18n" data-en="SME-tier" data-pt="Escalão PME" data-es="Nivel pyme" data-fr="Niveau PME">SME-tier</span>
-          <span class="price-sub i18n" data-en="governance included · no enterprise floor" data-pt="governação incluída · sem valor mínimo" data-es="gobernanza incluida · sin mínimo empresarial" data-fr="gouvernance incluse · sans minimum entreprise">governance included &middot; no enterprise floor</span>
-        </div>
+        <div class="pt-cell us" data-col="CernoFlow"><strong class="i18n" data-en="Built for SMEs, municipalities and their partners" data-pt="Pensado para PME, autarquias e os seus parceiros" data-es="Pensado para pymes, ayuntamientos y sus socios" data-fr="Conçu pour les PME, les collectivités locales et leurs partenaires">Built for SMEs, municipalities and their partners</strong></div>
 
         <div class="pt-cell pt-row-label i18n" data-en="Implementation" data-pt="Implementação" data-es="Implementación" data-fr="Implémentation">Implementation</div>
         <div class="pt-cell i18n" data-en="6–18 months, large consulting team" data-pt="6–18 meses, com uma grande equipa de consultoria" data-es="6–18 meses, gran equipo consultor" data-fr="6–18 mois, grande équipe de conseil" data-col="Enterprise case platforms">6–18 months, large consulting team</div>
@@ -2140,6 +2112,10 @@
                 data-pt=" — com preços e prazos à medida das organizações que precisam de governação, mas não podem pagar as plataformas feitas para grandes empresas."
                 data-es=" — con precio y plazos adaptados a las empresas que necesitan gobernanza pero no pueden permitirse las plataformas creadas para grandes empresas." data-fr=" — tarifée et dimensionnée pour les entreprises qui ont besoin de gouvernance mais ne peuvent pas se permettre les plateformes conçues pour les grands groupes."> — priced and timed for the businesses that need governance but can't afford the platforms built for large enterprises.</span>
         </p>
+        <a class="btn-primary" href="mailto:sales@cernoflow.com?subject=Pilot%20Enquiry">
+          <span class="i18n" data-en="Talk to us about a pilot" data-pt="Fale connosco sobre um projeto-piloto" data-es="Hable con nosotros sobre un proyecto piloto" data-fr="Parlez-nous d'un projet pilote">Talk to us about a pilot</span>
+          <span class="arrow">→</span>
+        </a>
       </div>
     </div>
   </section>
