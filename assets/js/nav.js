@@ -41,6 +41,21 @@
       });
     });
 
+    // The logo returns to the top without reloading when already on its page.
+    function pageOf(pathname) { return pathname.replace(/index\.html$/, ''); }
+
+    Array.prototype.forEach.call(document.querySelectorAll('.wordmark-link'), function (link) {
+      link.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (pageOf(link.pathname) !== pageOf(location.pathname)) return;
+        e.preventDefault();
+        closeAll();
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: reduced ? 'instant' : 'smooth' });
+        history.replaceState(null, '', location.pathname + location.search);
+      });
+    });
+
     document.addEventListener('click', function (e) {
       var t = e.target;
       if (t.closest('.lang-toggle')) { closeAll(); return; }
