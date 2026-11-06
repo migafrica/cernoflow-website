@@ -323,6 +323,12 @@
     }
     .topbar-left { gap: 0; }
   }
+  /* The full nav only just fits between the mobile breakpoint and 1000px. */
+  @media (min-width: 881px) and (max-width: 1000px) {
+    .topbar-left { gap: 24px; }
+    .topbar-nav { gap: 16px; }
+    .topbar-nav a { font-size: 12.5px; white-space: nowrap; }
+  }
   /* Burger + wordmark + language only fit a phone topbar with a smaller wordmark. */
   @media (max-width: 480px) {
     .topbar .wordmark-sm { height: 16px; }
@@ -1189,7 +1195,7 @@
     .agents-grid { grid-template-columns: 1fr; }
     .usecase-grid { grid-template-columns: 1fr 1fr; }
     .usecase.featured { display: flex; }
-    .usecase.featured > .uc-link { margin-top: auto; }
+    .usecase.featured > .uc-link { align-self: flex-start; margin-top: auto; }
     .audience-row { grid-template-columns: 1fr; gap: 40px; }
     .price-table {
       grid-template-columns: 1fr;
