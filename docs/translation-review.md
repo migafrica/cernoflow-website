@@ -125,3 +125,4 @@ The tips in `platform.html` still use "Co-diseñador" and "Co-concepteur" in the
 | Tile category: Operations · Assets | Operaciones · Activos | Opérations · Actifs |
 | Tile title: Asset & property maintenance | Mantenimiento de activos e inmuebles | Maintenance des actifs et des biens immobiliers |
 | Tile body: Inspections, service intervals, condition reports and repair… | Inspecciones, intervalos de servicio, informes de estado y reparaciones, con el historial completo de cada activo. | Inspections, intervalles de service, rapports d'état et réparations, avec l'historique complet de chaque actif. |
+| Nav label and section kicker: Who it's for | Para quién es | Pour qui |

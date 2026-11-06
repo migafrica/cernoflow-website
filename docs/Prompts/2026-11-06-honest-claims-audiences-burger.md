@@ -36,9 +36,9 @@ Out: `cases/mobility.html`, `assets/css/` (do not stage).
 
 Before, record the counts. After, all must be 0 in `index.html` (EN, PT, ES and FR values included):
 
-`calls Sage` · `Sage AP` · `writeback` · `land in your system` · `Coming soon` · `coming-soon` · `Indicative cost` · `€100k` · `€5–20k` · `section-pricing` · `Implementers, not end users` · `Sage and Pastel Evolution implementers` · `Live case study`
+`calls Sage` · `Sage AP` · `writeback` · `land in your system` · `Coming soon` · `coming-soon` · `Indicative cost` · `€100k` · `€5–20k` · `section-pricing` · `Implementers, not end users` · `Sage and Pastel Evolution implementers` · `Live case study` · `data-en="Customers"`
 
-After, 0 in `platform.html`: `out of the box` · `section-pricing`
+After, 0 in `platform.html`: `out of the box` · `section-pricing` · `data-en="Customers"`
 
 ## Edit rules
 
@@ -147,6 +147,10 @@ Block 4 — CTA `Talk to us about partnership` / keep its existing PT, `mailto:s
 
 Check the section's layout still holds at desktop, at 980px and at 390px with four blocks and two group labels.
 
+4d. Nav label for this section, both pages (the link with `data-en="Customers"`; keep its `href`):
+- EN `Who it's for` · PT `Para quem é` · ES `Para quién es` · FR `Pour qui`.
+Section kicker `Who this is for`: EN `Who it's for`, PT `Para quem é` (keep ES/FR meaning aligned).
+
 Commit: `content: who this is for — organisations and partners, municipalities first`
 
 ## Step 5 — Use cases
@@ -186,7 +190,7 @@ Commit: `content: use cases as audience-labelled examples; feature the walkthrou
 2. Homepage i18n attribute check: 0 malformed. PT banned-term scan from `2026-11-06-pt-pt-pass.md`: all 0.
 3. Serve locally (free port; not 8080). In EN and PT, check and report pass/fail:
    - 390×844, both pages: burger visible left of the logo; opens the nav, turns into an X, closes on tap, Escape, outside tap and link tap; language menu and nav never open together; light theme correct; reduced motion has no animation.
-   - 1440×900 homepage: nav shows "Why CernoFlow" / "Porquê o CernoFlow" and scrolls to the section; table has no price row and four aligned columns; pilot CTA visible; Who this is for shows two labelled groups of two; use cases show the featured walkthrough full width and six tiles in a 3×2 grid, none clickable.
+   - 1440×900 homepage: nav shows "Who it's for" / "Para quem é" and "Why CernoFlow" / "Porquê o CernoFlow", each scrolling to its section; table has no price row and four aligned columns; pilot CTA visible; Who this is for shows two labelled groups of two; use cases show the featured walkthrough full width and six tiles in a 3×2 grid, none clickable.
    - 980px and 390px homepage: Who this is for and use cases stack cleanly, no horizontal scroll.
    - Platform page: nav link goes to `index.html#section-why`; Connectors tip shows the new text.
 4. Console: no errors on either page.
