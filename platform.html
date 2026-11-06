@@ -1101,7 +1101,7 @@ const TINTS = {
 const STRINGS = {
   en: {
     headline: "One solution. One conversation.",
-    subtitle: "Define the entity model once — every form, permission, view, record, and audit trail derives from it.",
+    subtitle: "Define the entity model once — every form, view, record and audit trail derives from it.",
     emLabel: "THE ENTITY MODEL",
     sideDesignEyebrow: "Design by conversation",
     cardHintEyebrow: "Explore",
@@ -1154,11 +1154,11 @@ const STRINGS = {
       },
       "lifecycle": {
         eyebrow: "Lifecycle",
-        body: "The states an entity moves through and the transitions between them. Configure once and every screen, search, and workflow knows where each instance is in its journey."
+        body: "The stages a record moves through and the transitions between them. Configure once and every screen, search and workflow knows where each record is in its journey."
       },
       "views": {
         eyebrow: "Views",
-        body: "Screens for working with entity instances. Forms, lists, dashboards. Generated automatically from the entity model, then refined where it matters."
+        body: "Screens for working with each entity's records — forms, lists, dashboards. Generated from the entity model; you only leave out what a screen doesn't need."
       },
       "workflows": {
         eyebrow: "Workflows",
@@ -1174,15 +1174,15 @@ const STRINGS = {
       },
       "actors": {
         eyebrow: "Actors",
-        body: "The participants in the process. Internal users, external users, system services, AI agents — all the same shape. Each Actor maps to one or more roles; permissions on the entity model decide what each role can see and do."
+        body: "The participants in the process: internal users, external users, system services and AI agents, all the same shape. Each Actor maps to one or more of the organisation's roles, and the model decides what each can see and do."
       },
       "surfaces": {
         eyebrow: "Surfaces",
-        body: "Where the solution shows up — internal Workspace for staff, external Portals for the people you serve. Entity views are generated automatically; composed multi-entity forms get authored here when a process needs them. Same model, different audiences."
+        body: "Where the solution reaches people — the Workspace for internal teams, the Portal for citizens and customers, and APIs for other systems. Views come from the model; each surface only chooses the container, what is editable and what is left out. One model, different audiences."
       },
       "ai-agents": {
         eyebrow: "AI Agents",
-        body: "Attended assistants that help a user, delegated agents that act on their behalf, autonomous agents that work the queue. All governed by the same permissions and audit rules as humans."
+        body: "Attended agents that help a user, delegated agents that act on their behalf, autonomous agents that work the queue. All held to the same rules and the same audit trail as people — and none can clear a human approval step."
       },
       "connectors": {
         eyebrow: "Connectors",
@@ -1192,7 +1192,7 @@ const STRINGS = {
   },
   pt: {
     headline: "Uma solução. Uma conversa.",
-    subtitle: "Modela-se a estrutura de entidades uma vez — todos os formulários, permissões, vistas, documentos e registos de auditoria derivam dela.",
+    subtitle: "A estrutura de entidades é modelada uma vez — formulários, vistas, documentos e registo de auditoria derivam dela.",
     emLabel: "MODELO DE ENTIDADES",
     sideDesignEyebrow: "Conceber pela conversa",
     cardHintEyebrow: "Explorar",
@@ -1202,7 +1202,7 @@ const STRINGS = {
     acrossLabel: "EM TODA A PLATAFORMA",
     timecodePrefix: "CERNOFLOW · cena 06 ·",
     replay: "↻ Repetir",
-    userPrompt: "Cria uma solução de contratação pública conforme com a regulamentação da UE e as boas práticas.",
+    userPrompt: "Cria uma solução de contratação pública em conformidade com as diretivas europeias e as boas práticas.",
     aiOpener: "Deixa comigo!",
     aiResearch: "A consultar as diretivas europeias de contratação pública",
     aiEntities: "A acrescentar entidades",
@@ -1210,7 +1210,7 @@ const STRINGS = {
     aiViews: "A gerar vistas",
     aiFinal: "A finalizar a configuração",
     aiFinalCompliance: "A finalizar a conformidade",
-    aiDeploying: "A implementar no sandbox",
+    aiDeploying: "A colocar no sandbox",
     aiReadyForReview: "Pronta para revisão humana :)",
     wedge: {
       "structure": "Estrutura",
@@ -1233,24 +1233,24 @@ const STRINGS = {
     ],
     tips: {
       "ai-center": {
-        eyebrow: "Co-designer IA",
-        body: "Em linguagem natural, descreve-se o que se pretende. O Co-designer traduz a descrição em entidades, ciclos de vida, workflows, canais — a solução completa. O utilizador permanece na conversa, nunca na configuração."
+        eyebrow: "Co-designer de IA",
+        body: "Descreve-se em linguagem natural o que se pretende. O Co-designer transforma a descrição em entidades, ciclos de vida, workflows e superfícies — a solução completa. O utilizador fica na conversa, nunca na configuração."
       },
       "compliance": {
         eyebrow: "Quadro de conformidade",
-        body: "RGPD, eIDAS, MoReq e ISO 15489 não são funcionalidades acrescentadas posteriormente. São requisitos transversais aplicados a todas as camadas — classificação de dados, registos de auditoria, prazos de conservação, assinatura eletrónica qualificada e linhas de base de segurança."
+        body: "O RGPD, o eIDAS, o MoReq e a ISO 15489 não são funcionalidades acrescentadas no fim. São requisitos transversais aplicados a todas as camadas — classificação de dados, registo de auditoria, prazos de conservação, assinatura eletrónica qualificada e requisitos mínimos de segurança."
       },
       "structure": {
         eyebrow: "Estrutura",
-        body: "Definem-se as entidades, os atributos e os relacionamentos. Constitui a fonte única de verdade da qual tudo o resto deriva — formulários, validações, pesquisa, sem exceção."
+        body: "Definem-se as entidades, os campos e as relações entre eles. É a fonte única de verdade de onde deriva tudo o resto — formulários, validações e pesquisa, sem exceção."
       },
       "lifecycle": {
         eyebrow: "Ciclo de vida",
-        body: "Os estados por que passa uma entidade e as transições entre eles. Configurado uma única vez, cada ecrã, pesquisa e workflow reconhece em que fase do percurso se encontra cada instância."
+        body: "Os estados por que passa cada registo e as transições entre eles. Configurado uma vez, cada ecrã, pesquisa e workflow sabe em que fase se encontra cada registo."
       },
       "views": {
         eyebrow: "Vistas",
-        body: "Os ecrãs onde se trabalha sobre as instâncias de cada entidade — formulários, listagens, painéis. Gerados automaticamente a partir do modelo, refinam-se apenas onde acrescenta valor."
+        body: "Os ecrãs de trabalho de cada entidade — formulários, listas e dashboards. Gerados a partir do modelo; só se retira o que um ecrã não precisa."
       },
       "workflows": {
         eyebrow: "Workflows",
@@ -1258,7 +1258,7 @@ const STRINGS = {
       },
       "records": {
         eyebrow: "Gestão documental",
-        body: "Quando um processo produz algo que tem de ser preservado — uma decisão, um contrato, uma licença — torna-se documento de arquivo. ISO 15489, da produção e classificação à conservação e eliminação."
+        body: "Quando um processo produz algo que tem de ser preservado — uma decisão, um contrato, uma licença — esse documento fica declarado como documento de arquivo, segundo a ISO 15489: da produção e classificação à conservação e eliminação."
       },
       "starting-points": {
         eyebrow: "Pontos de partida",
@@ -1266,25 +1266,25 @@ const STRINGS = {
       },
       "actors": {
         eyebrow: "Atores",
-        body: "Os participantes do processo. Utilizadores internos, utilizadores externos, serviços de sistema, agentes IA — todos com a mesma estrutura. Cada Ator está associado a um ou mais papéis; as permissões no modelo de entidades definem o que cada papel pode ver e fazer."
+        body: "Os intervenientes no processo: utilizadores internos e externos, serviços de sistema e agentes de IA, todos com a mesma estrutura. Cada ator corresponde a um ou mais perfis da organização, e o modelo define o que cada um pode ver e fazer."
       },
       "surfaces": {
-        eyebrow: "Canais",
-        body: "Onde a solução chega ao utilizador — back-office para os serviços internos, portais externos para os munícipes ou clientes. As vistas das entidades são geradas automaticamente; formulários multi-entidade compostos são desenhados aqui quando o processo o exige. O mesmo modelo, públicos diferentes."
+        eyebrow: "Superfícies",
+        body: "Onde a solução chega a quem a usa — o Workspace para os serviços internos, o Portal para munícipes e clientes, e APIs para outros sistemas. As vistas vêm do modelo; cada superfície escolhe apenas o enquadramento, o que é editável e o que fica de fora. O mesmo modelo, públicos diferentes."
       },
       "ai-agents": {
-        eyebrow: "Agentes IA",
-        body: "Assistentes que apoiam o utilizador, agentes delegados que atuam em seu nome e agentes autónomos que processam filas de trabalho. Todos sujeitos às mesmas permissões e regras de auditoria que os utilizadores humanos."
+        eyebrow: "Agentes de IA",
+        body: "Agentes assistidos que apoiam o utilizador, delegados que atuam em seu nome e autónomos que tratam filas de trabalho. Todos sujeitos às mesmas regras e ao mesmo registo de auditoria que as pessoas — e nenhum pode ultrapassar um passo de aprovação humana."
       },
       "connectors": {
-        eyebrow: "Integrações",
-        body: "Onde a plataforma se articula com os restantes sistemas. Sage e M365 de origem, com orquestração via Power Automate e n8n. Recebe dados, publica eventos e mantém os sistemas alinhados."
+        eyebrow: "Conectores",
+        body: "Onde a plataforma se liga aos restantes sistemas: Sage e M365 de origem, e orquestração através do Power Automate e do n8n. Recebe dados, publica eventos e mantém os sistemas alinhados."
       },
     },
   },
   es: {
     headline: "Una solución. Una conversación.",
-    subtitle: "Define el modelo de entidad una vez — cada formulario, permiso, vista, registro y rastro de auditoría deriva de él.",
+    subtitle: "Defina el modelo de entidades una vez — cada formulario, vista, registro y rastro de auditoría deriva de él.",
     emLabel: "EL MODELO DE ENTIDADES",
     sideDesignEyebrow: "Diseño por conversación",
     cardHintEyebrow: "Explorar",
@@ -1337,11 +1337,11 @@ const STRINGS = {
       },
       "lifecycle": {
         eyebrow: "Ciclo de vida",
-        body: "Los estados por los que pasa una entidad y las transiciones entre ellos. Configure una vez y cada pantalla, búsqueda y flujo de trabajo sabe en qué punto del recorrido se encuentra cada instancia."
+        body: "Las etapas por las que pasa un registro y las transiciones entre ellas. Configure una vez y cada pantalla, búsqueda y flujo de trabajo sabe en qué punto de su recorrido se encuentra cada registro."
       },
       "views": {
         eyebrow: "Vistas",
-        body: "Pantallas para trabajar con instancias de entidades. Formularios, listas, paneles. Generadas automáticamente desde el modelo de entidad, refinadas donde importa."
+        body: "Pantallas para trabajar con los registros de cada entidad — formularios, listas, paneles. Generadas a partir del modelo de entidades; solo se omite lo que una pantalla no necesita."
       },
       "workflows": {
         eyebrow: "Flujos de trabajo",
@@ -1357,15 +1357,15 @@ const STRINGS = {
       },
       "actors": {
         eyebrow: "Actores",
-        body: "Los participantes en el proceso. Usuarios internos, externos, servicios del sistema, agentes de IA — todos con la misma estructura. Cada Actor se asigna a uno o más roles; los permisos en el modelo de entidad determinan qué puede ver y hacer cada rol."
+        body: "Los participantes en el proceso: usuarios internos, usuarios externos, servicios del sistema y agentes de IA, todos con la misma estructura. Cada Actor corresponde a uno o más roles de la organización, y el modelo decide qué puede ver y hacer cada uno."
       },
       "surfaces": {
         eyebrow: "Superficies",
-        body: "Donde aparece la solución — un Espacio de trabajo interno para el personal, Portales externos para las personas a las que sirve. Las vistas de entidad se generan automáticamente; los formularios multi-entidad compuestos se crean aquí cuando el proceso los necesita. El mismo modelo, distintas audiencias."
+        body: "Donde la solución llega a las personas — el Workspace para los equipos internos, el Portal para ciudadanos y clientes, y API para otros sistemas. Las vistas vienen del modelo; cada superficie solo elige el contenedor, qué es editable y qué se omite. Un mismo modelo, distintas audiencias."
       },
       "ai-agents": {
         eyebrow: "Agentes de IA",
-        body: "Asistentes que ayudan a un usuario, agentes delegados que actúan en su nombre, agentes autónomos que procesan la cola. Todos gobernados por los mismos permisos y reglas de auditoría que los humanos."
+        body: "Agentes asistidos que ayudan a un usuario, agentes delegados que actúan en su nombre, agentes autónomos que procesan la cola. Todos sujetos a las mismas reglas y al mismo rastro de auditoría que las personas — y ninguno puede saltarse un paso de aprobación humana."
       },
       "connectors": {
         eyebrow: "Conectores",
@@ -1375,7 +1375,7 @@ const STRINGS = {
   },
   fr: {
     headline: "Une solution. Une conversation.",
-    subtitle: "Définissez le modèle d'entité une fois — chaque formulaire, permission, vue, enregistrement et piste d'audit en dérive.",
+    subtitle: "Définissez le modèle d'entité une fois — chaque formulaire, vue, enregistrement et piste d'audit en dérive.",
     emLabel: "LE MODÈLE D'ENTITÉ",
     sideDesignEyebrow: "Conception par conversation",
     cardHintEyebrow: "Explorer",
@@ -1428,11 +1428,11 @@ const STRINGS = {
       },
       "lifecycle": {
         eyebrow: "Cycle de vie",
-        body: "Les états par lesquels passe une entité et les transitions entre eux. Configurez une fois et chaque écran, recherche et flux de travail sait où se trouve chaque instance dans son parcours."
+        body: "Les étapes par lesquelles passe un enregistrement et les transitions entre elles. Configurez une fois et chaque écran, recherche et flux de travail sait où en est chaque enregistrement dans son parcours."
       },
       "views": {
         eyebrow: "Vues",
-        body: "Écrans pour travailler avec les instances d'entités. Formulaires, listes, tableaux de bord. Générés automatiquement depuis le modèle d'entité, raffinés là où cela compte."
+        body: "Écrans pour travailler avec les enregistrements de chaque entité — formulaires, listes, tableaux de bord. Générés à partir du modèle d'entité ; vous n'écartez que ce dont un écran n'a pas besoin."
       },
       "workflows": {
         eyebrow: "Flux de travail",
@@ -1448,15 +1448,15 @@ const STRINGS = {
       },
       "actors": {
         eyebrow: "Acteurs",
-        body: "Les participants au processus. Utilisateurs internes, externes, services système, agents IA — tous de même structure. Chaque Acteur est associé à un ou plusieurs rôles ; les permissions sur le modèle d'entité définissent ce que chaque rôle peut voir et faire."
+        body: "Les participants au processus : utilisateurs internes, utilisateurs externes, services système et agents IA, tous de même structure. Chaque Acteur correspond à un ou plusieurs rôles de l'organisation, et le modèle décide ce que chacun peut voir et faire."
       },
       "surfaces": {
         eyebrow: "Surfaces",
-        body: "Là où la solution se manifeste — un Espace de travail interne pour le personnel, des Portails externes pour les personnes que vous servez. Les vues d'entité sont générées automatiquement ; les formulaires multi-entités composés sont créés ici quand un processus en a besoin. Le même modèle, des audiences différentes."
+        body: "Là où la solution atteint les personnes — le Workspace pour les équipes internes, le Portail pour les citoyens et les clients, et des API pour les autres systèmes. Les vues viennent du modèle ; chaque surface choisit seulement le conteneur, ce qui est modifiable et ce qui est écarté. Un même modèle, des publics différents."
       },
       "ai-agents": {
         eyebrow: "Agents IA",
-        body: "Des assistants qui aident un utilisateur, des agents délégués qui agissent en son nom, des agents autonomes qui traitent la file d'attente. Tous gouvernés par les mêmes permissions et règles d'audit que les humains."
+        body: "Des agents assistés qui aident un utilisateur, des agents délégués qui agissent en son nom, des agents autonomes qui traitent la file d'attente. Tous soumis aux mêmes règles et à la même piste d'audit que les personnes — et aucun ne peut franchir une étape d'approbation humaine."
       },
       "connectors": {
         eyebrow: "Connecteurs",
