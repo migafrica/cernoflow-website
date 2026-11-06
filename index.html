@@ -971,7 +971,22 @@
       0 20px 50px -16px rgba(91,138,236,0.40);
     transform: translateY(-2px);
   }
-  .usecase.coming-soon { opacity: 0.55; cursor: default; }
+  .usecase.example { cursor: default; }
+  /* Spans the grid: copy on the left, link on the right. Stacks at 980px and below. */
+  .usecase.featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 48px;
+    min-height: 0;
+  }
+  .usecase.featured > * { grid-column: 1; }
+  .usecase.featured > .uc-link {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    align-self: center;
+    margin-top: 0;
+  }
   .usecase .uc-tag {
     font-family: "JetBrains Mono", monospace;
     font-size: 9.5px; letter-spacing: 0.10em;
@@ -993,6 +1008,7 @@
     text-transform: uppercase;
     color: var(--ink-4);
     margin-bottom: 6px;
+    flex: none;
   }
   .usecase h4 {
     font-family: "Syne", "Inter", sans-serif;
@@ -1015,7 +1031,6 @@
   }
   .usecase .uc-link .arrow { transition: transform 200ms ease; }
   .usecase.active:hover .uc-link .arrow { transform: translateX(3px); }
-  .usecase.coming-soon .uc-link { color: var(--ink-3); }
 
   /* ——— Audience ——— */
   .audience-row {
@@ -1173,6 +1188,8 @@
     .row-visual.platform-card { display: none; }
     .agents-grid { grid-template-columns: 1fr; }
     .usecase-grid { grid-template-columns: 1fr 1fr; }
+    .usecase.featured { display: flex; }
+    .usecase.featured > .uc-link { margin-top: auto; }
     .audience-row { grid-template-columns: 1fr; gap: 40px; }
     .price-table {
       grid-template-columns: 1fr;
@@ -1871,17 +1888,17 @@
             data-pt="Qualquer processo com princípio, meio e fim."
             data-es="Cualquier proceso transaccional con un ciclo de vida." data-fr="Tout ce qui est transactionnel avec un cycle de vie.">Anything transactional with a lifecycle.</h2>
         <p class="lead-italic i18n"
-           data-en="People, things, money, documents — if it has a beginning, a middle, and an end, and someone might one day ask you to prove what happened, it belongs on CernoFlow. A few examples of what implementers are building."
-           data-pt="Pessoas, bens, dinheiro, documentos — se tem princípio, meio e fim, e alguém lhe pode um dia pedir que prove o que aconteceu, tem lugar no CernoFlow. Alguns exemplos do que os implementadores estão a construir."
-           data-es="Personas, cosas, dinero, documentos — si tiene un principio, un desarrollo y un final, y alguien podría algún día pedirle que demuestre lo ocurrido, pertenece a CernoFlow. Algunos ejemplos de lo que los implementadores están construyendo." data-fr="Personnes, choses, argent, documents — si cela a un début, un milieu et une fin, et que quelqu'un pourrait un jour vous demander de prouver ce qui s'est passé, cela appartient à CernoFlow. Quelques exemples de ce que les implémenteurs construisent.">
-          People, things, money, documents &mdash; if it has a beginning, a middle, and an end, and someone might one day ask you to prove what happened, it belongs on CernoFlow. A few examples of what implementers are building.
+           data-en="People, things, money, documents — if it has a beginning, a middle, and an end, and someone might one day ask you to prove what happened, it belongs on CernoFlow. A few examples of what organisations and their partners can build."
+           data-pt="Pessoas, bens, dinheiro, documentos — se tem princípio, meio e fim, e alguém lhe pode um dia pedir que prove o que aconteceu, tem lugar no CernoFlow. Alguns exemplos do que as organizações e os seus parceiros podem construir."
+           data-es="Personas, cosas, dinero, documentos — si tiene un principio, un desarrollo y un final, y alguien podría algún día pedirle que demuestre lo ocurrido, pertenece a CernoFlow. Algunos ejemplos de lo que las organizaciones y sus socios pueden construir." data-fr="Personnes, choses, argent, documents — si cela a un début, un milieu et une fin, et que quelqu'un pourrait un jour vous demander de prouver ce qui s'est passé, cela appartient à CernoFlow. Quelques exemples de ce que les organisations et leurs partenaires peuvent construire.">
+          People, things, money, documents &mdash; if it has a beginning, a middle, and an end, and someone might one day ask you to prove what happened, it belongs on CernoFlow. A few examples of what organisations and their partners can build.
         </p>
       </div>
 
       <div class="usecase-grid">
-        <a class="usecase active" href="./cases/mobility.html">
+        <a class="usecase active featured" href="./cases/mobility.html">
           <p class="uc-category i18n" data-en="People · HR" data-pt="Pessoas · RH" data-es="Personas · RRHH" data-fr="Personnes · RH">People &middot; HR</p>
-          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Live case study" data-pt="Caso real" data-es="Caso de estudio en vivo" data-fr="Étude de cas en direct">Live case study</span></span>
+          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Walkthrough" data-pt="Demonstração" data-es="Demostración" data-fr="Démonstration">Walkthrough</span></span>
           <h4 class="i18n" data-en="Cross-border employee relocation" data-pt="Mobilidade internacional de colaboradores" data-es="Reubicación transfronteriza de empleados" data-fr="Relocalisation transfrontalière d'employés">Cross-border employee relocation</h4>
           <p class="i18n"
              data-en="Multi-stage approval, eIDAS qualified signatures, multilingual records, automatic payroll instructions to a French outsourcer."
@@ -1890,93 +1907,41 @@
           <span class="uc-link"><span class="i18n" data-en="Watch the five-minute walkthrough" data-pt="Veja a demonstração de cinco minutos" data-es="Ver la demostración de cinco minutos" data-fr="Voir la démonstration de cinq minutes">Watch the five-minute walkthrough</span> <span class="arrow">→</span></span>
         </a>
 
-        <a class="usecase coming-soon">
-          <p class="uc-category i18n" data-en="People · HR" data-pt="Pessoas · RH" data-es="Personas · RRHH" data-fr="Personnes · RH">People &middot; HR</p>
-          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Coming soon" data-pt="Em breve" data-es="Próximamente" data-fr="Bientôt disponible">Coming soon</span></span>
-          <h4 class="i18n" data-en="Employee onboarding &amp; offboarding" data-pt="Integração e saída de colaboradores" data-es="Incorporación y salida de empleados" data-fr="Intégration et départ des employés">Employee onboarding &amp; offboarding</h4>
-          <p class="i18n"
-             data-en="Document collection, equipment provisioning, access requests, exit checklist — auditable end to end across HR, IT, and Finance."
-             data-pt="Recolha de documentos, atribuição de equipamentos, pedidos de acesso, lista de verificação de saída — auditável de ponta a ponta entre RH, TI e Financeiro."
-             data-es="Recogida de documentos, aprovisionamiento de equipos, solicitudes de acceso, lista de salida — auditable de extremo a extremo en RRHH, TI y Finanzas." data-fr="Collecte de documents, fourniture d'équipements, demandes d'accès, liste de départ — auditable de bout en bout entre RH, IT et Finance.">Document collection, equipment provisioning, access requests, exit checklist &mdash; auditable end to end across HR, IT, and Finance.</p>
-          <span class="uc-link i18n" data-en="Walkthrough coming soon" data-pt="Demonstração em breve" data-es="Demostración próximamente" data-fr="Démonstration bientôt disponible">Walkthrough coming soon</span>
-        </a>
-
-        <a class="usecase coming-soon">
-          <p class="uc-category i18n" data-en="Suppliers · Procurement" data-pt="Fornecedores · Compras" data-es="Proveedores · Compras" data-fr="Fournisseurs · Achats">Suppliers &middot; Procurement</p>
-          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Coming soon" data-pt="Em breve" data-es="Próximamente" data-fr="Bientôt disponible">Coming soon</span></span>
-          <h4 class="i18n" data-en="Supplier onboarding &amp; KYC" data-pt="Qualificação de fornecedores e KYC" data-es="Incorporación de proveedores y KYC" data-fr="Intégration fournisseur et KYC">Supplier onboarding &amp; KYC</h4>
-          <p class="i18n"
-             data-en="Application intake, document collection, sanctions screening, dual-control approval, master-data writeback to the ledger."
-             data-pt="Receção de candidaturas, recolha de documentos, verificação de sanções, aprovação com dupla validação e atualização dos dados mestre no ERP."
-             data-es="Recepción de solicitudes, recogida de documentos, verificación de sanciones, aprobación de control dual, reescritura de datos maestros al libro mayor." data-fr="Réception des demandes, collecte de documents, vérification des sanctions, approbation à double contrôle, réécriture des données maîtres dans le livre de comptes.">Application intake, document collection, sanctions screening, dual-control approval, master-data writeback to the ledger.</p>
-          <span class="uc-link i18n" data-en="Walkthrough coming soon" data-pt="Demonstração em breve" data-es="Demostración próximamente" data-fr="Démonstration bientôt disponible">Walkthrough coming soon</span>
-        </a>
-
-        <a class="usecase coming-soon">
-          <p class="uc-category i18n" data-en="Money · Finance" data-pt="Dinheiro · Finanças" data-es="Dinero · Finanzas" data-fr="Argent · Finance">Money &middot; Finance</p>
-          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Coming soon" data-pt="Em breve" data-es="Próximamente" data-fr="Bientôt disponible">Coming soon</span></span>
-          <h4 class="i18n" data-en="Procurement exception approvals" data-pt="Aprovação de exceções nas compras" data-es="Aprobaciones de excepciones de compras" data-fr="Approbations d'exceptions d'achats">Procurement exception approvals</h4>
-          <p class="i18n"
-             data-en="Out-of-policy spend, threshold-driven dual control, exception logs, governed postings to Sage AP or Pastel Evolution."
-             data-pt="Despesa fora da política, dupla validação acima de limites definidos, registo de exceções e lançamentos controlados no Sage AP ou no Pastel Evolution."
-             data-es="Gasto fuera de política, control dual basado en umbrales, registros de excepciones, asientos gobernados a Sage AP o Pastel Evolution." data-fr="Dépenses hors politique, double contrôle basé sur les seuils, journaux d'exceptions, écritures gouvernées vers Sage AP ou Pastel Evolution.">Out-of-policy spend, threshold-driven dual control, exception logs, governed postings to Sage AP or Pastel Evolution.</p>
-          <span class="uc-link i18n" data-en="Walkthrough coming soon" data-pt="Demonstração em breve" data-es="Demostración próximamente" data-fr="Démonstration bientôt disponible">Walkthrough coming soon</span>
-        </a>
-
-        <a class="usecase coming-soon">
-          <p class="uc-category i18n" data-en="Things · Operations" data-pt="Bens · Operações" data-es="Cosas · Operaciones" data-fr="Choses · Opérations">Things &middot; Operations</p>
-          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Coming soon" data-pt="Em breve" data-es="Próximamente" data-fr="Bientôt disponible">Coming soon</span></span>
-          <h4 class="i18n" data-en="Asset lifecycle &amp; maintenance" data-pt="Ciclo de vida e manutenção de ativos" data-es="Ciclo de vida y mantenimiento de activos" data-fr="Cycle de vie et maintenance des actifs">Asset lifecycle &amp; maintenance</h4>
-          <p class="i18n"
-             data-en="Acquisition, deployment, service intervals, condition reports, disposal — with location tracking and full chain of custody."
-             data-pt="Aquisição, colocação em serviço, intervalos de manutenção, relatórios de estado, abate — com geolocalização e cadeia de custódia completa."
-             data-es="Adquisición, despliegue, intervalos de servicio, informes de estado, eliminación — con seguimiento de ubicación y cadena de custodia completa." data-fr="Acquisition, déploiement, intervalles de service, rapports d'état, élimination — avec suivi de localisation et chaîne de custody complète.">Acquisition, deployment, service intervals, condition reports, disposal &mdash; with location tracking and full chain of custody.</p>
-          <span class="uc-link i18n" data-en="Walkthrough coming soon" data-pt="Demonstração em breve" data-es="Demostración próximamente" data-fr="Démonstration bientôt disponible">Walkthrough coming soon</span>
-        </a>
-
-        <a class="usecase coming-soon">
-          <p class="uc-category i18n" data-en="Documents · Records" data-pt="Documentos · Arquivo" data-es="Documentos · Registros" data-fr="Documents · Enregistrements">Documents &middot; Records</p>
-          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Coming soon" data-pt="Em breve" data-es="Próximamente" data-fr="Bientôt disponible">Coming soon</span></span>
-          <h4 class="i18n" data-en="Contract lifecycle management" data-pt="Gestão do ciclo de vida de contratos" data-es="Gestión del ciclo de vida de contratos" data-fr="Gestion du cycle de vie des contrats">Contract lifecycle management</h4>
-          <p class="i18n"
-             data-en="Drafting, negotiation, signature (eIDAS), renewal triggers, sealed records under MoReq — with version diffs preserved."
-             data-pt="Redação, negociação, assinatura (eIDAS), alertas de renovação e documentos selados segundo o MoReq — com o histórico de versões preservado."
-             data-es="Redacción, negociación, firma (eIDAS), disparadores de renovación, registros sellados bajo MoReq — con diferencias de versión conservadas." data-fr="Rédaction, négociation, signature (eIDAS), déclencheurs de renouvellement, enregistrements scellés sous MoReq — avec différences de version préservées.">Drafting, negotiation, signature (eIDAS), renewal triggers, sealed records under MoReq &mdash; with version diffs preserved.</p>
-          <span class="uc-link i18n" data-en="Walkthrough coming soon" data-pt="Demonstração em breve" data-es="Demostración próximamente" data-fr="Démonstration bientôt disponible">Walkthrough coming soon</span>
-        </a>
-
-        <a class="usecase coming-soon">
-          <p class="uc-category i18n" data-en="Cases · Service" data-pt="Processos · Atendimento" data-es="Casos · Servicio" data-fr="Cas · Service">Cases &middot; Service</p>
-          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Coming soon" data-pt="Em breve" data-es="Próximamente" data-fr="Bientôt disponible">Coming soon</span></span>
-          <h4 class="i18n" data-en="Citizen &amp; customer service cases" data-pt="Atendimento a munícipes e clientes" data-es="Casos de servicio al ciudadano y al cliente" data-fr="Cas de service aux citoyens et aux clients">Citizen &amp; customer service cases</h4>
-          <p class="i18n"
-             data-en="Request intake, triage, multi-team handoffs, SLAs, decision records — suitable for local government and regulated service providers."
-             data-pt="Receção de pedidos, triagem, encaminhamento entre serviços, SLAs e registo das decisões — pensado para a administração local e para prestadores de serviços regulados."
-             data-es="Recepción de solicitudes, triaje, traspasos entre equipos, SLAs, registros de decisiones — adecuado para administración local y proveedores de servicios regulados." data-fr="Réception des demandes, triage, transferts multi-équipes, SLA, enregistrements de décisions — adapté aux collectivités locales et aux prestataires de services réglementés.">Request intake, triage, multi-team handoffs, SLAs, decision records &mdash; suitable for local government and regulated service providers.</p>
-          <span class="uc-link i18n" data-en="Walkthrough coming soon" data-pt="Demonstração em breve" data-es="Demostración próximamente" data-fr="Démonstration bientôt disponible">Walkthrough coming soon</span>
-        </a>
-
-        <a class="usecase coming-soon">
-          <p class="uc-category i18n" data-en="Applications · Decisions" data-pt="Candidaturas · Decisões" data-es="Solicitudes · Decisiones" data-fr="Demandes · Décisions">Applications &middot; Decisions</p>
-          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Coming soon" data-pt="Em breve" data-es="Próximamente" data-fr="Bientôt disponible">Coming soon</span></span>
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Municipalities · Licensing" data-pt="Autarquias · Licenciamento" data-es="Ayuntamientos · Licencias" data-fr="Collectivités · Autorisations">Municipalities · Licensing</p>
           <h4 class="i18n" data-en="Permits, licences &amp; applications" data-pt="Licenciamentos, autorizações e candidaturas" data-es="Permisos, licencias y solicitudes" data-fr="Permis, licences et demandes">Permits, licences &amp; applications</h4>
-          <p class="i18n"
-             data-en="Intake, scoring, exception handling, threshold-driven approval, signed decision records — defensible to the regulator."
-             data-pt="Receção, avaliação, tratamento de exceções, aprovação acima de limites definidos e decisões assinadas — defensáveis perante o regulador."
-             data-es="Recepción, puntuación, gestión de excepciones, aprobación basada en umbrales, registros de decisiones firmados — defendible ante el regulador." data-fr="Réception, notation, gestion des exceptions, approbation basée sur les seuils, enregistrements de décisions signés — défendable devant le régulateur.">Intake, scoring, exception handling, threshold-driven approval, signed decision records &mdash; defensible to the regulator.</p>
-          <span class="uc-link i18n" data-en="Walkthrough coming soon" data-pt="Demonstração em breve" data-es="Demostración próximamente" data-fr="Démonstration bientôt disponible">Walkthrough coming soon</span>
-        </a>
+          <p class="i18n" data-en="Intake, assessment, exception handling, approval above set limits and signed decisions — defensible to the regulator." data-pt="Receção, avaliação, tratamento de exceções, aprovação acima de limites definidos e decisões assinadas — defensáveis perante o regulador." data-es="Recepción, evaluación, gestión de excepciones, aprobación por encima de límites definidos y decisiones firmadas — defendibles ante el regulador." data-fr="Réception, évaluation, gestion des exceptions, approbation au-delà de seuils définis et décisions signées — défendables devant le régulateur.">Intake, assessment, exception handling, approval above set limits and signed decisions — defensible to the regulator.</p>
+        </div>
 
-        <a class="usecase coming-soon">
-          <p class="uc-category i18n" data-en="Money · Payroll" data-pt="Dinheiro · Vencimentos" data-es="Dinero · Nómina" data-fr="Argent · Paie">Money &middot; Payroll</p>
-          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Coming soon" data-pt="Em breve" data-es="Próximamente" data-fr="Bientôt disponible">Coming soon</span></span>
-          <h4 class="i18n" data-en="Payroll adjustments &amp; corrections" data-pt="Acertos e correções de vencimentos" data-es="Ajustes y correcciones de nómina" data-fr="Ajustements et corrections de paie">Payroll adjustments &amp; corrections</h4>
-          <p class="i18n"
-             data-en="Mid-cycle changes, retro adjustments, governed approvals, signed instructions to the payroll provider of record."
-             data-pt="Alterações a meio do mês, acertos retroativos, aprovações controladas e instruções assinadas para o prestador de processamento salarial."
-             data-es="Cambios a mitad de ciclo, ajustes retroactivos, aprobaciones gobernadas, instrucciones firmadas al proveedor de nómina de registro." data-fr="Changements en milieu de cycle, ajustements rétroactifs, approbations gouvernées, instructions signées au prestataire de paie de référence.">Mid-cycle changes, retro adjustments, governed approvals, signed instructions to the payroll provider of record.</p>
-          <span class="uc-link i18n" data-en="Walkthrough coming soon" data-pt="Demonstração em breve" data-es="Demostración próximamente" data-fr="Démonstration bientôt disponible">Walkthrough coming soon</span>
-        </a>
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Municipalities · Citizen service" data-pt="Autarquias · Atendimento" data-es="Ayuntamientos · Atención ciudadana" data-fr="Collectivités · Service aux citoyens">Municipalities · Citizen service</p>
+          <h4 class="i18n" data-en="Citizen requests &amp; complaints" data-pt="Pedidos e reclamações de munícipes" data-es="Solicitudes y reclamaciones ciudadanas" data-fr="Demandes et réclamations des citoyens">Citizen requests &amp; complaints</h4>
+          <p class="i18n" data-en="Request intake, triage, hand-offs between departments, SLAs and recorded decisions, with the citizen kept informed through the portal." data-pt="Receção de pedidos, triagem, encaminhamento entre serviços, SLAs e registo das decisões, com o munícipe informado através do portal." data-es="Recepción de solicitudes, triaje, traspasos entre departamentos, SLA y decisiones registradas, con el ciudadano informado a través del portal." data-fr="Réception des demandes, triage, transferts entre services, SLA et décisions enregistrées, avec le citoyen tenu informé via le portail.">Request intake, triage, hand-offs between departments, SLAs and recorded decisions, with the citizen kept informed through the portal.</p>
+        </div>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Compliance firms · Onboarding" data-pt="Conformidade · Integração de clientes" data-es="Cumplimiento · Incorporación de clientes" data-fr="Conformité · Intégration de clients">Compliance firms · Onboarding</p>
+          <h4 class="i18n" data-en="Client onboarding &amp; KYC" data-pt="Integração de clientes e KYC" data-es="Incorporación de clientes y KYC" data-fr="Intégration de clients et KYC">Client onboarding &amp; KYC</h4>
+          <p class="i18n" data-en="Application intake, document collection, sanctions screening and dual-control approval, all on the audit trail." data-pt="Receção de candidaturas, recolha de documentos, verificação de sanções e aprovação com dupla validação, tudo no registo de auditoria." data-es="Recepción de solicitudes, recogida de documentos, verificación de sanciones y aprobación de control dual, todo en el rastro de auditoría." data-fr="Réception des demandes, collecte de documents, vérification des sanctions et approbation à double contrôle, le tout dans la piste d'audit.">Application intake, document collection, sanctions screening and dual-control approval, all on the audit trail.</p>
+        </div>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Finance · Procurement" data-pt="Finanças · Compras" data-es="Finanzas · Compras" data-fr="Finance · Achats">Finance · Procurement</p>
+          <h4 class="i18n" data-en="Procurement exception approvals" data-pt="Aprovação de exceções nas compras" data-es="Aprobaciones de excepciones de compras" data-fr="Approbations d'exceptions d'achats">Procurement exception approvals</h4>
+          <p class="i18n" data-en="Out-of-policy spend, approval above set limits with dual control, and an exception log the auditor can read." data-pt="Despesa fora da política, aprovação acima de limites definidos com dupla validação e um registo de exceções que o auditor consegue ler." data-es="Gasto fuera de política, aprobación por encima de límites definidos con control dual y un registro de excepciones que el auditor puede leer." data-fr="Dépenses hors politique, approbation au-delà de seuils définis avec double contrôle et un journal d'exceptions lisible par l'auditeur.">Out-of-policy spend, approval above set limits with dual control, and an exception log the auditor can read.</p>
+        </div>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="People · HR and IT" data-pt="Pessoas · RH e TI" data-es="Personas · RRHH y TI" data-fr="Personnes · RH et IT">People · HR and IT</p>
+          <h4 class="i18n" data-en="Employee onboarding &amp; offboarding" data-pt="Integração e saída de colaboradores" data-es="Incorporación y salida de empleados" data-fr="Intégration et départ des employés">Employee onboarding &amp; offboarding</h4>
+          <p class="i18n" data-en="Document collection, equipment provisioning, access requests, exit checklist — auditable end to end across HR, IT and Finance." data-pt="Recolha de documentos, atribuição de equipamentos, pedidos de acesso, lista de verificação de saída — auditável de ponta a ponta entre RH, TI e Financeiro." data-es="Recogida de documentos, aprovisionamiento de equipos, solicitudes de acceso, lista de salida — auditable de extremo a extremo entre RRHH, TI y Finanzas." data-fr="Collecte de documents, fourniture d'équipements, demandes d'accès, liste de départ — auditable de bout en bout entre RH, IT et Finance.">Document collection, equipment provisioning, access requests, exit checklist — auditable end to end across HR, IT and Finance.</p>
+        </div>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Operations · Assets" data-pt="Operações · Ativos" data-es="Operaciones · Activos" data-fr="Opérations · Actifs">Operations · Assets</p>
+          <h4 class="i18n" data-en="Asset &amp; property maintenance" data-pt="Manutenção de ativos e imóveis" data-es="Mantenimiento de activos e inmuebles" data-fr="Maintenance des actifs et des biens immobiliers">Asset &amp; property maintenance</h4>
+          <p class="i18n" data-en="Inspections, service intervals, condition reports and repairs, with a full history for every asset." data-pt="Inspeções, intervalos de manutenção, relatórios de estado e reparações, com o histórico completo de cada ativo." data-es="Inspecciones, intervalos de servicio, informes de estado y reparaciones, con el historial completo de cada activo." data-fr="Inspections, intervalles de service, rapports d'état et réparations, avec l'historique complet de chaque actif.">Inspections, service intervals, condition reports and repairs, with a full history for every asset.</p>
+        </div>
       </div>
     </div>
   </section>
