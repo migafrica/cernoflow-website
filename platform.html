@@ -1765,11 +1765,12 @@ function App() {
               </radialGradient>
 
               {/* Curved-text paths */}
-              {/* Inner ring labels — halfSpan 28° gives the label nearly the full
-                  72° wedge with an 8° divider buffer either side. Was 14° (cramped). */}
+              {/* Inner ring labels — halfSpan 34° gives the label nearly the full
+                  72° wedge with a 2° divider buffer either side, enough for the
+                  longest label ("Gestão documental"). Was 28°, which clipped it. */}
               {INNER_WEDGES.map(w => {
                 const flip = isBottomHalf(w.center);
-                const halfSpan = 28;
+                const halfSpan = 34;
                 const a1 = w.center - halfSpan;
                 const a2 = w.center + halfSpan;
                 // Shift path inward (top) or outward (bottom-flipped) so glyphs centre on band
