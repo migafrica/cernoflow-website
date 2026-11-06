@@ -126,3 +126,10 @@ The tips in `platform.html` still use "Co-diseñador" and "Co-concepteur" in the
 | Tile title: Asset & property maintenance | Mantenimiento de activos e inmuebles | Maintenance des actifs et des biens immobiliers |
 | Tile body: Inspections, service intervals, condition reports and repair… | Inspecciones, intervalos de servicio, informes de estado y reparaciones, con el historial completo de cada activo. | Inspections, intervalles de service, rapports d'état et réparations, avec l'historique complet de chaque actif. |
 | Nav label and section kicker: Who it's for | Para quién es | Pour qui |
+
+## Follow-ups (2026-11-06)
+
+| Element | es-ES | fr-FR |
+|---|---|---|
+| Add a field to an entity… (forms, lists, audit views, sealed records and mobile) | Añada un campo a una entidad y aparecerá en todos los lugares donde aparece la entidad — formularios, listas, vistas de auditoría, registros sellados y móvil. El Co-designer de Studio puede añadirlo por usted, y el cambio en sí queda registrado como un evento gobernado. | Ajoutez un champ à une entité et il apparaît partout où l'entité apparaît — formulaires, listes, vues d'audit, enregistrements scellés et mobile. Le Co-designer Studio peut l'ajouter pour vous, et le changement lui-même est enregistré comme un événement gouverné. |
+| An ERP or Microsoft 365 implementer can stand up… | Un implementador de ERP o de Microsoft 365 puede poner en marcha una solución gobernada para un cliente en días — no en los meses que requeriría un proyecto con Pega o Appian. La plataforma se ocupa de la parte técnica; usted mantiene la conversación de negocio con el cliente. | Un implémenteur ERP ou Microsoft 365 peut mettre en place une solution gouvernée pour un client en quelques jours — pas les mois qu'exigerait un projet Pega ou Appian. La plateforme s'occupe de la partie technique ; vous gardez la conversation métier avec le client. |
