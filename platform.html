@@ -128,14 +128,29 @@
     cursor: pointer;
   }
   .wedge.in { opacity: 1; transform: scale(1); }
-  .wedge:hover,
-  .wedge.flashed {
+  .wedge:focus { outline: none; }
+  .wedge.flashed,
+  .wedge.selected,
+  .wedge:focus-visible {
     fill: var(--hover-fill, rgba(109,155,255,0.22)) !important;
     filter: drop-shadow(0 0 18px var(--hover-glow, rgba(123,165,255,0.8)));
     stroke: var(--hover-glow, rgba(123,165,255,0.9));
     stroke-width: 2 !important;
     transition: fill 180ms ease, filter 180ms ease, stroke-width 180ms ease, stroke 180ms ease;
   }
+  /* Hover only where a pointer can hover: on touch, :hover sticks after a tap. */
+  @media (hover: hover) {
+    .wedge:hover {
+      fill: var(--hover-fill, rgba(109,155,255,0.22)) !important;
+      filter: drop-shadow(0 0 18px var(--hover-glow, rgba(123,165,255,0.8)));
+      stroke: var(--hover-glow, rgba(123,165,255,0.9));
+      stroke-width: 2 !important;
+      transition: fill 180ms ease, filter 180ms ease, stroke-width 180ms ease, stroke 180ms ease;
+    }
+  }
+  .compliance-hit:focus, .center-hit:focus { outline: none; }
+  .compliance-hit:focus-visible { stroke: rgba(232,121,249,0.22); }
+  .center-hit:focus-visible { stroke: rgba(196,132,255,0.8); stroke-width: 2; }
 
   .wedge-divider {
     stroke: rgba(148, 163, 184, 0.10);
@@ -236,10 +251,10 @@
   .center-text {
     position: absolute;
     left: 50%; top: 50%;
-    /* Default (perched) transform: positioned just left of the centred convo floater,
-       and nudged up so the face's vertical centre aligns with the "I've got this!" line.
-       When .center-text gets .centred, it slides to the SVG centre. */
-    transform: translate(calc(-50% - 220px), calc(-50% - 14px));
+    /* Default (perched) transform: just left of the centred conversation, measured in
+       App (--perch-x, --perch-y; both 0 outside the wide band). When .center-text gets
+       .centred, it slides to the SVG centre. */
+    transform: translate(calc(-50% + var(--perch-x, 0px)), calc(-50% + var(--perch-y, 0px)));
     text-align: center;
     width: 56px;
     opacity: 0;
@@ -267,7 +282,7 @@
     position: absolute;
     left: 50%; top: 50%;
     /* Same anchor as the perched .center-text — centred on the face spot */
-    transform: translate(calc(-50% - 220px), calc(-50% - 14px));
+    transform: translate(calc(-50% + var(--perch-x, 0px)), calc(-50% + var(--perch-y, 0px)));
     width: 60px;
     height: 60px;
     pointer-events: none;
@@ -365,24 +380,7 @@
     filter: blur(6px);
   }
 
-  /* Side columns — pinned left and right of the ring.
-     Both have the same anatomy: eyebrow + rule + body paragraph. */
-  .side-column {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 280px;
-    max-width: 28vw;
-    z-index: 60;
-    pointer-events: none;
-    font-family: "JetBrains Mono", monospace;
-    opacity: 0;
-    transition: opacity 280ms ease;
-  }
-  .side-column.left  { left: 4vw; }
-  .side-column.right { right: 4vw; text-align: right; }
-  .side-column.ready { opacity: 1; }
-
+  /* Eyebrow + rule + body: shared by the conversation panel and the wedge card. */
   .side-eyebrow {
     font-family: "JetBrains Mono", monospace;
     font-size: 11px;
@@ -403,7 +401,6 @@
     margin-bottom: 14px;
     transition: opacity 220ms ease;
   }
-  .side-column.right .side-rule { margin-left: auto; }
 
   .side-body {
     font-family: "Inter", sans-serif;
@@ -412,63 +409,122 @@
     color: var(--ink-1);
     line-height: 1.55;
     letter-spacing: -0.005em;
-    min-height: 120px;
+    min-height: 150px;
     transition: opacity 220ms ease, color 220ms ease;
   }
   .side-body.muted { color: var(--ink-2); font-style: italic; }
 
-  /* === Floating conversation wrapper ===
-     Centred while the user types, then slides right into the right-column body slot
-     once `convoSettled` is true. Lives outside the side-column shell so it can move
-     freely. The right-column shell renders the eyebrow + rule + an empty body slot
-     above this same screen position.
+  /* === Layout bands === */
+  .diagram-wrap { width: 100%; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .wheel-col { min-width: 0; }
+  .rail { position: relative; z-index: 65; min-width: 0; }
 
-     Anchored at the right-column position (right: 4vw, width: 260px). The 'centred'
-     state uses a transform to push it to screen centre and scale it up; transitioning
-     `transform` between states keeps the motion smooth. */
+  /* Wide: wheel left, conversation and card right. */
+  @media (min-width: 1100px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr) clamp(340px, 30vw, 400px);
+      align-items: center;
+      gap: 48px;
+    }
+    .diagram-wrap {
+      width: max(
+        min(100%, 460px),
+        min(100%, calc(100svh - 64px - var(--head-h, 130px) - 64px), 720px)
+      );
+    }
+  }
+  /* Medium: wheel, then conversation, then card. */
+  @media (min-width: 700px) and (max-width: 1099.98px) {
+    .diagram-wrap { width: min(92vw, 620px); }
+    .rail { width: 100%; max-width: 620px; margin: 0 auto; }
+  }
+  /* Phone: transcript, static wheel, area list. */
+  @media (max-width: 699.98px) {
+    .scene { padding: 24px 16px 40px; }
+    .diagram-wrap { width: min(100%, 420px); margin: 32px auto 8px; pointer-events: none; }
+    .center-text { width: 40px; }
+    .codesigner-face { width: 40px !important; height: 23px !important; margin-bottom: 10px !important; }
+  }
+  .is-static .center-pulse,
+  .is-static .face-eye { animation: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .stage *, .stage *::before, .stage *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* === Conversation panel ===
+     The conversation always lives in the slot. The centred intro (wide band only) is a
+     measured transform on top of that position (--intro-x, --intro-y), so releasing it
+     settles exactly into the slot. The hidden transcript reserves the slot's final height. */
+  .panel-head { opacity: 0; transition: opacity 280ms ease; }
+  .panel-head.in { opacity: 1; }
+  .convo-slot { position: relative; }
+  .convo-sizer { visibility: hidden; }
   .convo-floater {
     position: absolute;
-    top: 50%;
-    right: 4vw;
-    width: 280px;
-    z-index: 65;
+    top: 0; left: 0;
+    width: 100%;
     pointer-events: none;
     opacity: 0;
+    transform: translate(0, 0) scale(1);
     transform-origin: 50% 50%;
     transition:
       transform 1400ms cubic-bezier(.55, .05, .25, 1),
       opacity 600ms ease;
   }
   .convo-floater.ready { opacity: 1; }
-  /* Centred: shift left to screen centre, scale up. The translation =
-       (50vw) - (right_edge - half_width) = 50vw - (100vw - 4vw - 140px) = -46vw + 140px */
   .convo-floater.centred {
-    transform: translate(calc(-46vw + 140px), -50%) scale(1.3);
+    transform: translate(var(--intro-x, 0px), calc(var(--intro-y, 0px) - 50%)) scale(1.3);
   }
-  /* Settled: anchor the floater's TOP just below where the right column's eyebrow + rule
-     end. The right column has top:50%;translateY(-50%); its body slot starts ~41px below
-     its top. With a column min-height around 160px, the body's top sits roughly 39px above
-     viewport centre. We use translateY(-39px) + scale(1) so the conversation begins right
-     at the body slot's top, leaving the eyebrow + rule visible above it. */
-  .convo-floater.settled {
-    transform: translate(0, -39px) scale(1);
-  }
+  .convo-static .ai-opener-line,
+  .convo-static .ai-followup-line { white-space: normal; overflow-wrap: break-word; }
 
+  /* === Wedge card === */
+  .wedge-card {
+    margin-top: 28px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 280ms ease;
+  }
+  .wedge-card.ready { opacity: 1; visibility: visible; }
+
+  /* === Phone area list === */
+  .area-group { margin-top: 28px; }
+  .area-group .side-eyebrow { margin-bottom: 10px; }
+  .area-group ul { list-style: none; margin: 0; padding: 0; }
+  .area-group li + li { margin-top: 8px; }
+  .area-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    width: 100%; min-height: 48px; padding: 10px 14px;
+    box-sizing: border-box;
+    border: 1px solid rgba(184, 196, 220, 0.18);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    color: var(--ink-0);
+    font-family: "Inter", sans-serif; font-weight: 600; font-size: 15px;
+    text-align: left; cursor: pointer;
+  }
+  .area-item[aria-expanded="true"] {
+    border-color: rgba(109, 155, 255, 0.45);
+    background: rgba(91, 138, 236, 0.10);
+  }
+  .area-caret { flex: none; opacity: 0.7; transition: transform 180ms ease; }
+  .area-item[aria-expanded="true"] .area-caret { transform: rotate(180deg); }
+  .area-card { padding: 14px 14px 6px; }
+  .area-card .side-body { min-height: 0; }
+
+  /* === Timecode and replay: wide band only, in flow under the layout === */
+  .stage-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    margin-top: 24px; min-height: 36px;
+  }
   .timecode {
-    position: absolute;
-    left: 22px; bottom: 22px;
-    z-index: 60;
     color: #334155;
     font-family: "JetBrains Mono", monospace;
     font-size: 10.5px;
     letter-spacing: .08em;
   }
-
-  /* Replay */
   .replay {
-    position: absolute;
-    right: 22px; bottom: 22px;
-    z-index: 60;
     background: rgba(255,255,255,.04);
     border: 1px solid rgba(255,255,255,.10);
     color: var(--ink-2);
@@ -940,7 +996,7 @@
 <div id="root"></div>
 
 <script type="text/babel" data-presets="env,react">
-const { useEffect, useRef, useState } = React;
+const { useEffect, useLayoutEffect, useRef, useState } = React;
 
 // === GEOMETRY ===
 // SVG viewBox 1000x1000, centre at (500, 500)
@@ -1047,9 +1103,12 @@ const STRINGS = {
     headline: "One solution. One conversation.",
     subtitle: "Define the entity model once — every form, permission, view, record, and audit trail derives from it.",
     emLabel: "THE ENTITY MODEL",
-    sideExploreEyebrow: "Explore",
-    sideExploreBody: "Hover any wedge to see what it configures.",
     sideDesignEyebrow: "Design by conversation",
+    cardHintEyebrow: "Explore",
+    cardHintHover: "Hover over any section of the model to see what it configures.",
+    cardHintTap: "Tap any section of the model to see what it configures.",
+    deliveryLabel: "DELIVERY",
+    acrossLabel: "ACROSS THE PLATFORM",
     timecodePrefix: "CERNOFLOW · scene 06 ·",
     replay: "↻ Replay",
     userPrompt: "Create a procurement solution that meets EU regulations and follows best practice.",
@@ -1135,9 +1194,12 @@ const STRINGS = {
     headline: "Uma solução. Uma conversa.",
     subtitle: "Modela-se a estrutura de entidades uma vez — todos os formulários, permissões, vistas, documentos e registos de auditoria derivam dela.",
     emLabel: "MODELO DE ENTIDADES",
-    sideExploreEyebrow: "Explorar",
-    sideExploreBody: "Passe o rato sobre qualquer secção para ver o que configura.",
     sideDesignEyebrow: "Conceber pela conversa",
+    cardHintEyebrow: "Explorar",
+    cardHintHover: "Passe o cursor sobre qualquer secção do modelo para ver o que configura.",
+    cardHintTap: "Toque em qualquer secção do modelo para ver o que configura.",
+    deliveryLabel: "ENTREGA",
+    acrossLabel: "EM TODA A PLATAFORMA",
     timecodePrefix: "CERNOFLOW · cena 06 ·",
     replay: "↻ Repetir",
     userPrompt: "Cria uma solução de contratação pública conforme com a regulamentação da UE e as boas práticas.",
@@ -1224,9 +1286,12 @@ const STRINGS = {
     headline: "Una solución. Una conversación.",
     subtitle: "Define el modelo de entidad una vez — cada formulario, permiso, vista, registro y rastro de auditoría deriva de él.",
     emLabel: "EL MODELO DE ENTIDADES",
-    sideExploreEyebrow: "Explorar",
-    sideExploreBody: "Pase el cursor sobre cualquier sección para ver qué configura.",
     sideDesignEyebrow: "Diseño por conversación",
+    cardHintEyebrow: "Explorar",
+    cardHintHover: "Pase el cursor sobre cualquier sección del modelo para ver qué configura.",
+    cardHintTap: "Toque cualquier sección del modelo para ver qué configura.",
+    deliveryLabel: "ENTREGA",
+    acrossLabel: "EN TODA LA PLATAFORMA",
     timecodePrefix: "CERNOFLOW · escena 06 ·",
     replay: "↻ Repetir",
     userPrompt: "Crea una solución de contratación pública que cumpla con la normativa de la UE y las mejores prácticas.",
@@ -1312,9 +1377,12 @@ const STRINGS = {
     headline: "Une solution. Une conversation.",
     subtitle: "Définissez le modèle d'entité une fois — chaque formulaire, permission, vue, enregistrement et piste d'audit en dérive.",
     emLabel: "LE MODÈLE D'ENTITÉ",
-    sideExploreEyebrow: "Explorer",
-    sideExploreBody: "Survolez n'importe quel secteur pour voir ce qu'il configure.",
     sideDesignEyebrow: "Conception par conversation",
+    cardHintEyebrow: "Explorer",
+    cardHintHover: "Survolez n'importe quelle section du modèle pour voir ce qu'elle configure.",
+    cardHintTap: "Touchez n'importe quelle section du modèle pour voir ce qu'elle configure.",
+    deliveryLabel: "LIVRAISON",
+    acrossLabel: "SUR TOUTE LA PLATEFORME",
     timecodePrefix: "CERNOFLOW · scène 06 ·",
     replay: "↻ Rejouer",
     userPrompt: "Crée une solution d'achat public conforme aux réglementations de l'UE et aux meilleures pratiques.",
@@ -1678,8 +1746,89 @@ function Conversation({ active, onWinkTrigger, onPhase, T }) {
   );
 }
 
+function useMedia(query) {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setMatches(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+}
+
+// The whole conversation at once: phone band, reduced motion, and the hidden
+// copy that reserves the conversation's final height in the other bands.
+function StaticTranscript({ T }) {
+  const steps = [T.aiResearch, T.aiEntities, T.aiLifecycle, T.aiViews, T.aiFinal, T.aiFinalCompliance, T.aiDeploying];
+  return (
+    <div className="convo-inline convo-static">
+      <div className="convo-line user-line">
+        <span className="typed-text done">{T.userPrompt}</span>
+      </div>
+      <div className="convo-line ai-line">
+        <div className="typed-text no-cursor ai-opener-line">{T.aiOpener}</div>
+        {steps.map(line => (
+          <div key={line} className="typed-text no-cursor ai-followup-line">{line}...</div>
+        ))}
+        <div className="typed-text no-cursor ai-followup-line">{T.aiReadyForReview}</div>
+      </div>
+    </div>
+  );
+}
+
+// Phone band: the ten areas plus the Co-designer and compliance frame, one open at a time.
+function AreaList({ T }) {
+  const [open, setOpen] = useState(null);
+  const groups = [
+    { label: T.emLabel, items: INNER_WEDGES.map(w => ({ key: w.key, label: T.wedge[w.key] })) },
+    { label: T.deliveryLabel, items: OUTER_WEDGES.map(w => ({ key: w.key, label: T.wedge[w.key] })) },
+    { label: T.acrossLabel, items: ["ai-center", "compliance"].map(k => ({ key: k, label: T.tips[k].eyebrow })) },
+  ];
+  return (
+    <div className="area-list">
+      {groups.map(g => (
+        <div className="area-group" key={g.label}>
+          <div className="side-eyebrow">{g.label}</div>
+          <ul>
+            {g.items.map(item => (
+              <li key={item.key}>
+                <button
+                  type="button"
+                  className="area-item"
+                  aria-expanded={open === item.key}
+                  aria-controls={`area-${item.key}`}
+                  onClick={() => setOpen(k => (k === item.key ? null : item.key))}
+                >
+                  <span>{item.label}</span>
+                  <svg className="area-caret" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                    <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <div id={`area-${item.key}`} className="area-card" hidden={open !== item.key}>
+                  <div className="side-eyebrow">{T.tips[item.key].eyebrow}</div>
+                  <div className="side-rule" />
+                  <div className="side-body">{T.tips[item.key].body}</div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function App() {
   const [tick, setTick] = useState(0);
+  const isWide = useMedia("(min-width: 1100px)");
+  const isPhone = useMedia("(max-width: 699.98px)");
+  const reducedMotion = useMedia("(prefers-reduced-motion: reduce)");
+  const canHover = useMedia("(hover: hover)");
+  // Static: the finished state, with no animation or timers.
+  const isStatic = isPhone || reducedMotion;
+  const interactive = !isPhone;
   // Read the active language from the site-wide signal. The page is reloaded
   // on switch (data-reload-on-lang on <html>), so the React state is set once
   // on mount and never changes within a session.
@@ -1711,6 +1860,11 @@ function App() {
   const [labelsIn, setLabelsIn]   = useState(false);  // wedge labels visible
   const [complianceIn, setComplianceIn] = useState(false);
   const [hovered, setHovered]     = useState(null);
+  const [selected, setSelected]   = useState(null);
+  const sceneRef = useRef(null);
+  const headRef = useRef(null);
+  const diagramRef = useRef(null);
+  const slotRef = useRef(null);
   const [showReplay, setShowReplay] = useState(false);
   const [tc, setTc] = useState("00:00");
   const startRef = useRef(0);
@@ -1779,10 +1933,10 @@ function App() {
       //   "ready for human review."  (scheduled after the line above completes)
       // We then reveal the headline + subtitle, followed by the replay button.
       // The delays here are measured from compliancePhaseAt and must clear both lines.
-      setTimeout(() => setHeadIn(true), 4200);
+      timersRef.current.push(setTimeout(() => setHeadIn(true), 4200));
       // Heading fade is 1400ms; let it nearly land before the replay button arrives.
-      setTimeout(() => setConvoDone(true), 4800);
-      setTimeout(() => setShowReplay(true), 5800);
+      timersRef.current.push(setTimeout(() => setConvoDone(true), 4800));
+      timersRef.current.push(setTimeout(() => setShowReplay(true), 5800));
     }
   }
 
@@ -1792,7 +1946,8 @@ function App() {
     setInnerIn(new Set()); setOuterIn(new Set()); setFlashed(new Set());
     setLabelsIn(false); setComplianceIn(false);
     setConvoIn(false); setConvoSettled(false); setConvoDone(false);
-    setBlinkKey(0); setHovered(null); setShowReplay(false);
+    setBlinkKey(0); setHovered(null); setSelected(null); setShowReplay(false);
+    if (isStatic) return;
     startRef.current = performance.now();
 
     // Heading is now revealed at the END, after the compliance sweep completes
@@ -1809,9 +1964,83 @@ function App() {
       setTc(`${mm}:${ss}`);
     }, 250);
     return () => { clearTimers(); clearInterval(iv); };
-  }, [tick, lang]);
+  }, [tick, lang, isStatic]);
 
-  const tipText = hovered ? T.tips[hovered] : null;
+  // Wide band: the wheel's height budget, and where the centred intro and the perched
+  // face sit, all measured from the real layout. Recomputed whenever anything resizes.
+  useLayoutEffect(() => {
+    const scene = sceneRef.current;
+    if (isPhone || !scene) return undefined;
+    const vars = ["--intro-x", "--intro-y", "--perch-x", "--perch-y"];
+    const measure = () => {
+      const head = headRef.current, wheel = diagramRef.current, slot = slotRef.current;
+      if (!head || !wheel) return;
+      scene.style.setProperty("--head-h", `${head.getBoundingClientRect().height + 28}px`);
+      if (!isWide || !slot) {
+        vars.forEach(v => scene.style.removeProperty(v));
+        return;
+      }
+      const sceneBox = scene.getBoundingClientRect();
+      const wheelBox = wheel.getBoundingClientRect();
+      const slotBox = slot.getBoundingClientRect();
+      const targetX = sceneBox.left + sceneBox.width / 2;
+      const targetY = wheelBox.top + wheelBox.height / 2;
+      scene.style.setProperty("--intro-x", `${targetX - (slotBox.left + slotBox.width / 2)}px`);
+      scene.style.setProperty("--intro-y", `${targetY - slotBox.top}px`);
+      // Left of the scaled conversation (scale 1.3), with the same gap as before.
+      scene.style.setProperty("--perch-x", `${targetX - (slotBox.width * 1.3) / 2 - 38 - (wheelBox.left + wheelBox.width / 2)}px`);
+      scene.style.setProperty("--perch-y", "-14px");
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    [scene, headRef.current, diagramRef.current, slotRef.current].forEach(el => el && ro.observe(el));
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+      vars.forEach(v => scene.style.removeProperty(v));
+    };
+  }, [isWide, isPhone, isStatic]);
+
+  // In the static bands everything is already revealed.
+  const headOn = isStatic || headIn;
+  const faceOn = isStatic || faceIn;
+  const discOn = isStatic || discIn;
+  const frameOn = isStatic || frameIn;
+  const complianceOn = isStatic || complianceIn;
+  const doneOn = isStatic || convoDone;
+  const innerOn = key => isStatic || innerIn.has(key);
+  const outerOn = key => isStatic || outerIn.has(key);
+
+  // Hover previews a section; click, tap, Enter or Space selects it, and doing so
+  // again clears it. Touch browsers fire mouseenter on tap, hence the canHover guard.
+  const isActive = key => hovered === key || selected === key;
+  const labelFor = key => (T.wedge[key] || T.tips[key].eyebrow);
+  const toggleSelected = key => setSelected(k => (k === key ? null : key));
+  function pickProps(key, revealed, onEnter) {
+    if (!interactive) return {};
+    return {
+      role: "button",
+      tabIndex: revealed ? 0 : -1,
+      "aria-label": labelFor(key),
+      "aria-pressed": selected === key,
+      onClick: () => toggleSelected(key),
+      onKeyDown: e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleSelected(key);
+        }
+      },
+      onMouseEnter: () => {
+        if (!canHover) return;
+        setHovered(key);
+        if (onEnter) onEnter();
+      },
+      onMouseLeave: () => { if (canHover) setHovered(null); },
+    };
+  }
+  const tipKey = (canHover && hovered) || selected;
+  const tipText = tipKey ? T.tips[tipKey] : null;
 
   // Curved label paths for inner ring
   // For each wedge, we need a path along which the text is drawn.
@@ -1822,16 +2051,8 @@ function App() {
   const R_OUTER_LABEL = 380;   // centre of outer-ring band (280 + 480)/2
   const R_FRAME_LABEL = 496;   // sits along the compliance frame
 
-  return (
-    <div className={`stage lang-${lang}`}>
-      <div className="scene">
-
-        <div className={`heading-block ${headIn ? "in" : ""}`}>
-          <h1 className="headline">{T.headline}</h1>
-          <p className="subtitle">{T.subtitle}</p>
-        </div>
-
-        <div className="diagram-wrap">
+  const wheel = (
+        <div className="diagram-wrap" ref={diagramRef} aria-hidden={isPhone ? "true" : undefined}>
           <svg viewBox="0 0 1000 1000">
             <defs>
               <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
@@ -1904,7 +2125,7 @@ function App() {
               d={annularSector(R_FRAME - R_FRAME_BAND, R_FRAME + R_FRAME_BAND, -180, 180)}
               fill="rgba(232,121,249,0.05)"
               stroke="none"
-              className={`compliance-band-fill ${complianceIn ? "in" : ""} ${hovered === "compliance" ? "hovered" : ""}`}
+              className={`compliance-band-fill ${complianceOn ? "in" : ""} ${isActive("compliance") ? "hovered" : ""}`}
             />
             {/* Hover interaction layer for the compliance frame — thick stroked circle covers the band */}
             <circle
@@ -1912,22 +2133,22 @@ function App() {
               fill="none"
               stroke="transparent"
               strokeWidth={R_FRAME_BAND * 2 + 12}
-              style={{ cursor: "pointer", pointerEvents: complianceIn ? "stroke" : "none" }}
-              onMouseEnter={() => setHovered("compliance")}
-              onMouseLeave={() => setHovered(null)} />
+              className="compliance-hit"
+              style={{ cursor: "pointer", pointerEvents: complianceOn && interactive ? "stroke" : "none" }}
+              {...pickProps("compliance", complianceOn)} />
             <circle
               cx={CX} cy={CY} r={R_FRAME - R_FRAME_BAND}
               fill="none"
               stroke="rgba(232,121,249,0.55)"
               strokeWidth="1.4"
-              className={`compliance-band-edge ${complianceIn ? "in" : ""} ${hovered === "compliance" ? "hovered" : ""}`}
+              className={`compliance-band-edge ${complianceOn ? "in" : ""} ${isActive("compliance") ? "hovered" : ""}`}
             />
             <circle
               cx={CX} cy={CY} r={R_FRAME + R_FRAME_BAND}
               fill="none"
               stroke="rgba(232,121,249,0.55)"
               strokeWidth="1.4"
-              className={`compliance-band-edge ${complianceIn ? "in" : ""} ${hovered === "compliance" ? "hovered" : ""}`}
+              className={`compliance-band-edge ${complianceOn ? "in" : ""} ${isActive("compliance") ? "hovered" : ""}`}
             />
 
             {/* Compliance frame labels — all curved on band centre */}
@@ -1935,7 +2156,7 @@ function App() {
               <text
                 key={`flbl-${c.key}`}
                 
-                className={`compliance-label ${complianceIn ? "in" : ""}`}
+                className={`compliance-label ${complianceOn ? "in" : ""}`}
               >
                 <textPath href={`#tp-frame-${c.key}`} startOffset="50%" textAnchor="middle">
                   {c.label}
@@ -1954,7 +2175,7 @@ function App() {
 
             {/* Inner ring wedge fills */}
             {INNER_WEDGES.map(w => {
-              const isHot = hovered === w.key || flashed.has(w.key);
+              const isHot = isActive(w.key) || flashed.has(w.key);
               return (
                 <path
                   key={`iw-${w.key}`}
@@ -1962,17 +2183,16 @@ function App() {
                   fill={isHot ? TINTS[w.tint].hover : TINTS[w.tint].fill}
                   stroke={TINTS[w.tint].stroke}
                   strokeWidth="1"
-                  className={`wedge ${innerIn.has(w.key) ? "in" : ""} ${flashed.has(w.key) ? "flashed" : ""}`}
-                  style={{ "--hover-fill": TINTS[w.tint].hover, "--hover-glow": TINTS[w.tint].accent }}
-                  onMouseEnter={() => setHovered(w.key)}
-                  onMouseLeave={() => setHovered(null)}
+                  className={`wedge ${innerOn(w.key) ? "in" : ""} ${flashed.has(w.key) ? "flashed" : ""} ${selected === w.key ? "selected" : ""}`}
+                  style={{ "--hover-fill": TINTS[w.tint].hover, "--hover-glow": TINTS[w.tint].accent, pointerEvents: innerOn(w.key) && interactive ? undefined : "none" }}
+                  {...pickProps(w.key, innerOn(w.key))}
                 />
               );
             })}
 
             {/* Outer ring wedge fills */}
             {OUTER_WEDGES.map(w => {
-              const isHot = hovered === w.key || flashed.has(w.key);
+              const isHot = isActive(w.key) || flashed.has(w.key);
               return (
                 <path
                   key={`ow-${w.key}`}
@@ -1980,10 +2200,9 @@ function App() {
                   fill={isHot ? TINTS[w.tint].hover : TINTS[w.tint].fill}
                   stroke={TINTS[w.tint].stroke}
                   strokeWidth="1"
-                  className={`wedge ${outerIn.has(w.key) ? "in" : ""} ${flashed.has(w.key) ? "flashed" : ""}`}
-                  style={{ "--hover-fill": TINTS[w.tint].hover, "--hover-glow": TINTS[w.tint].accent }}
-                  onMouseEnter={() => setHovered(w.key)}
-                  onMouseLeave={() => setHovered(null)}
+                  className={`wedge ${outerOn(w.key) ? "in" : ""} ${flashed.has(w.key) ? "flashed" : ""} ${selected === w.key ? "selected" : ""}`}
+                  style={{ "--hover-fill": TINTS[w.tint].hover, "--hover-glow": TINTS[w.tint].accent, pointerEvents: outerOn(w.key) && interactive ? undefined : "none" }}
+                  {...pickProps(w.key, outerOn(w.key))}
                 />
               );
             })}
@@ -1996,7 +2215,7 @@ function App() {
                 <line
                   key={`div-${w.key}`}
                   x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y}
-                  className={`wedge-divider ${complianceIn ? "in" : ""}`}
+                  className={`wedge-divider ${complianceOn ? "in" : ""}`}
                 />
               );
             })}
@@ -2005,19 +2224,19 @@ function App() {
             {/* Inner: where AI centre meets entity model */}
             <circle cx={CX} cy={CY} r={R_INNER_INNER}
                     fill="none" stroke="rgba(123,165,255,0.95)" strokeWidth="2.5"
-                    className={`em-frame ${frameIn ? "in" : ""}`} />
+                    className={`em-frame ${frameOn ? "in" : ""}`} />
             {/* Outer: where entity model meets solution-level concerns. Full circle now
                 that the EM label sits inside the inner band, not on the line. */}
             <circle cx={CX} cy={CY} r={R_INNER_OUTER}
                     fill="none" stroke="rgba(123,165,255,0.95)" strokeWidth="2.5"
-                    className={`em-frame ${frameIn ? "in" : ""}`} />
+                    className={`em-frame ${frameOn ? "in" : ""}`} />
             {/* Solution outer edge — neutral; appears with the compliance ring sweep */}
             <circle cx={CX} cy={CY} r={R_OUTER_OUTER}
                     fill="none" stroke="rgba(148,163,184,0.18)" strokeWidth="1"
-                    className={`ring-edge ${complianceIn ? "in" : ""}`} />
+                    className={`ring-edge ${complianceOn ? "in" : ""}`} />
 
             {/* "THE ENTITY MODEL" curved label — sits inside the inner band, near (not on) the boundary. */}
-            <text className={`em-label ${frameIn ? "in" : ""}`}>
+            <text className={`em-label ${frameOn ? "in" : ""}`}>
               <textPath href="#tp-em-label" startOffset="50%" textAnchor="middle">
                 {T.emLabel}
               </textPath>
@@ -2027,7 +2246,7 @@ function App() {
             {INNER_WEDGES.map(w => {
               const sinAbs = Math.abs(Math.sin(deg2rad(w.center)));
               const useCurve = true;
-              const isIn = innerIn.has(w.key);
+              const isIn = innerOn(w.key);
               const wedgeLabel = T.wedge[w.key];
               if (useCurve) {
                 return (
@@ -2062,7 +2281,7 @@ function App() {
             {OUTER_WEDGES.map(w => {
               const sinAbs = Math.abs(Math.sin(deg2rad(w.center)));
               const useCurve = true;
-              const isIn = outerIn.has(w.key);
+              const isIn = outerOn(w.key);
               const wedgeLabel = T.wedge[w.key];
               if (useCurve) {
                 return (
@@ -2096,24 +2315,23 @@ function App() {
             <circle
               cx={CX} cy={CY} r={R_CENTER + 8}
               fill="url(#centerGlow)"
-              className={`center-pulse ${discIn ? "in" : ""}`}
+              className={`center-pulse ${discOn ? "in" : ""}`}
             />
 
             {/* Centre disc */}
-            <g className={`center-disc ${discIn ? "in" : ""}`}>
+            <g className={`center-disc ${discOn ? "in" : ""}`}>
               <circle cx={CX} cy={CY} r={R_CENTER} fill="url(#centerGrad)" />
               <circle cx={CX} cy={CY} r={R_CENTER} fill="none"
                 stroke="rgba(148,163,184,0.18)" strokeWidth="1" />
               {/* Hover interaction layer for the AI centre */}
               <circle cx={CX} cy={CY} r={R_CENTER}
                 fill="transparent"
-                style={{ cursor: "pointer", pointerEvents: "all" }}
-                onMouseEnter={() => {
-                  setHovered("ai-center");
+                className="center-hit"
+                style={{ cursor: "pointer", pointerEvents: discOn && interactive ? "all" : "none" }}
+                {...pickProps("ai-center", discOn, () => {
                   triggerWink();
                   setBlinkKey(k => k + 1);
-                }}
-                onMouseLeave={() => setHovered(null)} />
+                })} />
             </g>
           </svg>
 
@@ -2121,7 +2339,7 @@ function App() {
               1. Cluster of sparkles twinkle in sequence (~1500ms) — "something's brewing"
               2. Soft smoke cloud gathers (overlapping the sparkle tail)
               3. Face fades in from inside the cloud; last wisps drift up */}
-          {dustOn ? (
+          {dustOn && !isStatic ? (
             <div className="pixie-dust active">
               {/* --- Phase 1: sparkles (4 stars, twinkling in sequence) --- */}
               {[
@@ -2187,9 +2405,9 @@ function App() {
           ) : null}
 
           {/* AI Co-designer face — first appears perched to the left of the centred convo (faceIn),
-              then migrates to the SVG centre once discIn is true. */}
-          <div className={`center-text ${faceIn ? "in" : ""} ${discIn ? "centred" : ""}`}>
-            <svg className={`codesigner-face ${hovered === "ai-center" ? "face-hover" : ""}`} width="56" height="32" viewBox="0 0 36 22" xmlns="http://www.w3.org/2000/svg">
+              then migrates to the SVG centre once discOn is true. */}
+          <div className={`center-text ${faceOn ? "in" : ""} ${discOn || !isWide ? "centred" : ""}`}>
+            <svg className={`codesigner-face ${isActive("ai-center") ? "face-hover" : ""}`} width="56" height="32" viewBox="0 0 36 22" xmlns="http://www.w3.org/2000/svg">
               <ellipse className="face-glow" cx="18" cy="9" rx="14" ry="5" />
               <circle key={`l-${blinkKey}`} className="face-eye left"  cx="11" cy="9"  r="2.6" />
               <circle key={`r-${blinkKey}`} className={`face-eye right ${winkActive ? "winking" : ""}`} cx="25" cy="9"  r="2.6" />
@@ -2197,46 +2415,78 @@ function App() {
             </svg>
           </div>
         </div>
+  );
 
-        {/* Left column — wedge tooltip on hover, only revealed once the conversation has played */}
-        <div className={`side-column left ${convoDone ? "ready" : ""}`}>
-          <div className={`side-eyebrow ${tipText ? "" : "muted"}`}>
-            {tipText ? tipText.eyebrow : T.sideExploreEyebrow}
+  const panelHeadOn = isStatic || (isWide ? convoSettled : convoIn);
+  const convoPanel = (
+    <div className="convo-panel">
+      <div className={`panel-head ${panelHeadOn ? "in" : ""}`}>
+        <div className="side-eyebrow">{T.sideDesignEyebrow}</div>
+        <div className="side-rule" />
+      </div>
+      {isStatic ? (
+        <StaticTranscript T={T} />
+      ) : (
+        <div className="convo-slot" ref={slotRef}>
+          <div className="convo-sizer" aria-hidden="true"><StaticTranscript T={T} /></div>
+          <div className={`convo-floater ${convoIn ? "ready" : ""} ${isWide && !convoSettled ? "centred" : ""}`}>
+            <Conversation active={convoIn} onWinkTrigger={triggerWink} onPhase={handleConvoPhase} T={T} />
           </div>
-          <div className="side-rule" />
-          <div className={`side-body ${tipText ? "" : "muted"}`}>
-            {tipText ? tipText.body : T.sideExploreBody}
-          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div className={`stage lang-${lang} ${isStatic ? "is-static" : ""}`}>
+      <div className="scene" ref={sceneRef}>
+
+        <div className={`heading-block ${headOn ? "in" : ""}`} ref={headRef}>
+          <h1 className="headline">{T.headline}</h1>
+          <p className="subtitle">{T.subtitle}</p>
         </div>
 
-        {/* Right column shell — eyebrow + rule. Becomes visible once the conversation has settled into it. */}
-        <div className={`side-column right ${convoSettled ? "ready" : ""}`}>
-          <div className="side-eyebrow">{T.sideDesignEyebrow}</div>
-          <div className="side-rule" />
-          {/* Body slot is intentionally empty; the conversation itself lives in
-              the floating wrapper below so it can slide in from centre. */}
-          <div className="side-body convo-slot" />
-        </div>
-
-        {/* Floating conversation wrapper — sits centred while the user types,
-            then slides into the right-column body slot once convoSettled is true. */}
-        <div className={`convo-floater ${convoIn ? "ready" : ""} ${convoSettled ? "settled" : "centred"}`}>
-          <Conversation active={convoIn} onWinkTrigger={triggerWink} onPhase={handleConvoPhase} T={T} />
-        </div>
+        {isPhone ? (
+          <React.Fragment>
+            {convoPanel}
+            {wheel}
+            <AreaList T={T} />
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <div className="layout">
+              <div className="wheel-col">{wheel}</div>
+              <aside className="rail">
+                {convoPanel}
+                <div className={`wedge-card ${doneOn ? "ready" : ""}`} aria-live="polite">
+                  <div className={`side-eyebrow ${tipText ? "" : "muted"}`}>
+                    {tipText ? tipText.eyebrow : T.cardHintEyebrow}
+                  </div>
+                  <div className="side-rule" />
+                  <div className={`side-body ${tipText ? "" : "muted"}`}>
+                    {tipText ? tipText.body : (canHover ? T.cardHintHover : T.cardHintTap)}
+                  </div>
+                </div>
+              </aside>
+            </div>
+            {isWide && !isStatic ? (
+              <div className="stage-foot">
+                <div className="timecode">{T.timecodePrefix} {tc}</div>
+                <button
+                  className={`replay ${showReplay ? "show" : ""}`}
+                  onClick={() => setTick(t => t + 1)}
+                  tabIndex={showReplay ? 0 : -1}
+                >
+                  {T.replay}
+                </button>
+              </div>
+            ) : null}
+          </React.Fragment>
+        )}
       </div>
 
       <div className="vignette"></div>
       <div className="grain"></div>
-
-      <div className="timecode">{T.timecodePrefix} {tc}</div>
-
-      <button
-        className={`replay ${showReplay ? "show" : ""}`}
-        onClick={() => setTick(t => t + 1)}
-        tabIndex={showReplay ? 0 : -1}
-      >
-        {T.replay}
-      </button>
     </div>
   );
 }
