@@ -1025,6 +1025,10 @@
     margin-bottom: 6px;
     flex: none;
   }
+  /* Keep the longest labels on one line at the narrow end of each column layout. */
+  @media (max-width: 380px), (min-width: 641px) and (max-width: 760px), (min-width: 981px) and (max-width: 1100px) {
+    .usecase .uc-category { font-size: 10px; letter-spacing: 0.02em; }
+  }
   .usecase h4 {
     font-family: "Syne", "Inter", sans-serif;
     font-weight: 600; font-size: 17px;
@@ -1929,13 +1933,13 @@
         </a>
 
         <div class="usecase example">
-          <p class="uc-category i18n" data-en="Municipalities · Licensing" data-pt="Autarquias · Licenciamento" data-es="Ayuntamientos · Licencias" data-fr="Collectivités · Autorisations">Municipalities · Licensing</p>
+          <p class="uc-category i18n" data-en="Local government · Licensing" data-pt="Autarquias · Licenciamento" data-es="Administración local · Licencias" data-fr="Collectivités · Autorisations">Local government · Licensing</p>
           <h4 class="i18n" data-en="Permits, licences &amp; applications" data-pt="Licenciamentos, autorizações e candidaturas" data-es="Permisos, licencias y solicitudes" data-fr="Permis, licences et demandes">Permits, licences &amp; applications</h4>
           <p class="i18n" data-en="Intake, assessment, exception handling, approval above set limits and signed decisions — defensible to the regulator." data-pt="Receção, avaliação, tratamento de exceções, aprovação acima de limites definidos e decisões assinadas — defensáveis perante o regulador." data-es="Recepción, evaluación, gestión de excepciones, aprobación por encima de límites definidos y decisiones firmadas — defendibles ante el regulador." data-fr="Réception, évaluation, gestion des exceptions, approbation au-delà de seuils définis et décisions signées — défendables devant le régulateur.">Intake, assessment, exception handling, approval above set limits and signed decisions — defensible to the regulator.</p>
         </div>
 
         <div class="usecase example">
-          <p class="uc-category i18n" data-en="Municipalities · Citizen service" data-pt="Autarquias · Atendimento" data-es="Ayuntamientos · Atención ciudadana" data-fr="Collectivités · Service aux citoyens">Municipalities · Citizen service</p>
+          <p class="uc-category i18n" data-en="Local government · Citizen service" data-pt="Autarquias · Atendimento" data-es="Administración local · Atención ciudadana" data-fr="Collectivités · Service aux citoyens">Local government · Citizen service</p>
           <h4 class="i18n" data-en="Citizen requests &amp; complaints" data-pt="Pedidos e reclamações de munícipes" data-es="Solicitudes y reclamaciones ciudadanas" data-fr="Demandes et réclamations des citoyens">Citizen requests &amp; complaints</h4>
           <p class="i18n" data-en="Request intake, triage, hand-offs between departments, SLAs and recorded decisions, with the citizen kept informed through the portal." data-pt="Receção de pedidos, triagem, encaminhamento entre serviços, SLAs e registo das decisões, com o munícipe informado através do portal." data-es="Recepción de solicitudes, triaje, traspasos entre departamentos, SLA y decisiones registradas, con el ciudadano informado a través del portal." data-fr="Réception des demandes, triage, transferts entre services, SLA et décisions enregistrées, avec le citoyen tenu informé via le portail.">Request intake, triage, hand-offs between departments, SLAs and recorded decisions, with the citizen kept informed through the portal.</p>
         </div>
@@ -1979,7 +1983,7 @@
           <div class="audience-blocks">
             <p class="ab-group i18n" data-en="Organisations" data-pt="Organizações" data-es="Organizaciones" data-fr="Organisations">Organisations</p>
             <div class="ab">
-              <h3 class="h-eyebrow i18n" data-en="Municipalities." data-pt="Autarquias." data-es="Ayuntamientos." data-fr="Collectivités locales.">Municipalities.</h3>
+              <h3 class="h-eyebrow i18n" data-en="Local government." data-pt="Autarquias." data-es="Administración local." data-fr="Collectivités locales.">Local government.</h3>
               <p class="i18n" data-en="Licensing, works, citizen requests, complaints: hundreds of processes run against strict rules and records requirements. CernoFlow lets your own analysts model them without code, with the audit trail and records declaration built in, designed for MoReq and DGLAB requirements. Built on twenty years of municipal process automation." data-pt="Licenciamentos, obras, pedidos de munícipes, reclamações: centenas de processos tratados com regras rigorosas e exigências de gestão documental. Com o CernoFlow, os próprios técnicos modelam esses processos sem código, com o registo de auditoria e a declaração de documentos de arquivo incluídos de raiz, pensados para os requisitos do MoReq e da DGLAB. Construído a partir de vinte anos de automatização de processos municipais." data-es="Licencias, obras, solicitudes ciudadanas, reclamaciones: cientos de procesos sujetos a normas estrictas y a requisitos de gestión documental. CernoFlow permite a sus propios técnicos modelarlos sin código, con el rastro de auditoría y la declaración de documentos de archivo integrados, pensados para los requisitos de MoReq y DGLAB. Construido sobre veinte años de automatización de procesos municipales." data-fr="Autorisations, travaux, demandes des citoyens, réclamations : des centaines de processus soumis à des règles strictes et à des exigences d'archivage. CernoFlow permet à vos propres analystes de les modéliser sans code, avec la piste d'audit et la déclaration d'archives intégrées, conçues pour les exigences de MoReq et de la DGLAB. Fondé sur vingt ans d'automatisation de processus municipaux.">Licensing, works, citizen requests, complaints: hundreds of processes run against strict rules and records requirements. CernoFlow lets your own analysts model them without code, with the audit trail and records declaration built in, designed for MoReq and DGLAB requirements. Built on twenty years of municipal process automation.</p>
               <a class="link-secondary" href="mailto:sales@cernoflow.com?subject=Municipal%20Enquiry"><span class="i18n" data-en="Talk to us" data-pt="Fale connosco" data-es="Hable con nosotros" data-fr="Contactez-nous">Talk to us</span> <span class="arrow">→</span></a>
             </div>
@@ -2065,7 +2069,7 @@
         <div class="pt-cell pt-row-label i18n" data-en="Typical comparator" data-pt="Comparador típico" data-es="Comparador típico" data-fr="Comparateur typique">Typical comparator</div>
         <div class="pt-cell" data-col="Enterprise case platforms">ServiceNow, Pega, Appian</div>
         <div class="pt-cell" data-col="No-code app builders">Power Apps, Mendix, OutSystems</div>
-        <div class="pt-cell us" data-col="CernoFlow"><strong class="i18n" data-en="Built for SMEs, municipalities and their partners" data-pt="Pensado para PME, autarquias e os seus parceiros" data-es="Pensado para pymes, ayuntamientos y sus socios" data-fr="Conçu pour les PME, les collectivités locales et leurs partenaires">Built for SMEs, municipalities and their partners</strong></div>
+        <div class="pt-cell us" data-col="CernoFlow"><strong class="i18n" data-en="Built for SMEs, local government and their partners" data-pt="Pensado para PME, autarquias e os seus parceiros" data-es="Pensado para pymes, administración local y sus socios" data-fr="Conçu pour les PME, les collectivités locales et leurs partenaires">Built for SMEs, local government and their partners</strong></div>
 
         <div class="pt-cell pt-row-label i18n" data-en="Implementation" data-pt="Implementação" data-es="Implementación" data-fr="Implémentation">Implementation</div>
         <div class="pt-cell i18n" data-en="6–18 months, large consulting team" data-pt="6–18 meses, com uma grande equipa de consultoria" data-es="6–18 meses, gran equipo consultor" data-fr="6–18 mois, grande équipe de conseil" data-col="Enterprise case platforms">6–18 months, large consulting team</div>
