@@ -50,6 +50,23 @@
     }
   }
 
+  // Translations and web fonts change the page height after the browser has
+  // scrolled to a #fragment. On first load only, put the target back in place,
+  // without smooth scrolling, unless the visitor has already started scrolling.
+  function settleAnchor() {
+    var target = location.hash && document.getElementById(location.hash.slice(1));
+    if (!target) return;
+    var interrupted = false;
+    ['wheel', 'touchstart', 'keydown'].forEach(function (type) {
+      window.addEventListener(type, function () { interrupted = true; }, { once: true, passive: true });
+    });
+    function settle() {
+      if (!interrupted) target.scrollIntoView({ behavior: 'instant', block: 'start' });
+    }
+    settle();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(settle);
+  }
+
   // Set <html lang> as early as possible — before DOMContentLoaded — to keep
   // any lang-scoped CSS in sync from first paint.
   try { document.documentElement.lang = getLang(); } catch (e) {}
@@ -64,6 +81,7 @@
     }
 
     apply(getLang());
+    settleAnchor();
 
     var toggles = document.querySelectorAll('.lang-toggle');
     for (var i = 0; i < toggles.length; i++) {
