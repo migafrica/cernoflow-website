@@ -56,6 +56,9 @@
   function settleAnchor() {
     var target = location.hash && document.getElementById(location.hash.slice(1));
     if (!target) return;
+    // Reveal it now: its 12px entrance offset would otherwise skew the landing.
+    target.style.transition = 'none';
+    target.classList.add('in');
     var interrupted = false;
     ['wheel', 'touchstart', 'keydown'].forEach(function (type) {
       window.addEventListener(type, function () { interrupted = true; }, { once: true, passive: true });
