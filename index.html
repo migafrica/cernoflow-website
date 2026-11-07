@@ -1270,6 +1270,16 @@
     .propagation-strip { grid-template-columns: 1fr; gap: 4px; }
     .propagation-strip .stop::after { display: none; }
     .wordmark-lg { width: clamp(260px, 80vw, 600px); }
+
+    /* Hero: one sentence per line; H1, subhead, lead, CTAs, then the image. */
+    .section-hero .container { display: flex; flex-direction: column; }
+    .hero-layout { display: contents; }
+    .section-hero .h-display { order: 1; font-size: min(38px, 10.2vw); }
+    .hero-line { display: block; }
+    .section-hero .hero-subhead { order: 2; }
+    .section-hero .lead-italic { order: 3; font-style: normal; font-size: 16px; }
+    .section-hero .cta-row { order: 4; }
+    .hero-image-wrap { order: 5; margin-top: 40px; }
   }
 
   /* ——— Language dropdown ——— */
@@ -1448,10 +1458,11 @@
   <section class="section-hero" data-section="A">
     <div class="container">
       <div class="hero-layout">
-        <h1 class="h-display i18n"
-            data-en="No code. No shortcuts. Governed work."
-            data-pt="Sem código. Sem atalhos. Processos sob controlo."
-            data-es="Sin código. Sin atajos. Trabajo con reglas." data-fr="Sans code. Sans raccourcis. Un travail encadré.">No code. No shortcuts. Governed work.</h1>
+        <h1 class="h-display">
+          <span class="hero-line i18n" data-en="No code." data-pt="Sem código." data-es="Sin código." data-fr="Sans code.">No code.</span>
+          <span class="hero-line i18n" data-en="No shortcuts." data-pt="Sem atalhos." data-es="Sin atajos." data-fr="Sans raccourcis.">No shortcuts.</span>
+          <span class="hero-line i18n" data-en="Governed work." data-pt="Processos sob controlo." data-es="Trabajo con reglas." data-fr="Un travail encadré.">Governed work.</span>
+        </h1>
 
         <div class="hero-image-wrap">
           <img src="./assets/js/cernoflow-hero.png" alt="CernoFlow platform screenshot" loading="eager">
