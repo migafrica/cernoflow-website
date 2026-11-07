@@ -1273,14 +1273,14 @@
     .propagation-strip .stop::after { display: none; }
     .wordmark-lg { width: clamp(260px, 80vw, 600px); }
 
-    /* Hero: one sentence per line; H1, subhead, lead, CTAs, then the image. */
+    /* Hero: H1, image, subhead, CTAs, then the lead. */
     .section-hero .container { display: flex; flex-direction: column; }
     .hero-layout { display: contents; }
     .section-hero .h-display { order: 1; font-size: min(38px, 10.2vw); }
-    .section-hero .hero-subhead { order: 2; }
-    .section-hero .lead-italic { order: 3; font-style: normal; font-size: 16px; }
+    .hero-image-wrap { order: 2; margin-top: 20px; }
+    .section-hero .hero-subhead { order: 3; margin: 20px 0 20px; }
     .section-hero .cta-row { order: 4; }
-    .hero-image-wrap { order: 5; margin-top: 40px; }
+    .section-hero .lead-italic { order: 5; font-style: normal; font-size: 16px; margin: 32px 0 0; }
   }
 
   /* ——— Language dropdown ——— */
