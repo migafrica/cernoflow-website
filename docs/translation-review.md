@@ -155,3 +155,24 @@ The tips in `platform.html` still use "Co-diseñador" and "Co-concepteur" in the
 | Tile category: Local government · Licensing | Administración local · Licencias | Collectivités · Autorisations (unchanged) |
 | Tile category: Local government · Citizen service | Administración local · Atención ciudadana | Collectivités · Service aux citoyens (unchanged) |
 | Comparison header: Built for SMEs, local government and their partners | Pensado para pymes, administración local y sus socios | Conçu pour les PME, les collectivités locales et leurs partenaires (unchanged) |
+
+## Location (2026-11-21)
+
+| Element, data-en first 60 chars | es-ES | fr-FR |
+|---|---|---|
+| D2 kicker: Location | Ubicación | Localisation |
+| D2 H2: Every record knows where it is. | Cada registro sabe dónde está. | Chaque enregistrement sait où il se trouve. |
+| D2 para 1: Switch on Location for an entity and each record carries on… | Active la Ubicación en una entidad y cada registro tendrá un único lugar — un punto, una línea o un área. Se define al crear el registro, se muestra junto a los campos que está leyendo y se abre en un mapa cuando necesita contexto. Una solicitud sobre un inmueble toma el lugar del inmueble: se introduce una vez y nunca se vuelve a teclear. | Activez la Localisation pour une entité et chaque enregistrement porte un lieu unique — un point, une ligne ou une zone. Il est défini à la création de l'enregistrement, affiché à côté des champs que vous consultez, et s'ouvre sur une carte quand vous avez besoin du contexte. Une demande liée à un bien immobilier reprend le lieu du bien : saisi une fois, jamais ressaisi. |
+| D2 para 2: Lists and Work gain a Map layout with the same filters, eac… | Las listas y el área de Trabajo ganan una vista de Mapa con los mismos filtros, cada registro marcado con el color de su etapa, y cada cambio de lugar queda en el historial del registro. No es una herramienta de cartografía. El trabajo ocurre en algún lugar, y el registro dice dónde. | Les listes et l'espace Travail gagnent une vue Carte avec les mêmes filtres, chaque enregistrement marqué de la couleur de son étape, et chaque déplacement figure dans l'historique de l'enregistrement. Ce n'est pas un outil de cartographie. Le travail se fait quelque part, et l'enregistrement dit où. |
+| D2 link: Explore the entity model | Explorar el modelo de entidades | Explorer le modèle d'entité |
+| D2 chrome label: Inspections · Map | Inspecciones · Mapa | Inspections · Carte |
+| D2 filter chip: Active | Activas | Actives |
+| D2 stage: Scheduled | Programada | Planifiée |
+| D2 stage: In progress | En curso | En cours |
+| D2 stage: Completed | Completada | Terminée |
+| D2 card title: Fire safety inspection | Inspección de seguridad contra incendios | Inspection de sécurité incendie |
+| D2 card place: Place · from Property · Rua Augusta 112 | Lugar · del Inmueble · Rua Augusta 112 | Lieu · du Bien · Rua Augusta 112 |
+| Use case: Request intake, triage, hand-offs between departments, SL… | Recepción de solicitudes, triaje, traspasos entre departamentos, SLA y decisiones registradas, cada solicitud en el mapa, con el ciudadano informado a través del portal. | Réception des demandes, triage, transferts entre services, SLA et décisions enregistrées, chaque demande sur la carte, avec le citoyen tenu informé via le portail. |
+| Use case: Inspections, service intervals, condition reports and rep… | Inspecciones, intervalos de servicio, informes de estado y reparaciones, cada intervención situada en el mapa en su inmueble, con el historial completo de cada activo. | Inspections, intervalles de service, rapports d'état et réparations, chaque intervention placée sur la carte à l'emplacement de son bien, avec l'historique complet de chaque actif. |
+| Local government, added sentence: Every licence, works site and request can carry its place,… | Cada licencia, obra o solicitud puede llevar su lugar, de modo que el mapa es una vista más de los mismos registros. | Chaque autorisation, chantier ou demande peut porter son lieu, et la carte devient une vue de plus sur les mêmes enregistrements. |
+| platform.html tips.structure.body: Define entities, fields, how they relate, and where each rec… | Defina entidades, campos, cómo se relacionan entre sí y, cuando el lugar importa, dónde está cada registro. La fuente única de verdad de la que todo lo demás hereda — formularios, validaciones, búsqueda, mapas, todo. | Définissez les entités, les champs, leurs relations et, quand le lieu compte, où se trouve chaque enregistrement. La source unique de vérité dont tout le reste hérite — formulaires, validations, recherche, cartes, le tout. |

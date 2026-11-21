@@ -41,6 +41,9 @@ Seed for product locale files in the cernoflow repo; keep both in step.
 | citizen (municipal) | munícipe | — | — | |
 | workflow | workflow | — | — | Established loanword in pt-PT B2B |
 | dashboard | dashboard | — | — | Established loanword |
+| Location | Localização | Ubicación | Localisation | Always the record's place; never GIS terms |
+| point · line · area | ponto · linha · área | punto · línea · área | point · ligne · zone | Shapes of a place |
+| Map (layout) | Mapa | Mapa | Carte | List layout beside List and Calendar |
 | Register | pt-PT formal: address the reader through the verb (3rd person), no "você"; company as "nós"; prompts to the AI in "tu" | — | — | |
 
 **Avoid (pt-BR):** gerenciamento, usuário, aplicativo, registro, desenvolvedor, time (equipa), tela (ecrã), retrabalho, precificação, se virar.
