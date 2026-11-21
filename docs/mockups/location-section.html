@@ -1,0 +1,2341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CernoFlow — No code. No shortcuts. Governed work.</title>
+<meta name="description" content="CernoFlow is the governed work platform: people, AI agents and machines working the same cases, under the same rules. No code, no shortcuts." />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  html { color-scheme: dark; scrollbar-color: #2a3342 #0a0e14; }
+  /* ——— Brand tokens (palette synced with Platform_Diagram_v4) ——— */
+  :root {
+    --bg-0: #07090d;
+    --bg-1: #0a0e14;
+    --bg-2: #0f1419;
+    --bg-elev: #11161f;
+    --panel: rgba(18, 24, 34, 0.55);
+    --panel-strong: rgba(22, 30, 42, 0.82);
+    --hairline: rgba(184, 196, 220, 0.10);
+    --hairline-soft: rgba(184, 196, 220, 0.06);
+    --hairline-strong: rgba(184, 196, 220, 0.18);
+    --ink-0: #ffffff;
+    --ink-1: #e2e8f0;
+    --ink-2: #94a3b8;
+    --ink-3: #64748b;
+    --ink-4: #475569;
+
+    /* Inner ring — blue family (from diagram v4) */
+    --blue-sky:    #7dd3fc;
+    --blue-azure:  #60a5fa;
+    --blue-brand:  #5b8aec;
+    --blue-indigo: #818cf8;
+    --blue-violet: #a78bfa;
+    /* Outer ring — warm hues + AI purple */
+    --coral:       #fb7185;
+    --orange:      #fb923c;
+    --amber:       #fbbf24;
+    --ai-purple:   #c484ff;
+    --rose:        #f472b6;
+    /* Brand + compliance */
+    --brand-blue:      #5B8AEC;
+    --brand-blue-soft: #6D9BFF;
+    --teal:            #3FB9CC;
+    --teal-soft:       #5DD3E8;
+    --green:           #4ADE80;
+    --fuchsia:         #E879F9;
+  }
+
+  /* ——— Light theme overrides ———
+     Applied via <html data-theme="light"> from /assets/js/theme.js.
+     We re-bind the surface and text variables; brand colours stay the same
+     except --brand-blue-soft, which darkens slightly for contrast on a light
+     background. Specific elements with hardcoded dark backgrounds (topbar,
+     grain pattern, panel cards) get explicit overrides further down. */
+  html[data-theme="light"] {
+    --bg-0: #f1f5fb;
+    --bg-1: #e7ecf4;
+    --bg-2: #dbe2ed;
+    --bg-elev: #ffffff;
+    --panel: rgba(255, 255, 255, 0.72);
+    --panel-strong: rgba(255, 255, 255, 0.92);
+    --hairline: rgba(15, 23, 42, 0.08);
+    --hairline-soft: rgba(15, 23, 42, 0.05);
+    --hairline-strong: rgba(15, 23, 42, 0.15);
+    --ink-0: #0a0e14;
+    --ink-1: #1e293b;
+    --ink-2: #475569;
+    --ink-3: #64748b;
+    --ink-4: #94a3b8;
+    --brand-blue-soft: #4F7DE0;
+  }
+  /* Image panels (.row-visual) stay dark in light mode so the SVGs and
+     panel chrome read as designed. The hover glow is retuned to read
+     well against a light page background. Dark mode is unaffected. */
+  html[data-theme="light"] .row-visual {
+    background:
+      radial-gradient(ellipse 600px 280px at 25% 0%, rgba(91,138,236,0.07), transparent 60%),
+      radial-gradient(ellipse 500px 260px at 100% 100%, rgba(63,185,204,0.05), transparent 60%),
+      #161e2a;
+    border-color: rgba(184, 196, 220, 0.18);
+  }
+  html[data-theme="light"] .row-visual .visual-chrome {
+    border-bottom-color: rgba(184, 196, 220, 0.10);
+  }
+  html[data-theme="light"] .row-visual.platform-card {
+    background:
+      radial-gradient(ellipse 700px 360px at 50% 50%, rgba(91,138,236,0.10), transparent 60%),
+      radial-gradient(ellipse 400px 200px at 50% 100%, rgba(196,132,255,0.08), transparent 60%),
+      #161e2a;
+  }
+  html[data-theme="light"] a.row-visual:hover {
+    border-color: rgba(123, 165, 255, 0.55);
+    background:
+      radial-gradient(ellipse 600px 280px at 25% 0%, rgba(91,138,236,0.14), transparent 60%),
+      radial-gradient(ellipse 500px 260px at 100% 100%, rgba(63,185,204,0.09), transparent 60%),
+      #161e2a;
+    box-shadow:
+      0 0 0 1px rgba(123,165,255,0.20),
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 22px 50px -18px rgba(15, 23, 42, 0.28),
+      0 10px 26px -10px rgba(91,138,236,0.40);
+    transform: translateY(-2px);
+  }
+  html[data-theme="light"] a.row-visual.platform-card:hover {
+    background:
+      radial-gradient(ellipse 700px 360px at 50% 50%, rgba(91,138,236,0.16), transparent 60%),
+      radial-gradient(ellipse 400px 200px at 50% 100%, rgba(196,132,255,0.12), transparent 60%),
+      #161e2a;
+  }
+  html[data-theme="light"] body::before {
+    /* Grain pattern is designed for dark; mute it on light. */
+    opacity: 0;
+  }
+  html[data-theme="light"] .topbar {
+    background: rgba(255, 255, 255, 0.85);
+  }
+  html[data-theme="light"] .topbar .nav-cta {
+    background: rgba(15, 23, 42, 0.02);
+  }
+  html[data-theme="light"] .lang-menu {
+    background: rgba(255, 255, 255, 0.96);
+  }
+  html[data-theme="light"] .lang-toggle:hover,
+  html[data-theme="light"] .topbar .nav-cta:hover {
+    background: rgba(91, 138, 236, 0.10);
+  }
+  html[data-theme="light"] .lang-option:hover {
+    background: rgba(91, 138, 236, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+  img, svg { max-width: 100%; }
+  html {
+    overflow-x: clip;
+  }
+  html, body {
+    width: 100%;
+    margin: 0; padding: 0;
+    background: var(--bg-1);
+    color: var(--ink-0);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background:
+      radial-gradient(ellipse 1600px 900px at 50% -200px, rgba(91,138,236,0.06), transparent 60%),
+      var(--bg-1);
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 3px 3px;
+    mix-blend-mode: overlay;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ——— Top bar ——— */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 64px;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px;
+    background: rgba(10, 14, 20, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--hairline-soft);
+  }
+  .topbar-left {
+    display: flex; align-items: center; gap: 40px;
+  }
+  .topbar a.wordmark-link { display: block; line-height: 0; }
+  .topbar .wordmark-sm { height: 22px; width: auto; display: block; }
+  .topbar .wordmark-sm .cerno-path { fill: var(--ink-0); }
+  .topbar .wordmark-sm .flow-path  { fill: var(--brand-blue-soft); }
+
+  .topbar-nav {
+    display: flex; align-items: center; gap: 28px;
+  }
+  .topbar-nav a {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    text-decoration: none;
+    letter-spacing: 0.005em;
+    transition: color 180ms ease;
+    position: relative;
+    padding: 4px 0;
+  }
+  .topbar-nav a:hover { color: var(--ink-0); }
+  .topbar-nav a::after {
+    content: "";
+    position: absolute;
+    bottom: -2px; left: 0;
+    height: 1px; width: 0;
+    background: var(--brand-blue-soft);
+    transition: width 180ms ease;
+  }
+  .topbar-nav a:hover::after { width: 100%; }
+
+  .topbar .nav-cta {
+    font-family: "Inter", sans-serif;
+    font-weight: 500; font-size: 13px;
+    color: var(--ink-1);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--hairline-strong);
+    background: rgba(255,255,255,0.02);
+    transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+  }
+  .topbar .nav-cta:hover {
+    color: #fff;
+    border-color: rgba(109, 155, 255, 0.45);
+    background: rgba(91, 138, 236, 0.10);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 33px; height: 33px;
+    margin-right: 12px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ink-1);
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease;
+  }
+  .nav-toggle:hover,
+  .nav-toggle:focus-visible {
+    color: #fff;
+    background: rgba(91, 138, 236, 0.10);
+  }
+  .nav-toggle:focus-visible {
+    outline: 2px solid var(--brand-blue-soft);
+    outline-offset: 2px;
+  }
+  .nav-toggle-icon {
+    position: relative;
+    display: block;
+    width: 18px; height: 14px;
+  }
+  .nav-toggle-icon span {
+    position: absolute;
+    left: 0;
+    width: 100%; height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    transition: transform 180ms ease, opacity 180ms ease;
+  }
+  .nav-toggle-icon span:nth-child(1) { top: 0; }
+  .nav-toggle-icon span:nth-child(2) { top: 6px; }
+  .nav-toggle-icon span:nth-child(3) { top: 12px; }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-icon span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-icon span:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-icon span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-toggle,
+    .nav-toggle-icon span { transition: none; }
+  }
+  @media (max-width: 880px) {
+    .nav-toggle { display: inline-flex; }
+    .topbar-nav {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 16px;
+      right: 16px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 6px;
+      background: rgba(17, 22, 31, 0.96);
+      border: 1px solid var(--hairline-strong);
+      border-radius: 10px;
+      box-shadow: 0 18px 44px -14px rgba(0,0,0,0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
+      z-index: 200;
+    }
+    .topbar-nav.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .topbar-nav a {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 12px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .topbar-nav a:hover { background: rgba(91, 138, 236, 0.10); }
+    .topbar-nav a::after { display: none; }
+    html[data-theme="light"] .topbar-nav {
+      background: rgba(255, 255, 255, 0.96);
+      border-color: rgba(15, 23, 42, 0.15);
+    }
+    .topbar-left { gap: 0; }
+  }
+  /* The longer PT labels need a tighter nav down to the mobile breakpoint. */
+  @media (min-width: 881px) and (max-width: 1110px) {
+    .topbar-left { gap: 20px; }
+    .topbar-nav { gap: 13px; }
+    .topbar-nav a { font-size: 12.5px; white-space: nowrap; }
+  }
+  @media (min-width: 881px) and (max-width: 980px) {
+    .topbar .wordmark-sm { height: 18px; }
+    .topbar-left { gap: 16px; }
+    .topbar-nav { gap: 9px; }
+    .topbar-nav a { font-size: 12px; }
+  }
+  /* Burger + wordmark + language only fit a phone topbar with a smaller wordmark. */
+  @media (max-width: 480px) {
+    .topbar .wordmark-sm { height: 16px; }
+    .topbar-right { gap: 8px; }
+  }
+  html[data-theme="light"] .nav-toggle {
+    color: #1e293b;
+  }
+  html[data-theme="light"] .nav-toggle:hover,
+  html[data-theme="light"] .nav-toggle:focus-visible {
+    color: #0a0e14;
+    background: rgba(91, 138, 236, 0.10);
+  }
+
+  /* ——— Layout ——— */
+  .container { max-width: 1360px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 2; }
+  main { padding-top: 64px; }
+
+  section {
+    position: relative;
+    padding: 64px 0;
+    scroll-margin-top: 16px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.6,.2,1);
+  }
+  html { scroll-behavior: smooth; }
+  section.in { opacity: 1; transform: translateY(0); }
+  /* Its heading sits 8px lower than in the other sections. */
+  #section-platform { scroll-margin-top: 8px; }
+  section.band {
+    background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.012) 8%, rgba(255,255,255,0.012) 92%, transparent 100%);
+    border-top: 1px solid var(--hairline-soft);
+    border-bottom: 1px solid var(--hairline-soft);
+  }
+
+  /* ——— Typography ——— */
+  .h-display {
+    font-family: "Syne", "Inter", sans-serif;
+    font-weight: 700;
+    font-size: clamp(40px, 4.4vw, 60px);
+    line-height: 1.08; letter-spacing: -0.018em;
+    color: var(--ink-0); text-wrap: balance; margin: 0;
+  }
+  .h-section {
+    font-family: "Syne", "Inter", sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 2.6vw, 36px);
+    line-height: 1.18; letter-spacing: -0.012em;
+    color: var(--ink-0); text-wrap: balance; margin: 0 0 20px;
+  }
+  .h-eyebrow {
+    font-family: "Syne", "Inter", sans-serif;
+    font-weight: 600; font-size: 21px;
+    line-height: 1.25; color: var(--ink-0);
+    margin: 0 0 10px;
+  }
+  .kicker {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600; font-size: 13.5px;
+    letter-spacing: 0.12em;
+    color: var(--brand-blue-soft);
+    text-transform: uppercase;
+    margin: 0 0 18px;
+  }
+  .lead-italic {
+    font-family: "Inter", sans-serif;
+    font-style: normal; font-weight: 400;
+    font-size: 18px; line-height: 1.6;
+    color: var(--ink-2); margin: 0; text-wrap: pretty;
+  }
+  .body-text {
+    font-family: "Inter", sans-serif;
+    font-weight: 400; font-size: 16px;
+    line-height: 1.65; color: var(--ink-1);
+    margin: 0 0 16px; text-wrap: pretty;
+  }
+  .body-text:last-child { margin-bottom: 0; }
+  .mono-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 500; font-size: 11.5px;
+    letter-spacing: 0.08em;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+
+  /* ——— Buttons & links ——— */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600; font-size: 14.5px;
+    color: #fff; background: var(--brand-blue);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 14px 24px; border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(91,138,236,0.22);
+    transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  }
+  .btn-primary:hover {
+    background: var(--brand-blue-soft);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(109,155,255,0.30);
+  }
+  .btn-primary .arrow { transition: transform 200ms ease; }
+  .btn-primary:hover .arrow { transform: translateX(3px); }
+
+  .link-secondary {
+    font-family: "Inter", sans-serif;
+    font-weight: 500; font-size: 14px;
+    color: var(--brand-blue-soft); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 200ms ease, text-shadow 200ms ease;
+  }
+  .link-secondary:hover {
+    color: #7BA5FF;
+    text-shadow: 0 0 16px rgba(91,138,236,0.75), 0 0 32px rgba(91,138,236,0.30);
+  }
+  .link-secondary .arrow { transition: transform 200ms ease; }
+  .link-secondary:hover .arrow { transform: translateX(3px); }
+
+  .link-muted {
+    font-family: "Inter", sans-serif;
+    font-weight: 400; font-size: 14px;
+    color: var(--ink-2); text-decoration: none;
+    transition: color 200ms ease;
+  }
+  .link-muted:hover { color: var(--brand-blue-soft); }
+
+  /* ——— Hero ——— */
+  .section-hero {
+    padding-top: 32px;
+    padding-bottom: 0;
+  }
+  .section-hero .h-display { margin-bottom: 0; }
+  .hero-line { display: block; }
+  .section-hero .hero-subhead {
+    font-family: "Syne", "Inter", sans-serif;
+    font-weight: 500;
+    font-size: clamp(22px, 2.2vw, 28px);
+    line-height: 1.3;
+    color: var(--ink-1);
+    max-width: 780px;
+    margin: 24px 0 16px;
+    text-wrap: balance;
+  }
+  .section-hero .lead-italic { max-width: 780px; margin-bottom: 48px; }
+  .cta-row { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+  .hero-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin-bottom: 40px; }
+  .hero-image-wrap img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
+
+  /* ——— Capability row ——— */
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .row.reverse .row-copy { order: 2; }
+  .row.reverse .row-visual { order: 1; }
+  .row-copy { padding: 8px 0; }
+  .row-copy .h-section { margin-bottom: 16px; }
+  .row-copy .body-text { color: var(--ink-1); max-width: 480px; }
+  .row-copy .link-secondary { margin-top: 8px; }
+
+  .row-visual {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    position: relative;
+    border-radius: 14px;
+    background:
+      radial-gradient(ellipse 600px 280px at 25% 0%, rgba(91,138,236,0.07), transparent 60%),
+      radial-gradient(ellipse 500px 260px at 100% 100%, rgba(63,185,204,0.05), transparent 60%),
+      var(--panel-strong);
+    border: 1px solid var(--hairline-strong);
+    padding: 20px;
+    overflow: hidden;
+    transition: border-color 300ms ease, box-shadow 300ms ease, background 300ms ease, transform 300ms ease;
+    min-height: 320px;
+  }
+  .row-visual:hover {
+    border-color: rgba(123, 165, 255, 0.58);
+    background:
+      radial-gradient(ellipse 600px 280px at 25% 0%, rgba(91,138,236,0.14), transparent 60%),
+      radial-gradient(ellipse 500px 260px at 100% 100%, rgba(63,185,204,0.09), transparent 60%),
+      var(--panel-strong);
+    box-shadow:
+      0 0 0 1px rgba(123,165,255,0.18),
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 22px 60px -16px rgba(91,138,236,0.36);
+    transform: translateY(-2px);
+  }
+  .row-visual .visual-chrome {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .row-visual .visual-chrome .dots { display: flex; gap: 5px; }
+  .row-visual .visual-chrome .dots span {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--ink-4); opacity: 0.5;
+  }
+  .row-visual .visual-chrome .label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    margin-left: 8px;
+  }
+
+  /* The platform-mini visual is now a richer card with darker radial centre */
+  .row-visual.platform-card {
+    background:
+      radial-gradient(ellipse 700px 360px at 50% 50%, rgba(91,138,236,0.10), transparent 60%),
+      radial-gradient(ellipse 400px 200px at 50% 100%, rgba(196,132,255,0.08), transparent 60%),
+      var(--panel-strong);
+  }
+
+  /* ——— Platform mini-diagram (faithful silhouette of v4) ——— */
+  .platform-mini-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 380px;
+  }
+
+  /* ——— Pills ——— */
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 11px; border-radius: 999px;
+    background: rgba(91,138,236,0.10);
+    border: 1px solid rgba(109, 155, 255, 0.22);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    color: var(--ink-1);
+  }
+  .pill.teal { background: rgba(63,185,204,0.10); border-color: rgba(93,211,232,0.22); }
+  .pill.green { background: rgba(74,222,128,0.10); border-color: rgba(74,222,128,0.28); color: #C9F4D7; }
+  .pill.fuchsia { background: rgba(232,121,249,0.08); border-color: rgba(232,121,249,0.25); color: #F5C9FA; }
+  .pill .dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+
+  /* ——— Configure-once visual ——— */
+  .config-still {
+    display: flex; flex-direction: column; gap: 18px;
+    padding: 12px 4px;
+  }
+  .config-still .prompt-line {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.28);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+  }
+  .config-still .prompt-line .agent-tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    color: var(--brand-blue-soft);
+    letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 4px;
+    background: rgba(91,138,236,0.12);
+    border: 1px solid rgba(109,155,255,0.25);
+    white-space: nowrap;
+  }
+  .config-still .prompt-line .prompt-text {
+    font-family: "Inter", sans-serif;
+    font-style: italic; font-size: 13px;
+    color: var(--ink-1);
+  }
+  .propagation-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .propagation-strip .stop {
+    padding: 10px 8px;
+    text-align: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    color: var(--ink-2);
+    text-transform: uppercase;
+    position: relative;
+    line-height: 1.2;
+  }
+  .propagation-strip .stop::after {
+    content: "→";
+    position: absolute;
+    right: -8px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-4);
+    font-size: 11px; z-index: 2;
+  }
+  .propagation-strip .stop:last-child::after { display: none; }
+  .propagation-strip .stop .stop-label {
+    display: block;
+    color: var(--ink-1);
+    font-weight: 500; font-size: 9.5px;
+    margin-top: 3px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .propagation-strip .stop.origin {
+    background: rgba(91,138,236,0.10);
+    border-color: rgba(109,155,255,0.30);
+    color: var(--brand-blue-soft);
+  }
+  .propagation-strip .stop.origin .stop-label { color: #C9D6FA; }
+  .config-still .field-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px;
+    background: rgba(91,138,236,0.04);
+    border: 1px solid rgba(109,155,255,0.18);
+    border-radius: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: var(--ink-2);
+  }
+  .config-still .field-row .field-name {
+    color: var(--brand-blue-soft);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .config-still .field-row .field-type {
+    color: var(--ink-3); font-size: 9.5px;
+  }
+
+  /* ——— Lifecycle visual ——— */
+  .lifecycle-still { display: flex; flex-direction: column; gap: 14px; padding: 8px 4px; }
+  .lifecycle-canvas {
+    position: relative;
+    padding: 18px 12px;
+    background: rgba(0,0,0,0.22);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+  }
+  .lifecycle-stages {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 6px;
+  }
+  .lifecycle-stages .stage {
+    flex: 1; text-align: center;
+    padding: 8px 4px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--hairline);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    color: var(--ink-2);
+    text-transform: uppercase;
+    line-height: 1.3; min-width: 0;
+  }
+  .lifecycle-stages .stage.in-review {
+    background: rgba(251,146,60,0.06);
+    border: 1px dashed rgba(251,146,60,0.45);
+    color: var(--orange);
+  }
+  .lifecycle-stages .stage.terminal {
+    background: rgba(74,222,128,0.06);
+    border-color: rgba(74,222,128,0.30);
+    color: #C9F4D7;
+  }
+  .lifecycle-stages .arrow {
+    color: var(--ink-4);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; flex-shrink: 0;
+  }
+  .transition-rules {
+    display: flex; flex-direction: column; gap: 6px;
+    margin-top: 10px;
+  }
+  .transition-rules .rule {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px; align-items: center;
+    padding: 7px 10px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--hairline-soft);
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px; color: var(--ink-2);
+  }
+  .transition-rules .rule .rule-tag {
+    font-size: 8.5px; letter-spacing: 0.06em;
+    padding: 2px 6px; border-radius: 3px;
+    text-transform: uppercase; font-weight: 600;
+  }
+  .transition-rules .rule .rule-tag.precondition { background: rgba(63,185,204,0.12); color: var(--teal-soft); border: 1px solid rgba(93,211,232,0.30); }
+  .transition-rules .rule .rule-tag.dual { background: rgba(251,146,60,0.10); color: var(--orange); border: 1px solid rgba(251,146,60,0.30); }
+  .transition-rules .rule .rule-tag.event { background: rgba(232,121,249,0.10); color: var(--fuchsia); border: 1px solid rgba(232,121,249,0.30); }
+  .transition-rules .rule .rule-tag.audit { background: rgba(74,222,128,0.10); color: #C9F4D7; border: 1px solid rgba(74,222,128,0.30); }
+  .transition-rules .rule .rule-desc {
+    color: var(--ink-1);
+    font-style: italic;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+  }
+
+  /* ——— Deploy visual ——— */
+  .studio-still { display: flex; flex-direction: column; gap: 12px; padding: 4px; }
+  .studio-still .studio-prompt {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px;
+    background: rgba(0,0,0,0.28);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+  }
+  .studio-still .studio-prompt .agent-tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    color: var(--brand-blue-soft);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 4px;
+    background: rgba(91,138,236,0.12);
+    border: 1px solid rgba(109,155,255,0.25);
+    white-space: nowrap;
+  }
+  .studio-still .studio-prompt .prompt-text {
+    font-family: "Inter", sans-serif;
+    font-style: italic; font-size: 12.5px;
+    color: var(--ink-1);
+  }
+  .studio-build {
+    display: flex; flex-direction: column; gap: 6px;
+    padding: 14px;
+    background: rgba(0,0,0,0.18);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+  }
+  .studio-build .build-line {
+    display: flex; align-items: center; gap: 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: var(--ink-2);
+  }
+  .studio-build .build-line .check {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: rgba(74,222,128,0.15);
+    border: 1px solid rgba(74,222,128,0.5);
+    color: var(--green);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 9px; flex-shrink: 0;
+  }
+  .studio-build .build-line .check.pending {
+    background: rgba(91,138,236,0.10);
+    border-color: rgba(109,155,255,0.40);
+    color: var(--brand-blue-soft);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  .studio-build .build-line .duration {
+    margin-left: auto;
+    color: var(--ink-4); font-size: 9px;
+  }
+  .deploy-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(74,222,128,0.04);
+    border: 1px solid rgba(74,222,128,0.25);
+    border-radius: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: var(--ink-1);
+  }
+  .deploy-meta .meta-label { color: var(--ink-3); }
+  .deploy-meta .meta-value { color: #C9F4D7; font-weight: 600; }
+
+  /* ——— Auditability visual (NEW capability section) ——— */
+  .audit-still { display: flex; flex-direction: column; gap: 10px; padding: 4px; }
+  .audit-entry {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px; align-items: center;
+    padding: 9px 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+  }
+  .audit-entry .time {
+    color: var(--ink-4);
+    font-size: 9.5px;
+    letter-spacing: 0.02em;
+  }
+  .audit-entry .event-name {
+    color: var(--ink-1);
+  }
+  .audit-entry .event-name .who { color: var(--brand-blue-soft); font-weight: 600; }
+  .audit-entry .event-name .what { color: var(--ink-1); }
+  .audit-entry .event-name .obj { color: var(--teal-soft); }
+  .audit-entry .badge {
+    font-size: 8.5px; letter-spacing: 0.06em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--green);
+    background: rgba(74,222,128,0.10);
+    border: 1px solid rgba(74,222,128,0.30);
+  }
+  .audit-entry.ai .badge {
+    color: var(--ai-purple);
+    background: rgba(196,132,255,0.10);
+    border-color: rgba(196,132,255,0.35);
+  }
+  .audit-entry.ai .event-name .who { color: var(--ai-purple); }
+  .audit-entry.compensation .badge {
+    color: var(--orange);
+    background: rgba(251,146,60,0.10);
+    border-color: rgba(251,146,60,0.30);
+  }
+  .audit-entry.seal .badge {
+    color: var(--fuchsia);
+    background: rgba(232,121,249,0.08);
+    border-color: rgba(232,121,249,0.30);
+  }
+  .audit-checksum {
+    margin-top: 6px;
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    background: rgba(232,121,249,0.04);
+    border: 1px dashed rgba(232,121,249,0.30);
+    border-radius: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    color: var(--ink-2);
+  }
+  .audit-checksum .csum-label {
+    color: var(--fuchsia); font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    font-size: 9px;
+  }
+  .audit-checksum .csum-hash {
+    color: var(--ink-1);
+    word-break: break-all;
+  }
+
+  /* ——— AI Agents band ——— */
+  .agents-band { text-align: center; }
+  .agents-band .h-section { margin: 0 auto 20px; max-width: 760px; }
+  .agents-band .lead-italic { max-width: 720px; margin: 0 auto 56px; }
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .agent-card {
+    display: block;
+    text-align: left;
+    padding: 26px 24px;
+    background: var(--panel-strong);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 12px;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
+  }
+  .agent-card:hover {
+    border-color: rgba(196, 132, 255, 0.55);
+    background:
+      radial-gradient(ellipse 380px 200px at 30% 0%, rgba(196,132,255,0.13), transparent 60%),
+      var(--panel-strong);
+    box-shadow:
+      0 0 0 1px rgba(196,132,255,0.20),
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 20px 50px -16px rgba(196,132,255,0.38);
+    transform: translateY(-2px);
+  }
+  .agent-card .agent-mode {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ai-purple);
+    margin-bottom: 14px;
+  }
+  .agent-card .agent-mode .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ai-purple);
+    box-shadow: 0 0 8px rgba(196,132,255,0.55);
+  }
+  .agent-card.delegated .agent-mode { color: var(--teal-soft); }
+  .agent-card.delegated .agent-mode .dot { background: var(--teal-soft); box-shadow: 0 0 8px rgba(93,211,232,0.55); }
+  .agent-card.autonomous .agent-mode { color: var(--green); }
+  .agent-card.autonomous .agent-mode .dot { background: var(--green); box-shadow: 0 0 8px rgba(74,222,128,0.55); }
+  .agent-card h4 {
+    font-family: "Syne", "Inter", sans-serif;
+    font-weight: 600; font-size: 18px;
+    color: #fff; margin: 0 0 10px;
+  }
+  .agent-card p {
+    font-family: "Inter", sans-serif;
+    font-size: 14px; line-height: 1.55;
+    color: var(--ink-2); margin: 0;
+  }
+  .agents-band .governed-note {
+    font-family: "Inter", sans-serif;
+    font-style: italic;
+    font-size: 14.5px;
+    color: var(--ink-2);
+    margin-top: 24px;
+  }
+  .agents-band .governed-note strong {
+    font-style: normal;
+    color: var(--fuchsia);
+    font-weight: 500;
+  }
+
+  /* ——— Use cases ——— */
+  .usecases-head { margin-bottom: 56px; }
+  .usecases-head .h-section { max-width: 760px; margin-bottom: 16px; }
+  .usecases-head .lead-italic { max-width: 760px; }
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .usecase {
+    position: relative;
+    padding: 24px 22px 22px;
+    background: var(--panel-strong);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    display: flex; flex-direction: column;
+    transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
+    min-height: 180px;
+  }
+  .usecase.active { cursor: pointer; }
+  .usecase.active:hover {
+    border-color: rgba(123, 165, 255, 0.62);
+    background:
+      radial-gradient(ellipse 380px 200px at 30% 0%, rgba(91,138,236,0.15), transparent 60%),
+      var(--panel-strong);
+    box-shadow:
+      0 0 0 1px rgba(123,165,255,0.20),
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 20px 50px -16px rgba(91,138,236,0.40);
+    transform: translateY(-2px);
+  }
+  .usecase.example { cursor: default; }
+  /* Spans the grid: copy on the left, link on the right. Stacks at 980px and below. */
+  .usecase.featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 48px;
+    min-height: 0;
+  }
+  .usecase.featured > * { grid-column: 1; }
+  .usecase.featured > .uc-link {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    align-self: center;
+    margin-top: 0;
+  }
+  .usecase .uc-tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px; letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .usecase .uc-tag .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--ink-4);
+  }
+  .usecase.active .uc-tag .dot { background: var(--green); box-shadow: 0 0 6px rgba(74,222,128,0.45); }
+  .usecase.active .uc-tag { color: var(--green); }
+  .usecase .uc-category {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    margin-bottom: 6px;
+    flex: none;
+  }
+  /* Keep the longest labels on one line at the narrow end of each column layout. */
+  @media (max-width: 380px), (min-width: 641px) and (max-width: 760px), (min-width: 981px) and (max-width: 1100px) {
+    .usecase .uc-category { font-size: 10px; letter-spacing: 0.02em; }
+  }
+  .usecase h4 {
+    font-family: "Syne", "Inter", sans-serif;
+    font-weight: 600; font-size: 17px;
+    color: #fff; margin: 0 0 8px;
+    line-height: 1.25;
+  }
+  .usecase p {
+    font-family: "Inter", sans-serif;
+    font-size: 13.5px; line-height: 1.5;
+    color: var(--ink-2); margin: 0 0 14px;
+    flex: 1;
+  }
+  .usecase .uc-link {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: var(--brand-blue-soft);
+    margin-top: auto;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .usecase .uc-link .arrow { transition: transform 200ms ease; }
+  .usecase.active:hover .uc-link .arrow { transform: translateX(3px); }
+
+  /* ——— Audience ——— */
+  .audience-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: center;
+  }
+  .audience-copy .h-section { margin-bottom: 16px; max-width: 540px; }
+  .audience-copy .lead-italic { max-width: 540px; margin-bottom: 36px; }
+  .audience-blocks { display: flex; flex-direction: column; gap: 24px; }
+  .audience-blocks .ab-group {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600; font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--brand-blue-soft);
+    text-transform: uppercase;
+    margin: 0 0 -8px;
+  }
+  .audience-blocks .ab + .ab-group { margin-top: 32px; }
+  .audience-blocks .ab {
+    padding: 20px 22px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+  }
+  .audience-blocks .ab .h-eyebrow { font-size: 17px; margin-bottom: 8px; }
+  .audience-blocks .ab p {
+    font-family: "Inter", sans-serif;
+    font-size: 14.5px; line-height: 1.55;
+    color: var(--ink-2); margin: 0 0 14px;
+  }
+  .editorial-graphic {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .editorial-graphic svg { width: 100%; height: 100%; display: block; }
+
+  /* ——— Differentiation ——— */
+  .diff-head { margin-bottom: 48px; }
+  .diff-head .h-section { max-width: 760px; margin-bottom: 16px; }
+  .diff-head .lead-italic { max-width: 760px; }
+  #section-about .diff-head { margin-bottom: 0; }
+  #section-about .lead-italic + .lead-italic { margin-top: 16px; }
+  .price-table {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    background: var(--panel-strong);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .price-table .pt-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--hairline);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px; letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: rgba(0,0,0,0.18);
+  }
+  .price-table .pt-header.us {
+    color: var(--brand-blue-soft);
+    background: rgba(91,138,236,0.10);
+  }
+  .price-table .pt-cell {
+    padding: 22px 20px;
+    border-bottom: 1px solid var(--hairline);
+    font-family: "Inter", sans-serif;
+    font-size: 14px; color: var(--ink-1);
+    line-height: 1.5;
+  }
+  .price-table .pt-cell.us { background: rgba(91,138,236,0.05); color: #fff; }
+  .price-table .pt-row-label {
+    font-family: "Syne", "Inter", sans-serif;
+    font-weight: 600; font-size: 14.5px;
+    color: var(--ink-0);
+    border-right: 1px solid var(--hairline);
+    background: rgba(0,0,0,0.12);
+  }
+  .price-table .pt-cell:last-child { border-right: 0; }
+  .price-table .row-bottom { border-bottom: 0; }
+
+  .diff-closer {
+    margin-top: 56px;
+    padding: 36px 32px;
+    background: rgba(91,138,236,0.04);
+    border-left: 2px solid var(--brand-blue-soft);
+    border-radius: 0 12px 12px 0;
+  }
+  .diff-closer p {
+    font-family: "Syne", "Inter", sans-serif;
+    font-weight: 600; font-size: clamp(20px, 1.9vw, 26px);
+    line-height: 1.35; color: var(--ink-0);
+    margin: 0; max-width: 800px; text-wrap: balance;
+  }
+  .diff-closer p em {
+    font-style: italic; color: var(--brand-blue-soft);
+  }
+  .diff-closer .btn-primary { margin-top: 24px; }
+
+  /* ——— Brand close ——— */
+  .section-close {
+    text-align: center;
+    padding-top: 96px;
+    padding-bottom: 120px;
+    position: relative;
+  }
+  .section-close::before {
+    content: "";
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(300px, 80vw, 720px); height: clamp(300px, 80vw, 720px);
+    border-radius: 50%;
+    background: radial-gradient(circle at center,
+      rgba(91,138,236,0.10) 0%,
+      rgba(91,138,236,0.04) 30%,
+      transparent 60%);
+    filter: blur(20px);
+    pointer-events: none; z-index: 0;
+  }
+  .section-close > * { position: relative; z-index: 1; }
+  .wordmark-lg {
+    width: clamp(360px, 44vw, 600px);
+    height: auto; margin: 0 auto 36px;
+    display: block;
+  }
+  .wordmark-lg .cerno-path { fill: var(--ink-0); }
+  .wordmark-lg .flow-path {
+    fill: var(--brand-blue-soft);
+  }
+  .close-line {
+    font-family: "Inter", sans-serif;
+    font-weight: 600; font-size: clamp(20px, 2vw, 26px);
+    color: #fff; margin: 0 auto 44px;
+    line-height: 1.35; max-width: 680px;
+  }
+  .close-ctas {
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+  }
+  .close-ctas .btn-primary { padding: 16px 28px; font-size: 15px; }
+  .close-ctas .link-muted { font-size: 13.5px; }
+
+  /* ——— Reduced motion + responsive ——— */
+  @media (prefers-reduced-motion: reduce) {
+    section { transition: none; opacity: 1; transform: none; }
+    .studio-build .build-line .check.pending { animation: none; }
+  }
+  @media (max-width: 980px) {
+    .hero-layout { grid-template-columns: 1fr; gap: 32px; }
+    .row { grid-template-columns: 1fr; gap: 40px; }
+    .row.reverse .row-copy { order: 1; }
+    .row.reverse .row-visual { order: 2; }
+    .row-visual.platform-card { display: none; }
+    .agents-grid { grid-template-columns: 1fr; }
+    .usecase-grid { grid-template-columns: 1fr 1fr; }
+    .usecase.featured { display: flex; }
+    .usecase.featured > .uc-link { align-self: flex-start; margin-top: auto; }
+    .audience-row { grid-template-columns: 1fr; gap: 40px; }
+    .price-table {
+      grid-template-columns: 1fr;
+      background: transparent;
+      border: 0;
+      gap: 16px;
+    }
+    .price-table .pt-header { display: none; }
+    .price-table .pt-row-label {
+      font-family: "Syne", "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--brand-blue-soft);
+      background: transparent;
+      border: 0;
+      border-right: 0;
+      padding: 0 0 8px;
+    }
+    .price-table .pt-cell {
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      padding: 12px 14px 14px;
+      background: rgba(255,255,255,0.02);
+      font-size: 13.5px;
+    }
+    .price-table .pt-cell.us {
+      background: rgba(91,138,236,0.07);
+      border-color: rgba(123,165,255,0.30);
+    }
+    /* Column label injected before each value cell on mobile */
+    .price-table .pt-cell:not(.pt-row-label)::before {
+      content: attr(data-col);
+      display: block;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 6px;
+    }
+    .price-table .pt-cell.us:not(.pt-row-label)::before {
+      color: var(--brand-blue-soft);
+    }
+    /* Group each 4-cell row into a card via spacing — gap above does the visual work */
+    .price-table .pt-cell.row-bottom { border-bottom: 1px solid var(--hairline); }
+    .price-table .pt-cell.us.row-bottom { border-color: rgba(123,165,255,0.30); }
+  }
+  @media (max-width: 640px) {
+    .topbar { padding: 0 20px; }
+    .container { padding: 0 20px; }
+    /* Less section padding here, so more margin to clear the topbar. */
+    section { padding: 48px 0; scroll-margin-top: 32px; }
+    #section-platform { scroll-margin-top: 24px; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .propagation-strip { grid-template-columns: 1fr; gap: 4px; }
+    .propagation-strip .stop::after { display: none; }
+    .wordmark-lg { width: clamp(260px, 80vw, 600px); }
+
+    /* Hero: H1, image, subhead, CTAs, then the lead. */
+    .section-hero .container { display: flex; flex-direction: column; }
+    .hero-layout { display: contents; }
+    .section-hero .h-display { order: 1; font-size: min(38px, 10.2vw); }
+    .hero-image-wrap { order: 2; margin-top: 20px; }
+    .section-hero .hero-subhead { order: 3; margin: 20px 0 20px; }
+    .section-hero .cta-row { order: 4; }
+    .section-hero .lead-italic { order: 5; font-size: 16px; margin: 32px 0 0; }
+  }
+
+  /* ——— Language dropdown ——— */
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .lang-switcher { position: relative; }
+  .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--hairline-strong);
+    background: rgba(255,255,255,0.02);
+    color: var(--ink-1);
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+  }
+  .lang-toggle:hover {
+    color: #fff;
+    border-color: rgba(109, 155, 255, 0.45);
+    background: rgba(91, 138, 236, 0.10);
+  }
+  .lang-caret { opacity: 0.7; transition: transform 180ms ease; }
+  .lang-switcher:has(.lang-menu.open) .lang-caret { transform: rotate(180deg); }
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 150px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: rgba(17, 22, 31, 0.96);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 10px;
+    box-shadow: 0 18px 44px -14px rgba(0,0,0,0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: opacity 180ms ease, transform 180ms ease;
+    z-index: 200;
+  }
+  .lang-menu.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .lang-option {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    border: 0;
+    background: transparent;
+    color: var(--ink-2);
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    text-align: left;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 180ms ease, background 180ms ease;
+  }
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .lang-option:hover { color: #fff; background: rgba(91, 138, 236, 0.10); }
+  .lang-option[aria-pressed="true"] { color: var(--brand-blue-soft); }
+  .lang-code { min-width: 22px; font-weight: 600; opacity: 0.6; }
+
+  /* ——— Theme toggle ——— */
+  .theme-toggle {
+    display: inline-flex !important; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    margin-right: 4px;
+    padding: 0;
+    border: 1px solid var(--hairline-strong);
+    background: rgba(255,255,255,0.04);
+    color: var(--ink-1);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: color 180ms ease, background 180ms ease, border-color 180ms ease;
+  }
+  .theme-toggle:hover {
+    color: #fff;
+    border-color: rgba(109, 155, 255, 0.45);
+    background: rgba(91, 138, 236, 0.12);
+  }
+  html[data-theme="light"] .theme-toggle {
+    border-color: rgba(15, 23, 42, 0.18);
+    background: rgba(15, 23, 42, 0.03);
+    color: var(--ink-1);
+  }
+  html[data-theme="light"] .theme-toggle:hover {
+    color: #0a0e14;
+    border-color: rgba(79, 125, 224, 0.45);
+    background: rgba(91, 138, 236, 0.10);
+  }
+  .theme-toggle .theme-icon-sun  { display: none; }
+  .theme-toggle .theme-icon-moon { display: block; }
+  html[data-theme="light"] .theme-toggle .theme-icon-sun  { display: block; }
+  html[data-theme="light"] .theme-toggle .theme-icon-moon { display: none; }
+  /* Toggle disabled for now — see assets/js/theme.js. Remove this line
+     and re-enable theme.js to bring the toggle back. */
+  .theme-toggle { display: none !important; }
+  /* ——— Location still (section D2) ——— */
+  .map-still { display: flex; flex-direction: column; gap: 10px; padding: 4px; }
+  .map-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .map-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .map-chips .chip {
+    font-family: "Inter", sans-serif; font-size: 10px; font-weight: 500;
+    padding: 4px 9px; border-radius: 999px;
+    border: 1px solid var(--hairline-strong); color: var(--ink-2);
+    background: rgba(255,255,255,0.02);
+  }
+  .map-chips .chip.on { background: var(--brand-blue); border-color: var(--brand-blue); color: #fff; }
+  .map-layouts { display: flex; border: 1px solid var(--hairline-strong); border-radius: 6px; overflow: hidden; }
+  .map-layouts span { display: flex; padding: 4px 7px; color: var(--ink-3); }
+  .map-layouts span + span { border-left: 1px solid var(--hairline); }
+  .map-layouts span.on { color: #fff; background: rgba(91,138,236,0.35); }
+  .map-canvas {
+    position: relative; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--hairline); aspect-ratio: 16 / 9;
+  }
+  .map-canvas svg { display: block; width: 100%; height: 100%; }
+  .map-card {
+    position: absolute; left: 10px; bottom: 10px; max-width: 64%;
+    padding: 9px 11px; border-radius: 7px;
+    background: rgba(17,22,31,0.94); border: 1px solid var(--hairline-strong);
+    box-shadow: 0 10px 24px -10px rgba(0,0,0,0.6);
+  }
+  .map-card .mc-title { font-family: "Inter", sans-serif; font-size: 11px; font-weight: 600; color: #e2e8f0; }
+  .map-card .mc-sep { color: #64748b; }
+  .map-card .mc-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .map-card .mc-stage {
+    font-family: "Inter", sans-serif; font-size: 9.5px; font-weight: 600;
+    padding: 2px 7px; border-radius: 999px;
+    background: rgba(251,146,60,0.14); color: var(--orange); border: 1px solid rgba(251,146,60,0.35);
+  }
+  .map-card .mc-owner { font-family: "Inter", sans-serif; font-size: 10px; color: #94a3b8; }
+  .map-card .mc-place {
+    margin-top: 6px; font-family: "JetBrains Mono", monospace; font-size: 9px;
+    letter-spacing: 0.02em; color: var(--teal-soft);
+  }
+  .map-legend {
+    position: absolute; right: 10px; bottom: 10px; display: flex; gap: 10px;
+    padding: 5px 8px; border-radius: 6px; background: rgba(17,22,31,0.85);
+    font-family: "Inter", sans-serif; font-size: 9.5px; color: #94a3b8;
+  }
+  .map-legend > span { display: flex; align-items: center; gap: 5px; }
+  .map-legend i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  @media (max-width: 640px) {
+    .map-canvas { aspect-ratio: 4 / 3; }
+    .map-canvas svg { object-fit: cover; }
+    .map-legend { display: none; }
+    .map-card { max-width: 86%; padding: 7px 9px; }
+  }
+</style>
+<script src="../../assets/js/theme.js?v=2"></script>
+<script src="../../assets/js/i18n.js?v=7"></script>
+<script src="../../assets/js/nav.js?v=2"></script>
+</head>
+<body>
+
+<!-- ——— Top bar ——— -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">
+      <span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="sr-only i18n" data-en="Menu" data-pt="Menu" data-es="Menú" data-fr="Menu">Menu</span>
+    </button>
+    <button class="theme-toggle" aria-label="Switch theme">
+      <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+      </svg>
+    </button>
+    <a class="wordmark-link" href="./index.html" aria-label="CernoFlow home">
+      <svg class="wordmark-sm" viewBox="0 -69 870 73" xmlns="http://www.w3.org/2000/svg" aria-label="CernoFlow">
+        <path class="cerno-path" d="M99.500-26.700L125.500-26.700Q125-17.200 118.600-10.800Q112.200-4.400 99.750-1.200Q87.300 2 68.300 2L68.300 2Q53.800 2 42.300 0.450Q30.800-1.100 22.700-4.850Q14.600-8.600 10.300-15.100Q6-21.600 6-31.500L6-31.500Q6-41.400 10.300-48.050Q14.600-54.700 22.700-58.650Q30.800-62.600 42.300-64.300Q53.800-66 68.300-66L68.300-66Q87.300-66 99.800-62.550Q112.300-59.100 118.700-52.400Q125.100-45.700 125.600-36.100L125.600-36.100L99.600-36.100Q98.400-39.300 95.200-41.750Q92-44.200 85.600-45.600Q79.200-47 68.300-47L68.300-47Q55.500-47 47.500-45.450Q39.500-43.900 35.800-40.500Q32.100-37.100 32.100-31.500L32.100-31.500Q32.100-26.400 35.800-23.200Q39.500-20 47.500-18.500Q55.500-17 68.300-17L68.300-17Q79.200-17 85.550-18.300Q91.900-19.600 95.100-21.850Q98.300-24.100 99.500-26.700L99.500-26.700ZM201.900-17.600L201.900-17.600L225.500-17.600Q224.600-11.800 219.750-7.500Q214.900-3.200 205.650-0.850Q196.400 1.500 182.100 1.500L182.100 1.500Q167 1.500 156.050-0.900Q145.100-3.300 139.200-9Q133.300-14.700 133.300-24.400L133.300-24.400Q133.300-34 139.050-39.750Q144.800-45.500 155.700-48Q166.600-50.500 182.100-50.500L182.100-50.500Q197.300-50.500 207-47.800Q216.700-45.100 221.300-39.050Q225.900-33 225.700-22.700L225.700-22.700L157.700-22.700Q158.200-20.100 160.550-17.900Q162.900-15.700 167.850-14.350Q172.800-13 181.100-13L181.100-13Q189.700-13 195.250-14.200Q200.800-15.400 201.900-17.600ZM181.100-36L181.100-36Q170.500-36 164.950-33.700Q159.400-31.400 158.400-29.100L158.400-29.100L202.400-29.100Q201.700-31.700 196.800-33.850Q191.900-36 181.100-36ZM231.900 0L231.900-49L255.900-49L255.900-32Q256.100-32.500 256.300-33L256.300-33Q257.600-35.800 259.800-38.850Q262-41.900 265.200-44.550Q268.400-47.200 272.550-48.850Q276.700-50.500 281.700-50.500L281.700-50.500L281.700-30.500Q275.200-30.500 269.800-29.300Q264.400-28.100 260.600-26.500L260.600-26.500Q257.700-25.200 255.900-24L255.900-24L255.900 0L231.900 0ZM286.400 0L286.400-49L310.400-49L310.400-33.700Q311-34.800 312-36.100L312-36.100Q314.300-39.300 318.800-42.600Q323.300-45.900 330.150-48.200Q337-50.500 346.400-50.500L346.400-50.500Q352.300-50.500 357.800-49.250Q363.300-48 367.650-45Q372-42 374.600-36.800Q377.200-31.600 377.200-23.700L377.200-23.700L377.200 0L353.200 0L353.200-20.700Q353.200-28.200 349.300-31.350Q345.400-34.500 335.200-34.500L335.200-34.500Q329.800-34.500 324.750-33.300Q319.700-32.100 315.700-30.500L315.700-30.500Q312.500-29.100 310.400-27.800L310.400-27.800L310.400 0L286.400 0ZM430.900 1.500L430.900 1.500Q415 1.500 404.450-1.100Q393.900-3.700 388.650-9.400Q383.400-15.100 383.400-24.400L383.400-24.400Q383.400-33.700 388.650-39.450Q393.900-45.200 404.450-47.850Q415-50.500 430.900-50.500L430.900-50.500Q446.700-50.500 457.150-47.850Q467.600-45.200 472.800-39.450Q478-33.700 478-24.400L478-24.400Q478-15.100 472.800-9.400Q467.600-3.700 457.150-1.100Q446.700 1.500 430.900 1.500ZM430.900-13L430.900-13Q438.300-13 443.300-14.250Q448.300-15.500 450.900-18.050Q453.500-20.600 453.500-24.400L453.500-24.400Q453.500-28.200 450.950-30.800Q448.400-33.400 443.400-34.700Q438.400-36 430.900-36L430.900-36Q423.500-36 418.350-34.700Q413.200-33.400 410.550-30.850Q407.900-28.300 407.900-24.400L407.900-24.400Q407.900-20.600 410.500-18.050Q413.100-15.500 418.250-14.250Q423.400-13 430.900-13Z"/>
+        <path class="flow-path" d="M486.700-64L587.500-64L587.500-45L511.700-45L511.700-36.500L573.700-36.500L573.700-19.500L511.700-19.500L511.700 0L486.700 0L486.700-64ZM596.700 0L596.700-69L620.700-69L620.700 0L596.700 0ZM675.900 1.500L675.900 1.500Q660.000 1.500 649.450-1.100Q638.900-3.700 633.650-9.400Q628.400-15.100 628.400-24.400L628.400-24.400Q628.400-33.700 633.650-39.450Q638.900-45.200 649.450-47.850Q660.000-50.500 675.900-50.500L675.900-50.500Q691.700-50.500 702.150-47.850Q712.600-45.200 717.800-39.450Q723.000-33.700 723.000-24.400L723.000-24.400Q723.000-15.100 717.800-9.400Q712.600-3.700 702.150-1.100Q691.700 1.500 675.900 1.500ZM675.900-13L675.900-13Q683.300-13 688.300-14.250Q693.300-15.500 695.900-18.050Q698.500-20.600 698.500-24.400L698.500-24.400Q698.500-28.200 695.950-30.800Q693.400-33.400 688.400-34.700Q683.400-36 675.900-36L675.900-36Q668.500-36 663.350-34.700Q658.200-33.400 655.550-30.850Q652.900-28.300 652.900-24.400L652.900-24.400Q652.900-20.600 655.500-18.050Q658.100-15.500 663.250-14.250Q668.400-13 675.900-13ZM807.800-49L824.300-18.800L840.900-49L867.400-49L836.500 0L813.900 0L794.400-29.300L774.100 0L751.500 0L722.200-49L748.600-49L764.100-18.900L781.300-49L807.800-49Z"/>
+      </svg>
+    </a>
+    <nav class="topbar-nav" id="site-nav">
+      <a class="i18n" data-en="Home"      data-pt="Início" data-es="Inicio" data-fr="Accueil"         href="#">Home</a>
+      <a class="i18n" data-en="Platform"  data-pt="Plataforma" data-es="Plataforma" data-fr="Plateforme"     href="#section-platform">Platform</a>
+      <a class="i18n" data-en="Use cases" data-pt="Casos de utilização" data-es="Casos de uso" data-fr="Cas d'usage" href="#section-usecases">Use cases</a>
+      <a class="i18n" data-en="Who it's for" data-pt="Para quem é" data-es="Para quién es" data-fr="Pour qui" href="#section-customers">Who it's for</a>
+      <a class="i18n" data-en="Why CernoFlow" data-pt="Porquê o CernoFlow" data-es="Por qué CernoFlow" data-fr="Pourquoi CernoFlow" href="#section-why">Why CernoFlow</a>
+      <a class="i18n" data-en="About us" data-pt="Quem somos" data-es="Quiénes somos" data-fr="Qui sommes-nous" href="#section-about">About us</a>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <div class="lang-switcher">
+      <button class="lang-toggle" aria-haspopup="listbox" aria-label="Change language">
+        <span class="lang-current">EN</span>
+        <svg class="lang-caret" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+          <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <ul class="lang-menu" role="listbox" aria-label="Language">
+        <li><button class="lang-option" data-lang="en" role="option"><span class="lang-code">EN</span><span>English</span></button></li>
+        <li><button class="lang-option" data-lang="pt" role="option"><span class="lang-code">PT</span><span>Português</span></button></li>
+        <li><button class="lang-option" data-lang="es" role="option"><span class="lang-code">ES</span><span>Español</span></button></li>
+        <li><button class="lang-option" data-lang="fr" role="option"><span class="lang-code">FR</span><span>Français</span></button></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ——— A — Hero ——— -->
+  <section class="section-hero" data-section="A">
+    <div class="container">
+      <div class="hero-layout">
+        <h1 class="h-display">
+          <span class="hero-line i18n" data-en="No code." data-pt="Sem código." data-es="Sin código." data-fr="Sans code.">No code.</span>
+          <span class="hero-line i18n" data-en="No shortcuts." data-pt="Sem atalhos." data-es="Sin atajos." data-fr="Sans raccourcis.">No shortcuts.</span>
+          <span class="hero-line i18n" data-en="Governed work." data-pt="Processos sob controlo." data-es="Trabajo con reglas." data-fr="Un travail encadré.">Governed work.</span>
+        </h1>
+
+        <div class="hero-image-wrap">
+          <img src="../../assets/js/cernoflow-hero-v2.png" alt="Illustration: scattered documents flowing into a governed, audited record." loading="eager">
+        </div>
+      </div>
+
+      <p class="hero-subhead i18n" data-en="People, AI agents and machines working the same cases, under the same rules." data-pt="Pessoas, agentes de IA e máquinas a tratar os mesmos processos, com as mesmas regras." data-es="Personas, agentes de IA y máquinas trabajando en los mismos expedientes, con las mismas reglas." data-fr="Des personnes, des agents IA et des machines qui travaillent sur les mêmes dossiers, selon les mêmes règles.">People, AI agents and machines working the same cases, under the same rules.</p>
+
+      <p class="lead-italic i18n"
+         data-en="Approvals, applications, onboarding, exceptions — the operational work that has a beginning, a middle and an end, and that someone will one day ask you to prove. CernoFlow runs it, governs it and keeps the audit trail as it goes."
+         data-pt="Aprovações, candidaturas, integração de colaboradores, exceções — o trabalho operacional que tem princípio, meio e fim, e que um dia alguém lhe vai pedir que comprove. O CernoFlow conduz esse trabalho, aplica-lhe as regras e mantém o registo de auditoria ao longo do caminho."
+         data-es="Aprobaciones, solicitudes, incorporaciones, excepciones — el trabajo operativo con un principio, un desarrollo y un final, y que algún día alguien le pedirá que demuestre. CernoFlow lo ejecuta, lo gobierna y mantiene el rastro de auditoría sobre la marcha." data-fr="Approbations, demandes, intégrations, exceptions — le travail opérationnel qui a un début, un milieu et une fin, et que quelqu'un vous demandera un jour de prouver. CernoFlow l'exécute, le gouverne et tient la piste d'audit au fil de l'eau.">
+        Approvals, applications, onboarding, exceptions — the operational work that has a beginning, a middle and an end, and that someone will one day ask you to prove. CernoFlow runs it, governs it and keeps the audit trail as it goes.
+      </p>
+
+      <div class="cta-row">
+        <a class="btn-primary" href="mailto:sales@cernoflow.com?subject=Governed%20Work%20Enquiry" id="cta-partnership">
+          <span class="i18n" data-en="Talk to us" data-pt="Fale connosco" data-es="Hable con nosotros" data-fr="Contactez-nous">Talk to us</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="link-muted i18n" data-en="Or explore the platform →" data-pt="Ou conheça a plataforma →" data-es="O explore la plataforma →" data-fr="Ou explorez la plateforme →" href="./platform.html">Or explore the platform →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— B — Platform overview ——— -->
+  <section data-section="B" id="section-platform">
+    <div class="container">
+      <div class="row">
+        <div class="row-copy">
+          <p class="kicker i18n" data-en="The platform" data-pt="A plataforma" data-es="La plataforma" data-fr="La plateforme">The platform</p>
+          <h2 class="h-section i18n"
+              data-en="One model. Every surface. One conversation."
+              data-pt="Um modelo. Uma conversa. Tudo o resto deriva daí."
+              data-es="Un modelo. Todas las superficies. Una conversación." data-fr="Un modèle. Toutes les surfaces. Une conversation.">One model. Every surface. One conversation.</h2>
+          <p class="body-text i18n"
+             data-en="CernoFlow is built around a single entity model. Define it once and the platform derives the forms, lists and dashboards, the audit trail, the records-management view and the mobile app. No second screen to configure. No drift between what's recorded and what's shown."
+             data-pt="O CernoFlow assenta num único modelo de entidades. É definido uma vez e a plataforma deriva daí os formulários, as listas e os dashboards, o registo de auditoria, a gestão documental e a aplicação móvel. Não há um segundo ecrã para configurar, nem diferenças entre o que fica registado e o que se vê."
+             data-es="CernoFlow se construye en torno a un único modelo de entidades. Defínalo una vez y la plataforma deriva los formularios, las listas y los paneles, el rastro de auditoría, la vista de gestión de archivo y la aplicación móvil. Sin segundas pantallas que configurar. Sin divergencias entre lo registrado y lo mostrado." data-fr="CernoFlow est construit autour d'un modèle d'entité unique. Définissez-le une fois et la plateforme en dérive les formulaires, les listes et les tableaux de bord, la piste d'audit, la vue de gestion des archives et l'application mobile. Pas d'écran supplémentaire à configurer. Pas d'écart entre ce qui est enregistré et ce qui est affiché.">
+            CernoFlow is built around a single entity model. Define it once and the platform derives the forms, lists and dashboards, the audit trail, the records-management view and the mobile app. No second screen to configure. No drift between what's recorded and what's shown.
+          </p>
+          <p class="body-text i18n"
+             data-en="Five entity-level concerns (structure, lifecycle, views, starting points, records) and five delivery concerns (Actors, surfaces, workflows, AI Agents, connectors), wrapped in a compliance band — GDPR, eIDAS, MoReq, ISO 15489. AI participates at every layer, governed and audited."
+             data-pt="Cinco áreas ao nível da entidade (estrutura, ciclo de vida, vistas, pontos de partida e gestão documental) e cinco áreas de entrega (atores, superfícies, workflows, agentes de IA e conectores), todas enquadradas pelo RGPD, eIDAS, MoReq e ISO 15489. A IA participa em todas as camadas, com regras e auditoria."
+             data-es="Cinco ejes a nivel de entidad (estructura, ciclo de vida, vistas, puntos de partida, registros) y cinco ejes de entrega (Actores, superficies, flujos de trabajo, Agentes de IA, conectores), envueltos en una banda de conformidad — RGPD, eIDAS, MoReq, ISO 15489. La IA participa en cada capa, gobernada y auditada." data-fr="Cinq axes au niveau de l'entité (structure, cycle de vie, vues, points de départ, enregistrements) et cinq axes de livraison (Acteurs, surfaces, flux de travail, Agents IA, connecteurs), enveloppés dans une bande de conformité — RGPD, eIDAS, MoReq, ISO 15489. L'IA participe à chaque couche, gouvernée et auditée.">
+            Five entity-level concerns (structure, lifecycle, views, starting points, records) and five delivery concerns (Actors, surfaces, workflows, AI Agents, connectors), wrapped in a compliance band — GDPR, eIDAS, MoReq, ISO 15489. AI participates at every layer, governed and audited.
+          </p>
+          <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore the platform" data-pt="Conhecer a plataforma" data-es="Explorar la plataforma" data-fr="Explorer la plateforme">Explore the platform</span> <span class="arrow">→</span></a>
+        </div>
+        <a class="row-visual platform-card" href="./platform.html" aria-label="Explore the platform">
+          <div class="visual-chrome">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="label i18n" data-en="Platform model · abridged" data-pt="Modelo da plataforma · versão resumida" data-es="Modelo de plataforma · resumido" data-fr="Modèle de plateforme · abrégé">Platform model &middot; abridged</span>
+          </div>
+
+          <!-- Faithful silhouette of Platform_Diagram_v4: 2 rings × 5 wedges, AI purple, compliance band -->
+          <svg class="platform-mini-svg" viewBox="0 0 600 540" xmlns="http://www.w3.org/2000/svg" aria-label="Platform diagram">
+            <defs>
+              <!-- Centre disc gradient -->
+              <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#7BA5FF" stop-opacity="0.30"/>
+                <stop offset="60%" stop-color="#5b8aec" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#5b8aec" stop-opacity="0.06"/>
+              </radialGradient>
+              <!-- Soft halo behind whole diagram -->
+              <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#5b8aec" stop-opacity="0.12"/>
+                <stop offset="60%" stop-color="#5b8aec" stop-opacity="0.04"/>
+                <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Soft halo -->
+            <circle cx="300" cy="270" r="265" fill="url(#haloGrad)"/>
+
+            <!-- INNER RING (entity-level) — 5 wedges, blue family.
+                 Inner radius 115, outer radius 175. Boundaries: -126°, -54°, 18°, 90°, 162°.
+                 Geometry computed symmetrically from centre (300,270). -->
+            <!-- Wedge: structure (top, blue-sky, centre -90°) -->
+            <path d="M 197.14 128.42 A 175 175 0 0 1 402.86 128.42 L 367.60 176.96 A 115 115 0 0 0 232.40 176.96 Z" fill="rgba(125,211,252,0.18)" stroke="rgba(125,211,252,0.46)" stroke-width="1.2"/>
+            <!-- Wedge: lifecycle (top-right, azure, centre -18°) -->
+            <path d="M 402.86 128.42 A 175 175 0 0 1 466.43 324.08 L 409.37 305.54 A 115 115 0 0 0 367.60 176.96 Z" fill="rgba(96,165,250,0.18)" stroke="rgba(96,165,250,0.46)" stroke-width="1.2"/>
+            <!-- Wedge: records (bottom-right, violet, centre 54°) -->
+            <path d="M 466.43 324.08 A 175 175 0 0 1 300.00 445.00 L 300.00 385.00 A 115 115 0 0 0 409.37 305.54 Z" fill="rgba(167,139,250,0.18)" stroke="rgba(167,139,250,0.46)" stroke-width="1.2"/>
+            <!-- Wedge: workflows (bottom-left, indigo, centre 126°) -->
+            <path d="M 300.00 445.00 A 175 175 0 0 1 133.57 324.08 L 190.63 305.54 A 115 115 0 0 0 300.00 385.00 Z" fill="rgba(129,140,248,0.18)" stroke="rgba(129,140,248,0.46)" stroke-width="1.2"/>
+            <!-- Wedge: views (top-left, brand-blue, centre 198°) -->
+            <path d="M 133.57 324.08 A 175 175 0 0 1 197.14 128.42 L 232.40 176.96 A 115 115 0 0 0 190.63 305.54 Z" fill="rgba(91,138,236,0.20)" stroke="rgba(91,138,236,0.50)" stroke-width="1.2"/>
+
+            <!-- OUTER RING (solution-level) — 5 wedges, warm family + AI purple.
+                 Inner radius 175, outer radius 240. Same angular boundaries. -->
+            <!-- Wedge: starting-points (top, coral) -->
+            <path d="M 158.93 75.84 A 240 240 0 0 1 441.07 75.84 L 402.86 128.42 A 175 175 0 0 0 197.14 128.42 Z" fill="rgba(251,113,133,0.15)" stroke="rgba(251,113,133,0.40)" stroke-width="1.2"/>
+            <!-- Wedge: forms (top-right, orange) -->
+            <path d="M 441.07 75.84 A 240 240 0 0 1 528.25 344.16 L 466.43 324.08 A 175 175 0 0 0 402.86 128.42 Z" fill="rgba(251,146,60,0.15)" stroke="rgba(251,146,60,0.40)" stroke-width="1.2"/>
+            <!-- Wedge: surfaces (bottom-right, amber) -->
+            <path d="M 528.25 344.16 A 240 240 0 0 1 300.00 510.00 L 300.00 445.00 A 175 175 0 0 0 466.43 324.08 Z" fill="rgba(251,191,36,0.15)" stroke="rgba(251,191,36,0.42)" stroke-width="1.2"/>
+            <!-- Wedge: AI Agents (bottom-left, AI purple — the exception) -->
+            <path d="M 300.00 510.00 A 240 240 0 0 1 71.75 344.16 L 133.57 324.08 A 175 175 0 0 0 300.00 445.00 Z" fill="rgba(196,132,255,0.20)" stroke="rgba(196,132,255,0.55)" stroke-width="1.4"/>
+            <!-- Wedge: connectors (top-left, rose) -->
+            <path d="M 71.75 344.16 A 240 240 0 0 1 158.93 75.84 L 197.14 128.42 A 175 175 0 0 0 133.57 324.08 Z" fill="rgba(244,114,182,0.15)" stroke="rgba(244,114,182,0.40)" stroke-width="1.2"/>
+
+            <!-- Compliance band (fuchsia dashed rings) -->
+            <circle cx="300" cy="270" r="252" fill="none" stroke="rgba(232,121,249,0.40)" stroke-width="1.4" stroke-dasharray="3 4"/>
+            <circle cx="300" cy="270" r="262" fill="none" stroke="rgba(232,121,249,0.25)" stroke-width="1" stroke-dasharray="2 4"/>
+
+            <!-- Compliance labels along band (positioned around radius 270) -->
+            <text class="i18n" data-en="GDPR" data-pt="RGPD" data-es="RGPD" data-fr="RGPD" x="300" y="20"  text-anchor="middle" fill="#E879F9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="2.5" font-weight="500">GDPR</text>
+            <text x="580" y="274" text-anchor="end"    fill="#E879F9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="2.5" font-weight="500">eIDAS</text>
+            <text x="300" y="535" text-anchor="middle" fill="#E879F9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="2.5" font-weight="500">MoReq</text>
+            <text x="20"  y="274" text-anchor="start"  fill="#E879F9" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="2.5" font-weight="500">ISO 15489</text>
+
+            <!-- Centre disc — the entity model -->
+            <circle cx="300" cy="270" r="115" fill="url(#centerGrad)" stroke="rgba(123,165,255,0.55)" stroke-width="1.5"/>
+            <circle cx="300" cy="270" r="65"  fill="rgba(91,138,236,0.10)" stroke="rgba(123,165,255,0.30)" stroke-width="1"/>
+
+            <!-- Centre label -->
+            <text class="i18n" data-en="THE ENTITY" data-pt="MODELO DE" data-es="LA ENTIDAD" data-fr="L'ENTITÉ" x="300" y="264" text-anchor="middle" fill="#E0EAFF" font-family="Inter, sans-serif" font-weight="700" font-size="13" letter-spacing="0.6">THE ENTITY</text>
+            <text class="i18n" data-en="MODEL"      data-pt="ENTIDADES" data-es="MODELO" data-fr="MODÈLE" x="300" y="282" text-anchor="middle" fill="#E0EAFF" font-family="Inter, sans-serif" font-weight="700" font-size="13" letter-spacing="0.6">MODEL</text>
+
+            <!-- Inner ring labels — positioned at radial centre (radius 145) of each wedge -->
+            <text class="i18n" data-en="Structure" data-pt="Estrutura" data-es="Estructura" data-fr="Structure"     x="300" y="129" text-anchor="middle" fill="#E0EAFF" font-family="Inter, sans-serif" font-weight="600" font-size="12">Structure</text>
+            <text class="i18n" data-en="Lifecycle" data-pt="Ciclo de vida" data-es="Ciclo de vida" data-fr="Cycle de vie" x="438" y="229" text-anchor="middle" fill="#E0EAFF" font-family="Inter, sans-serif" font-weight="600" font-size="12">Lifecycle</text>
+            <text class="i18n" data-en="Views" data-pt="Vistas" data-es="Vistas" data-fr="Vues" x="385" y="391" text-anchor="middle" fill="#E0EAFF" font-family="Inter, sans-serif" font-weight="600" font-size="12">Views</text>
+            <text class="i18n" data-en="Starting Points" data-pt="Pontos de partida" data-es="Puntos de partida" data-fr="Points de départ" x="215" y="391" text-anchor="middle" fill="#E0EAFF" font-family="Inter, sans-serif" font-weight="600" font-size="12">Starting Points</text>
+            <text class="i18n" data-en="Records" data-pt="" data-es="Registros" data-fr="Enregistrements" x="162" y="229" text-anchor="middle" fill="#E0EAFF" font-family="Inter, sans-serif" font-weight="600" font-size="12">Records</text>
+            <!-- PT only: two lines, placed higher in the wedge, where the ring band is wide enough for "documental" at this font size. -->
+            <text class="i18n" data-en="" data-pt="Gestão" data-es="" data-fr="" x="187.5" y="171" text-anchor="middle" fill="#E0EAFF" font-family="Inter, sans-serif" font-weight="600" font-size="12"></text>
+            <text class="i18n" data-en="" data-pt="documental" data-es="" data-fr="" x="187.5" y="185" text-anchor="middle" fill="#E0EAFF" font-family="Inter, sans-serif" font-weight="600" font-size="12"></text>
+
+            <!-- Outer ring labels — positioned at radial centre (radius 208) of each wedge -->
+            <text class="i18n" data-en="Actors" data-pt="Atores" data-es="Actores" data-fr="Acteurs" x="300" y="66"  text-anchor="middle" fill="#ffffff" font-family="Inter, sans-serif" font-weight="600" font-size="12">Actors</text>
+            <text class="i18n" data-en="Surfaces" data-pt="Superfícies" data-es="Superficies" data-fr="Surfaces" x="498" y="210" text-anchor="middle" fill="#ffffff" font-family="Inter, sans-serif" font-weight="600" font-size="12">Surfaces</text>
+            <text class="i18n" data-en="Workflows" data-pt="Workflows" data-es="Flujos de trabajo" data-fr="Flux de travail" x="422" y="442" text-anchor="middle" fill="#ffffff" font-family="Inter, sans-serif" font-weight="600" font-size="12">Workflows</text>
+            <text class="i18n" data-en="AI Agents"       data-pt="Agentes de IA" data-es="Agentes de IA" data-fr="Agents IA"     x="178" y="442" text-anchor="middle" fill="#D9A8FF" font-family="Inter, sans-serif" font-weight="600" font-size="12">AI Agents</text>
+            <text class="i18n" data-en="Connectors"      data-pt="Conectores" data-es="Conectores" data-fr="Connecteurs"        x="102" y="210" text-anchor="middle" fill="#ffffff" font-family="Inter, sans-serif" font-weight="600" font-size="12">Connectors</text>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— C — Configure once, inherit everywhere ——— -->
+  <section data-section="C">
+    <div class="container">
+      <div class="row reverse">
+        <div class="row-copy">
+          <p class="kicker i18n" data-en="Define once" data-pt="Definido uma vez" data-es="Definir una vez" data-fr="Définir une fois">Define once</p>
+          <h2 class="h-section i18n"
+              data-en="One field. Every surface. Zero rework."
+              data-pt="Um campo. Todas as superfícies. Sem repetir o trabalho."
+              data-es="Un campo. Todas las superficies. Cero retrabajo." data-fr="Un champ. Toutes les surfaces. Zéro retravail.">One field. Every surface. Zero rework.</h2>
+          <p class="body-text i18n"
+             data-en="Every field type in CernoFlow is a complete contract. It knows how to appear on a form and in a list, how it is stored, how it is classified under GDPR, how it is sealed into the record and how it is captured on a phone. You define it once."
+             data-pt="No CernoFlow, cada tipo de campo é um contrato completo: sabe como aparecer num formulário e numa lista, como é guardado, como é classificado no RGPD, como fica selado no documento final e como é preenchido no telemóvel. É definido uma vez."
+             data-es="Cada tipo de campo en CernoFlow es un contrato completo. Sabe cómo aparecer en un formulario y en una lista, cómo se almacena, cómo se clasifica según el RGPD, cómo se sella en el registro y cómo se captura en un teléfono. Usted lo define una vez." data-fr="Chaque type de champ dans CernoFlow est un contrat complet. Il sait comment apparaître dans un formulaire et dans une liste, comment il est stocké, comment il est classé au titre du RGPD, comment il est scellé dans l'enregistrement et comment il est saisi sur un téléphone. Vous le définissez une seule fois.">
+            Every field type in CernoFlow is a complete contract. It knows how to appear on a form and in a list, how it is stored, how it is classified under GDPR, how it is sealed into the record and how it is captured on a phone. You define it once.
+          </p>
+          <p class="body-text i18n"
+             data-en="Add a field to an entity and it appears everywhere the entity does — forms, lists, audit views, sealed records and mobile. The Studio Co-designer can add it for you, and the change itself is recorded as a governed event."
+             data-pt="Quando acrescenta um campo a uma entidade, ele passa a aparecer em todo o lado onde a entidade aparece — formulários, listas, vistas de auditoria, documentos selados e telemóvel. O Co-designer do Studio pode acrescentá-lo por si, e a própria alteração fica registada como um evento auditável."
+             data-es="Añada un campo a una entidad y aparecerá en todos los lugares donde aparece la entidad — formularios, listas, vistas de auditoría, registros sellados y móvil. El Co-designer de Studio puede añadirlo por usted, y el cambio en sí queda registrado como un evento gobernado." data-fr="Ajoutez un champ à une entité et il apparaît partout où l'entité apparaît — formulaires, listes, vues d'audit, enregistrements scellés et mobile. Le Co-designer Studio peut l'ajouter pour vous, et le changement lui-même est enregistré comme un événement gouverné.">
+            Add a field to an entity and it appears everywhere the entity does — forms, lists, audit views, sealed records and mobile. The Studio Co-designer can add it for you, and the change itself is recorded as a governed event.
+          </p>
+          <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore the entity model" data-pt="Conhecer o modelo de entidades" data-es="Explorar el modelo de entidades" data-fr="Explorer le modèle d'entité">Explore the entity model</span> <span class="arrow">→</span></a>
+        </div>
+        <a class="row-visual" href="./platform.html" aria-label="Explore the entity model">
+          <div class="visual-chrome">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="label i18n" data-en="Field propagation · entity_field_added" data-pt="Propagação de campo · entity_field_added" data-es="Propagación de campo · entity_field_added" data-fr="Propagation de champ · entity_field_added">Field propagation &middot; entity_field_added</span>
+          </div>
+          <div class="config-still">
+            <div class="prompt-line">
+              <span class="agent-tag">Co-designer</span>
+              <span class="prompt-text i18n"
+                    data-en="“Add a qualified signature field, required over €50,000.”"
+                    data-pt="“Acrescenta um campo de assinatura qualificada, obrigatório acima de 50 000 €.”"
+                    data-es="«Añada un campo de firma cualificada, obligatorio por encima de 50.000 €.»" data-fr="« Ajoutez un champ de signature qualifiée, obligatoire au-dessus de 50 000 €. »">"Add a qualified signature field, required over &euro;50,000."</span>
+            </div>
+            <div class="field-row">
+              <span class="field-name">qualified_signature</span>
+              <span class="field-type">eIDAS_QES &middot; required_when amount &gt; 50000</span>
+            </div>
+            <div class="propagation-strip">
+              <div class="stop origin">entity<span class="stop-label">Approval</span></div>
+              <div class="stop">form<span class="stop-label">Workspace</span></div>
+              <div class="stop">audit<span class="stop-label">trail</span></div>
+              <div class="stop">PDF/A<span class="stop-label">record</span></div>
+              <div class="stop">mobile<span class="stop-label">capture</span></div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— D — Rich lifecycle with transition model ——— -->
+  <section data-section="D">
+    <div class="container">
+      <div class="row">
+        <div class="row-copy">
+          <p class="kicker i18n" data-en="Lifecycle &amp; transitions" data-pt="Ciclo de vida e transições" data-es="Ciclo de vida y transiciones" data-fr="Cycle de vie et transitions">Lifecycle &amp; transitions</p>
+          <h2 class="h-section i18n"
+              data-en="Lifecycles you can defend to a regulator."
+              data-pt="Ciclos de vida que resistem ao escrutínio de qualquer regulador."
+              data-es="Ciclos de vida que puede defender ante un regulador." data-fr="Des cycles de vie que vous pouvez défendre devant un régulateur.">Lifecycles you can defend to a regulator.</h2>
+          <p class="body-text i18n"
+             data-en="Every entity has a lifecycle. Every transition is a contract — preconditions, Actors bound to roles, dual control where you need it, wait conditions that hold until they are met, events fired to downstream systems on success. Configure transitions in the model, not in code."
+             data-pt="Cada entidade tem um ciclo de vida e cada transição é um contrato: pré-condições, atores com perfis definidos, dupla validação onde for necessária, condições de espera que retêm o processo até serem cumpridas e eventos enviados para outros sistemas quando a transição é concluída. Tudo isto se configura no modelo, não em código."
+             data-es="Cada entidad tiene un ciclo de vida. Cada transición es un contrato — precondiciones, Actores vinculados a roles, control dual donde lo necesite, condiciones de espera que retienen hasta cumplirse, eventos enviados a sistemas posteriores al completarse con éxito. Configure las transiciones en el modelo, no en código." data-fr="Chaque entité a un cycle de vie. Chaque transition est un contrat — préconditions, Acteurs liés à des rôles, double contrôle là où vous en avez besoin, conditions d'attente qui retiennent jusqu'à ce qu'elles soient remplies, événements envoyés aux systèmes en aval en cas de succès. Configurez les transitions dans le modèle, pas dans le code.">
+            Every entity has a lifecycle. Every transition is a contract — preconditions, Actors bound to roles, dual control where you need it, wait conditions that hold until they are met, events fired to downstream systems on success. Configure transitions in the model, not in code.
+          </p>
+          <p class="body-text i18n"
+             data-en="Whether it's an approval, an onboarding, a case escalation, or a status change on a piece of equipment — the same governance rigour applies, and the platform records who decided what, when, and why. Compensating transactions on rollback. No silent deletes."
+             data-pt="Seja uma aprovação, a integração de um colaborador, a escalada de um processo ou a mudança de estado de um equipamento, aplica-se o mesmo rigor, e a plataforma regista quem decidiu o quê, quando e porquê. As reversões geram transações compensatórias. Nada é apagado sem deixar rasto."
+             data-es="Sea una aprobación, una incorporación, una escalada de caso o un cambio de estado en un equipo — se aplica el mismo rigor de gobernanza, y la plataforma registra quién decidió qué, cuándo y por qué. Transacciones compensatorias en caso de reversión. Sin eliminaciones silenciosas." data-fr="Qu'il s'agisse d'une approbation, d'une intégration, d'une escalade de cas ou d'un changement de statut d'un équipement — la même rigueur de gouvernance s'applique, et la plateforme enregistre qui a décidé quoi, quand et pourquoi. Transactions compensatoires sur réversion. Pas de suppressions silencieuses.">
+            Whether it's an approval, an onboarding, a case escalation, or a status change on a piece of equipment &mdash; the same governance rigour applies, and the platform records who decided what, when, and why. Compensating transactions on rollback. No silent deletes.
+          </p>
+          <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore the lifecycle model" data-pt="Conhecer o modelo de ciclo de vida" data-es="Explorar el modelo de ciclo de vida" data-fr="Explorer le modèle de cycle de vie">Explore the lifecycle model</span> <span class="arrow">→</span></a>
+        </div>
+        <a class="row-visual" href="./platform.html" aria-label="Explore the lifecycle model">
+          <div class="visual-chrome">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="label i18n" data-en="Lifecycle canvas · Approval entity" data-pt="Editor de ciclo de vida · entidade Aprovação" data-es="Lienzo de ciclo de vida · Entidad de aprobación" data-fr="Canevas de cycle de vie · Entité d'approbation">Lifecycle canvas &middot; Approval entity</span>
+          </div>
+          <div class="lifecycle-still">
+            <div class="lifecycle-canvas">
+              <div class="lifecycle-stages">
+                <div class="stage i18n" data-en="Draft" data-pt="Rascunho" data-es="Borrador" data-fr="Brouillon">Draft</div>
+                <span class="arrow">→</span>
+                <div class="stage i18n" data-en="Submitted" data-pt="Submetido" data-es="Enviado" data-fr="Soumis">Submitted</div>
+                <span class="arrow">→</span>
+                <div class="stage in-review i18n" data-en="In review" data-pt="Em análise" data-es="En revisión" data-fr="En revue">In review</div>
+                <span class="arrow">→</span>
+                <div class="stage i18n" data-en="Approved" data-pt="Aprovado" data-es="Aprobado" data-fr="Approuvé">Approved</div>
+                <span class="arrow">→</span>
+                <div class="stage terminal i18n" data-en="Sealed" data-pt="Selado" data-es="Sellado" data-fr="Scellé">Sealed</div>
+              </div>
+            </div>
+            <div class="transition-rules">
+              <div class="rule">
+                <span class="rule-tag precondition i18n" data-en="Precondition" data-pt="Pré-condição" data-es="Precondición" data-fr="Précondition">Precondition</span>
+                <span class="rule-desc i18n" data-en="amount &lt; €50,000 OR qualified_signature present" data-pt="amount &lt; 50 000 € OU qualified_signature presente" data-es="importe &lt; 50.000 € O firma_cualificada presente" data-fr="montant &amp;lt; 50 000 € OU signature_qualifiée présente">amount &lt; €50,000 OR qualified_signature present</span>
+              </div>
+              <div class="rule">
+                <span class="rule-tag dual i18n" data-en="Dual control" data-pt="Dupla validação" data-es="Control dual" data-fr="Double contrôle">Dual control</span>
+                <span class="rule-desc i18n" data-en="Approver + Countersignatory, distinct actors" data-pt="Aprovador + Cossignatário, atores distintos" data-es="Aprobador + Cofirmante, actores distintos" data-fr="Approbateur + Contresignataire, acteurs distincts">Approver + Countersignatory, distinct actors</span>
+              </div>
+              <div class="rule">
+                <span class="rule-tag event i18n" data-en="Event fired" data-pt="Evento emitido" data-es="Evento disparado" data-fr="Événement déclenché">Event fired</span>
+                <span class="rule-desc i18n" data-en="on_approved → connectors · PDF/A sealed" data-pt="on_approved → conectores · PDF/A selado" data-es="on_approved → conectores · PDF/A sellado" data-fr="on_approved → connecteurs · PDF/A scellé">on_approved → connectors &middot; PDF/A sealed</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— D2 — Location ——— -->
+  <section data-section="D2" id="section-location">
+    <div class="container">
+      <div class="row reverse">
+        <div class="row-copy">
+          <p class="kicker i18n" data-en="Location" data-pt="Localização" data-es="Location" data-fr="Location">Location</p>
+          <h2 class="h-section i18n"
+              data-en="Every record knows where it is."
+              data-pt="Cada registo sabe onde está."
+              data-es="Every record knows where it is." data-fr="Every record knows where it is.">Every record knows where it is.</h2>
+          <p class="body-text i18n"
+             data-en="Switch on Location for an entity and each record carries one place — a point, a line or an area. It is set when the record is created, shown beside the fields you are reading, and opens onto a map when you need the context. A request at a property takes the property’s place: entered once, never re-keyed."
+             data-pt="Ative a Localização numa entidade e cada registo passa a ter um lugar — um ponto, uma linha ou uma área. Define-se quando o registo é criado, vê-se ao lado dos campos que está a ler e abre-se num mapa quando é preciso contexto. Um pedido num imóvel herda o lugar do imóvel: introduz-se uma vez e nunca se volta a digitar."
+             data-es="Switch on Location for an entity and each record carries one place — a point, a line or an area. It is set when the record is created, shown beside the fields you are reading, and opens onto a map when you need the context. A request at a property takes the property’s place: entered once, never re-keyed." data-fr="Switch on Location for an entity and each record carries one place — a point, a line or an area. It is set when the record is created, shown beside the fields you are reading, and opens onto a map when you need the context. A request at a property takes the property’s place: entered once, never re-keyed.">
+            Switch on Location for an entity and each record carries one place — a point, a line or an area. It is set when the record is created, shown beside the fields you are reading, and opens onto a map when you need the context. A request at a property takes the property’s place: entered once, never re-keyed.
+          </p>
+          <p class="body-text i18n"
+             data-en="Lists and Work gain a Map layout with the same filters, each record marked in its stage colour, and every move is on the record’s history. Not a mapping tool. The work happens somewhere, and the record says where."
+             data-pt="As listas ganham uma vista de mapa com os mesmos filtros, cada registo assinalado na cor do seu estado, e cada mudança de lugar fica no histórico do registo. Não é uma ferramenta de mapas. O trabalho acontece num lugar, e o registo diz onde."
+             data-es="Lists and Work gain a Map layout with the same filters, each record marked in its stage colour, and every move is on the record’s history. Not a mapping tool. The work happens somewhere, and the record says where." data-fr="Lists and Work gain a Map layout with the same filters, each record marked in its stage colour, and every move is on the record’s history. Not a mapping tool. The work happens somewhere, and the record says where.">
+            Lists and Work gain a Map layout with the same filters, each record marked in its stage colour, and every move is on the record’s history. Not a mapping tool. The work happens somewhere, and the record says where.
+          </p>
+          <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore the entity model" data-pt="Conhecer o modelo de entidades" data-es="Explore the entity model" data-fr="Explore the entity model">Explore the entity model</span> <span class="arrow">→</span></a>
+        </div>
+        <a class="row-visual" href="./platform.html" aria-label="Explore the entity model">
+          <div class="visual-chrome">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="label i18n" data-en="Inspections · Map" data-pt="Inspeções · Mapa" data-es="Inspections · Map" data-fr="Inspections · Map">Inspections &middot; Map</span>
+          </div>
+          <div class="map-still">
+            <div class="map-toolbar">
+              <div class="map-chips">
+                <span class="chip on i18n" data-en="Active" data-pt="Ativos" data-es="Active" data-fr="Active">Active</span>
+                <span class="chip i18n" data-en="Scheduled" data-pt="Agendada" data-es="Scheduled" data-fr="Scheduled">Scheduled</span>
+                <span class="chip i18n" data-en="In progress" data-pt="Em curso" data-es="In progress" data-fr="In progress">In progress</span>
+                <span class="chip i18n" data-en="Completed" data-pt="Concluída" data-es="Completed" data-fr="Completed">Completed</span>
+              </div>
+              <div class="map-layouts" aria-hidden="true">
+                <span><svg viewBox="0 0 16 16" width="12" height="12"><path d="M3 4h10M3 8h10M3 12h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+                <span><svg viewBox="0 0 16 16" width="12" height="12"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3" stroke="currentColor" stroke-width="1.3"/></svg></span>
+                <span class="on"><svg viewBox="0 0 16 16" width="12" height="12"><path d="M8 14s4.5-4.2 4.5-7.5a4.5 4.5 0 0 0-9 0C3.5 9.8 8 14 8 14z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6.5" r="1.6" fill="currentColor"/></svg></span>
+              </div>
+            </div>
+            <div class="map-canvas">
+              <svg viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <rect width="480" height="270" fill="#0c121b"/>
+                <path d="M0 214 C90 196 150 232 240 214 S390 182 480 204 L480 270 L0 270 Z" fill="rgba(63,185,204,0.07)"/>
+                <path d="M300 22 L392 30 L398 92 L306 98 Z" fill="rgba(74,222,128,0.045)"/>
+                <g stroke="rgba(184,196,220,0.10)" stroke-linecap="round" fill="none">
+                  <path d="M0 62 L480 48" stroke-width="7"/>
+                  <path d="M0 150 L480 128" stroke-width="7"/>
+                  <path d="M118 0 L140 270" stroke-width="7"/>
+                  <path d="M262 0 L280 270" stroke-width="5"/>
+                  <path d="M410 0 L430 200" stroke-width="5"/>
+                </g>
+                <g stroke="rgba(184,196,220,0.055)" fill="none">
+                  <path d="M0 104 L480 88" stroke-width="3"/>
+                  <path d="M0 186 L480 166" stroke-width="3"/>
+                  <path d="M58 0 L72 200" stroke-width="3"/>
+                  <path d="M192 0 L210 210" stroke-width="3"/>
+                  <path d="M340 0 L352 190" stroke-width="3"/>
+                </g>
+                <!-- Property areas -->
+                <path d="M150 72 L246 66 L250 118 L154 124 Z" fill="rgba(91,138,236,0.13)" stroke="rgba(123,165,255,0.75)" stroke-width="1.4" stroke-dasharray="4 3"/>
+                <path d="M292 108 L330 106 L333 150 L295 152 Z" fill="rgba(91,138,236,0.08)" stroke="rgba(123,165,255,0.45)" stroke-width="1.2" stroke-dasharray="4 3"/>
+                <!-- Marks: Scheduled (blue) · In progress (orange) -->
+                <g stroke="#0c121b" stroke-width="2">
+                  <circle cx="42" cy="84" r="6" fill="#5B8AEC"/>
+                  <circle cx="92" cy="128" r="6" fill="#fb923c"/>
+                  <circle cx="176" cy="172" r="6" fill="#5B8AEC"/>
+                  <circle cx="312" cy="128" r="6" fill="#5B8AEC"/>
+                  <circle cx="368" cy="62" r="6" fill="#fb923c"/>
+                  <circle cx="452" cy="112" r="6" fill="#5B8AEC"/>
+                  <circle cx="232" cy="40" r="6" fill="#5B8AEC"/>
+                </g>
+                <g>
+                  <circle cx="398" cy="150" r="11" fill="rgba(91,138,236,0.85)" stroke="#0c121b" stroke-width="2"/>
+                  <text x="398" y="154" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#fff">4</text>
+                </g>
+                <!-- Selected record -->
+                <circle cx="200" cy="95" r="16" fill="rgba(251,146,60,0.16)"/>
+                <circle cx="200" cy="95" r="7.5" fill="#fb923c" stroke="#fff" stroke-width="2"/>
+              </svg>
+              <div class="map-card">
+                <div class="mc-title">INS-2026-0412 <span class="mc-sep">·</span> <span class="i18n" data-en="Fire safety inspection" data-pt="Inspeção de segurança contra incêndio" data-es="Fire safety inspection" data-fr="Fire safety inspection">Fire safety inspection</span></div>
+                <div class="mc-row">
+                  <span class="mc-stage i18n" data-en="In progress" data-pt="Em curso" data-es="In progress" data-fr="In progress">In progress</span>
+                  <span class="mc-owner">Ana Costa</span>
+                </div>
+                <div class="mc-place i18n" data-en="Place · from Property · Rua Augusta 112" data-pt="Lugar · do Imóvel · Rua Augusta 112" data-es="Place · from Property · Rua Augusta 112" data-fr="Place · from Property · Rua Augusta 112">Place &middot; from Property &middot; Rua Augusta 112</div>
+              </div>
+              <div class="map-legend">
+                <span><i style="background:#5B8AEC"></i><span class="i18n" data-en="Scheduled" data-pt="Agendada" data-es="Scheduled" data-fr="Scheduled">Scheduled</span></span>
+                <span><i style="background:#fb923c"></i><span class="i18n" data-en="In progress" data-pt="Em curso" data-es="In progress" data-fr="In progress">In progress</span></span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— E — Auditability ——— -->
+  <section data-section="E">
+    <div class="container">
+      <div class="row">
+        <div class="row-copy">
+          <p class="kicker i18n" data-en="Auditability" data-pt="Auditoria" data-es="Auditabilidad" data-fr="Auditabilité">Auditability</p>
+          <h2 class="h-section i18n"
+              data-en="Every action recorded. Nothing destroyed."
+              data-pt="Tudo fica registado. Nada se perde."
+              data-es="Cada acción registrada. Nada destruido." data-fr="Chaque action enregistrée. Rien de détruit.">Every action recorded. Nothing destroyed.</h2>
+          <p class="body-text i18n"
+             data-en="Every action a user or AI Agent takes generates an immutable, tamper-proof event in the audit store — with dual attribution when an Agent participated, cryptographic sealing at terminal stages, and field-level GDPR classification at extraction."
+             data-pt="Cada ação de um utilizador ou de um agente de IA gera um evento imutável e inviolável no registo de auditoria — com dupla atribuição quando um agente participa, selagem criptográfica nos estados finais e classificação RGPD de cada campo."
+             data-es="Cada acción de un usuario o Agente de IA genera un evento inmutable en el almacén de auditoría — con doble atribución cuando participó un Agente, sellado criptográfico en etapas terminales y clasificación RGPD a nivel de campo en la extracción." data-fr="Chaque action d'un utilisateur ou d'un Agent IA génère un événement immuable dans le journal d'audit — avec double attribution lorsqu'un Agent a participé, scellement cryptographique aux étapes terminales et classification RGPD au niveau du champ lors de l'extraction.">
+            Every action a user or AI Agent takes generates an immutable, tamper-proof event in the audit store &mdash; with dual attribution when an Agent participated, cryptographic sealing at terminal stages, and field-level GDPR classification at extraction.
+          </p>
+          <p class="body-text i18n"
+             data-en="Rollback never deletes. It records a compensating transaction that undoes the original action while preserving the original record. The checksum chain holds. When a regulator asks “who decided this, and why?”, the platform answers without you having to assemble it from logs."
+             data-pt="Uma reversão nunca apaga nada. Regista uma transação compensatória que anula a ação original e preserva o registo inicial, sem quebrar a cadeia de verificação. Quando um regulador pergunta «quem decidiu isto, e porquê?», a plataforma responde sem que tenha de reconstruir a resposta a partir de logs."
+             data-es="La reversión nunca elimina. Registra una transacción compensatoria que deshace la acción original y conserva el registro original. La cadena de sumas de verificación se mantiene íntegra. Cuando un regulador pregunta «¿quién decidió esto y por qué?», la plataforma responde sin que usted tenga que reconstruirlo a partir de los logs." data-fr="L'annulation ne supprime jamais rien. Elle enregistre une transaction compensatoire qui défait l'action d'origine tout en préservant l'enregistrement d'origine. La chaîne de sommes de contrôle reste intacte. Lorsqu'un régulateur demande « qui a décidé cela, et pourquoi ? », la plateforme répond sans que vous ayez à le reconstituer à partir des journaux.">
+            Rollback never deletes. It records a compensating transaction that undoes the original action while preserving the original record. The checksum chain holds. When a regulator asks “who decided this, and why?”, the platform answers without you having to assemble it from logs.
+          </p>
+          <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore the audit model" data-pt="Conhecer o modelo de auditoria" data-es="Explorar el modelo de auditoría" data-fr="Explorer le modèle d'audit">Explore the audit model</span> <span class="arrow">→</span></a>
+        </div>
+        <a class="row-visual" href="./platform.html" aria-label="Explore the audit model">
+          <div class="visual-chrome">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="label i18n" data-en="Audit trail · Approval/REQ-2026-0142" data-pt="Registo de auditoria · Aprovação/REQ-2026-0142" data-es="Rastro de auditoría · Aprobación/REQ-2026-0142" data-fr="Piste d'audit · Approbation/REQ-2026-0142">Audit trail &middot; Approval/REQ-2026-0142</span>
+          </div>
+          <div class="audit-still">
+            <div class="audit-entry">
+              <span class="time">14:02:18</span>
+              <span class="event-name"><span class="who">maria.silva</span> <span class="what i18n" data-en="submitted" data-pt="submeteu" data-es="enviado" data-fr="soumis">submitted</span> <span class="obj">Approval/REQ-2026-0142</span></span>
+              <span class="badge i18n" data-en="USER" data-pt="UTILIZADOR" data-es="USUARIO" data-fr="UTILISATEUR">USER</span>
+            </div>
+            <div class="audit-entry ai">
+              <span class="time">14:02:34</span>
+              <span class="event-name"><span class="who i18n" data-en="Case Agent" data-pt="Agente de Processo" data-es="Agente de Expediente" data-fr="Agent de Dossier">Case Agent</span> <span class="what i18n" data-en="attached comparison" data-pt="anexou comparação" data-es="comparación adjunta" data-fr="comparaison jointe">attached comparison</span> <span class="obj i18n" data-en="3 prior approvals" data-pt="3 aprovações anteriores" data-es="3 aprobaciones previas" data-fr="3 approbations antérieures">3 prior approvals</span></span>
+              <span class="badge i18n" data-en="AI · attended" data-pt="IA · assistida" data-es="IA · asistida" data-fr="IA · assistée">AI &middot; attended</span>
+            </div>
+            <div class="audit-entry">
+              <span class="time">14:08:51</span>
+              <span class="event-name"><span class="who">oliver.b</span> <span class="what i18n" data-en="approved" data-pt="aprovou" data-es="aprobado" data-fr="approuvé">approved</span> <span class="obj i18n" data-en="stage: in review → approved" data-pt="estado: em análise → aprovado" data-es="etapa: en revisión → aprobado" data-fr="étape : en revue → approuvé">stage: in review → approved</span></span>
+              <span class="badge i18n" data-en="USER" data-pt="UTILIZADOR" data-es="USUARIO" data-fr="UTILISATEUR">USER</span>
+            </div>
+            <div class="audit-entry compensation">
+              <span class="time">14:09:12</span>
+              <span class="event-name"><span class="who">oliver.b</span> <span class="what i18n" data-en="corrected" data-pt="corrigiu" data-es="corregido" data-fr="corrigé">corrected</span> <span class="obj i18n" data-en="amount field · compensating" data-pt="campo amount · compensação" data-es="campo de importe · compensatorio" data-fr="champ de montant · compensatoire">amount field &middot; compensating</span></span>
+              <span class="badge i18n" data-en="COMPENSATE" data-pt="COMPENSAR" data-es="COMPENSAR" data-fr="COMPENSER">COMPENSATE</span>
+            </div>
+            <div class="audit-entry seal">
+              <span class="time">14:11:00</span>
+              <span class="event-name"><span class="who">eleanor.r</span> <span class="what i18n" data-en="countersigned" data-pt="cossignou" data-es="refrendado" data-fr="contresigné">countersigned</span> <span class="obj i18n" data-en="stage → sealed (ISO 15489)" data-pt="estado → selado (ISO 15489)" data-es="etapa → sellada (ISO 15489)" data-fr="étape → scellée (ISO 15489)">stage → sealed (ISO 15489)</span></span>
+              <span class="badge i18n" data-en="SEAL" data-pt="SELAR" data-es="SELLAR" data-fr="SCELLER">SEAL</span>
+            </div>
+            <div class="audit-checksum">
+              <span class="csum-label i18n" data-en="Chain checksum" data-pt="Verificação da cadeia" data-es="Suma de verificación de cadena" data-fr="Somme de contrôle de chaîne">Chain checksum</span>
+              <span class="csum-hash i18n" data-en="sha256: 9f4a…c81e · verified · depth: 5" data-pt="sha256: 9f4a…c81e · verificado · profundidade: 5" data-es="sha256: 9f4a…c81e · verificado · profundidad: 5" data-fr="sha256: 9f4a…c81e · vérifié · profondeur : 5">sha256: 9f4a&hellip;c81e &middot; verified &middot; depth: 5</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— F — Deploy in days ——— -->
+  <section data-section="F">
+    <div class="container">
+      <div class="row reverse">
+        <div class="row-copy">
+          <p class="kicker i18n" data-en="Deploy in days" data-pt="Em produção em dias" data-es="Despliegue en días" data-fr="Déploiement en jours">Deploy in days</p>
+          <h2 class="h-section i18n"
+              data-en="From client conversation to deployed solution in days."
+              data-pt="Da conversa com o cliente à solução em produção, em poucos dias."
+              data-es="De la conversación con el cliente a la solución desplegada en días." data-fr="De la conversation client à la solution déployée en jours.">From client conversation to deployed solution in days.</h2>
+          <p class="body-text i18n"
+             data-en="Because everything derives from the entity model, there is no separate form layer, no audit configuration and no PDF template to maintain, and no separate mobile app to build. The Studio Co-designer turns a Business Analyst's description into a working model in minutes. You refine it; the platform deploys it."
+             data-pt="Como tudo deriva do modelo de entidades, não há uma camada de formulários à parte, nem auditoria para configurar, nem modelos de PDF para manter, nem uma aplicação móvel para desenvolver. O Co-designer do Studio transforma a descrição de um analista de negócio num modelo funcional em minutos. O analista afina-o e a plataforma coloca-o em produção."
+             data-es="Dado que todo deriva del modelo de entidades, no hay una capa de formularios aparte, ni configuración de auditoría, ni plantillas PDF que mantener, ni una aplicación móvil que desarrollar. El Co-designer de Studio convierte la descripción de un Analista de Negocio en un modelo funcional en minutos. Usted lo refina; la plataforma lo despliega." data-fr="Parce que tout dérive du modèle d'entité, il n'y a ni couche de formulaires à part, ni configuration d'audit, ni modèle PDF à maintenir, ni application mobile à développer. Le Co-designer Studio transforme la description d'un Analyste métier en modèle fonctionnel en quelques minutes. Vous l'affinez ; la plateforme le déploie.">
+            Because everything derives from the entity model, there is no separate form layer, no audit configuration and no PDF template to maintain, and no separate mobile app to build. The Studio Co-designer turns a Business Analyst's description into a working model in minutes. You refine it; the platform deploys it.
+          </p>
+          <p class="body-text i18n"
+             data-en="An ERP or Microsoft 365 implementer can stand up a governed client solution in days — not the months a Pega or Appian engagement would take. The platform handles the plumbing; you keep the domain conversation with the client."
+             data-pt="Um implementador de ERP ou de Microsoft 365 pode pôr a funcionar uma solução governada para um cliente em dias — não nos meses que um projeto Pega ou Appian exigiria. A plataforma trata da parte técnica; a conversa de negócio com o cliente continua a ser sua."
+             data-es="Un implementador de ERP o de Microsoft 365 puede poner en marcha una solución gobernada para un cliente en días — no en los meses que requeriría un proyecto con Pega o Appian. La plataforma se ocupa de la parte técnica; usted mantiene la conversación de negocio con el cliente." data-fr="Un implémenteur ERP ou Microsoft 365 peut mettre en place une solution gouvernée pour un client en quelques jours — pas les mois qu'exigerait un projet Pega ou Appian. La plateforme s'occupe de la partie technique ; vous gardez la conversation métier avec le client.">
+            An ERP or Microsoft 365 implementer can stand up a governed client solution in days — not the months a Pega or Appian engagement would take. The platform handles the plumbing; you keep the domain conversation with the client.
+          </p>
+          <a class="link-secondary" href="./platform.html"><span class="i18n" data-en="Explore Studio" data-pt="Conhecer o Studio" data-es="Explorar Studio" data-fr="Explorer Studio">Explore Studio</span> <span class="arrow">→</span></a>
+        </div>
+        <a class="row-visual" href="./platform.html" aria-label="Explore Studio">
+          <div class="visual-chrome">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="label i18n" data-en="Studio Co-designer · build trace" data-pt="Co-designer do Studio · registo de construção" data-es="Co-designer de Studio · traza de construcción" data-fr="Co-designer Studio · trace de construction">Studio Co-designer &middot; build trace</span>
+          </div>
+          <div class="studio-still">
+            <div class="studio-prompt">
+              <span class="agent-tag">Co-designer</span>
+              <span class="prompt-text i18n"
+                    data-en="“Build me a supplier onboarding flow with KYC and dual-control over €50k.”"
+                    data-pt="“Cria um processo de qualificação de fornecedores com KYC e dupla validação acima de 50 000 €.”"
+                    data-es="«Créame un flujo de incorporación de proveedores con KYC y control dual por encima de 50.000 €.»" data-fr="« Créez-moi un flux d'intégration fournisseur avec KYC et double contrôle au-dessus de 50 000 €. »">"Build me a supplier onboarding flow with KYC and dual-control over €50k."</span>
+            </div>
+            <div class="studio-build">
+              <div class="build-line">
+                <span class="check">✓</span>
+                <span class="i18n" data-en="Entity created · Supplier Onboarding (12 fields)" data-pt="Entidade criada · Qualificação de Fornecedor (12 campos)" data-es="Entidad creada · Incorporación de Proveedor (12 campos)" data-fr="Entité créée · Intégration Fournisseur (12 champs)">Entity created &middot; Supplier Onboarding (12 fields)</span>
+                <span class="duration">0.4s</span>
+              </div>
+              <div class="build-line">
+                <span class="check">✓</span>
+                <span class="i18n" data-en="Lifecycle · 6 stages, 2 wait conditions, 5 transitions" data-pt="Ciclo de vida · 6 estados, 2 condições de espera, 5 transições" data-es="Ciclo de vida · 6 etapas, 2 condiciones de espera, 5 transiciones" data-fr="Cycle de vie · 6 étapes, 2 conditions d'attente, 5 transitions">Lifecycle · 6 stages, 2 wait conditions, 5 transitions</span>
+                <span class="duration">0.6s</span>
+              </div>
+              <div class="build-line">
+                <span class="check">✓</span>
+                <span class="i18n" data-en="Actors bound · Requester, KYC Officer, Approver" data-pt="Atores associados · Requerente, Responsável KYC, Aprovador" data-es="Actores vinculados · Solicitante, Oficial KYC, Aprobador" data-fr="Acteurs liés · Demandeur, Agent KYC, Approbateur">Actors bound &middot; Requester, KYC Officer, Approver</span>
+                <span class="duration">0.3s</span>
+              </div>
+              <div class="build-line">
+                <span class="check">✓</span>
+                <span class="i18n" data-en="Records policy · ISO 15489, terminal stage seals to PDF/A" data-pt="Política documental · ISO 15489, o estado final sela em PDF/A" data-es="Política de registros · ISO 15489, sellado en etapa terminal a PDF/A" data-fr="Politique d'enregistrements · ISO 15489, scellement en étape terminale vers PDF/A">Records policy &middot; ISO 15489, terminal stage seals to PDF/A</span>
+                <span class="duration">0.2s</span>
+              </div>
+              <div class="build-line">
+                <span class="check pending">●</span>
+                <span class="i18n" data-en="Translating to pt-PT, en-GB…" data-pt="A traduzir para pt-PT, en-GB…" data-es="Traduciendo a pt-PT, en-GB…" data-fr="Traduction vers pt-PT, en-GB…">Translating to pt-PT, en-GB…</span>
+                <span class="duration">1.1s</span>
+              </div>
+            </div>
+            <div class="deploy-meta">
+              <span class="meta-label i18n" data-en="Total build time" data-pt="Tempo total de construção" data-es="Tiempo total de construcción" data-fr="Temps de construction total">Total build time</span>
+              <span class="meta-value i18n" data-en="2.6 seconds · ready to refine" data-pt="2,6 segundos · pronto para refinar" data-es="2,6 segundos · listo para refinar" data-fr="2,6 secondes · prêt à affiner">2.6 seconds &middot; ready to refine</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— G — AI Agents band ——— -->
+  <section class="band agents-band" data-section="G">
+    <div class="container">
+      <p class="kicker i18n" style="text-align: center;" data-en="AI Agents" data-pt="Agentes de IA" data-es="Agentes de IA" data-fr="Agents IA">AI Agents</p>
+      <h2 class="h-section i18n"
+          data-en="AI participates. The platform records."
+          data-pt="A IA participa. A plataforma regista."
+          data-es="La IA participa. La plataforma registra." data-fr="L'IA participe. La plateforme enregistre.">AI participates. The platform records.</h2>
+      <p class="lead-italic">
+        <span class="i18n"
+              data-en="AI Agents take part in your work — they are not a bolt-on assistant pane. They design entities with the implementer, assist case workers, guide external users, monitor SLAs and recommend decisions. Every action they take is captured in the audit trail, with its inputs and reasoning."
+              data-pt="Os agentes de IA participam no trabalho — não são um painel de assistente acrescentado à parte. Desenham entidades com o implementador, apoiam os técnicos que tratam os processos, orientam utilizadores externos, acompanham SLAs e recomendam decisões. Cada ação que executam fica no registo de auditoria, com os dados que usaram e o raciocínio que seguiram."
+              data-es="Los Agentes de IA participan en su trabajo — no son un panel asistente añadido. Diseñan entidades con el implementador, asisten a los gestores de casos, guían a usuarios externos, monitorizan SLAs y recomiendan decisiones. Cada acción que realizan queda capturada en el rastro de auditoría, con sus datos de entrada y su razonamiento." data-fr="Les Agents IA participent à votre travail — ce n'est pas un panneau assistant ajouté après coup. Ils conçoivent des entités avec l'implémenteur, assistent les gestionnaires de cas, guident les utilisateurs externes, surveillent les SLA et recommandent des décisions. Chaque action qu'ils effectuent est consignée dans la piste d'audit, avec ses données d'entrée et son raisonnement.">AI Agents take part in your work — they are not a bolt-on assistant pane. They design entities with the implementer, assist case workers, guide external users, monitor SLAs and recommend decisions. Every action they take is captured in the audit trail, with its inputs and reasoning.</span>
+      </p>
+
+      <div class="agents-grid">
+        <a class="agent-card" href="./platform.html" aria-label="Attended AI Agents — explore the platform">
+          <span class="agent-mode"><span class="dot"></span><span class="i18n" data-en="Attended" data-pt="Assistido" data-es="Asistido" data-fr="Assisté">Attended</span></span>
+          <h4 class="i18n" data-en="Acts inside your session." data-pt="Atua na sua sessão." data-es="Actúa dentro de su sesión." data-fr="Agit dans votre session.">Acts inside your session.</h4>
+          <p class="i18n"
+             data-en="The Studio Co-designer building entities with the implementer. The Case Agent helping a worker compare prior cases. You see and approve every step."
+             data-pt="O Co-designer do Studio a desenhar entidades com o implementador; o Agente de Processo a ajudar um técnico a comparar processos anteriores. Cada passo é visto e aprovado por si."
+             data-es="El Co-designer de Studio construyendo entidades con el implementador. El Agente de Expediente ayudando a un trabajador a comparar casos anteriores. Usted ve y aprueba cada paso." data-fr="Le Co-designer Studio construisant des entités avec l'implémenteur. L'Agent de Dossier aidant un travailleur à comparer des cas antérieurs. Vous voyez et approuvez chaque étape.">The Studio Co-designer building entities with the implementer. The Case Agent helping a worker compare prior cases. You see and approve every step.</p>
+        </a>
+        <a class="agent-card delegated" href="./platform.html" aria-label="Delegated AI Agents — explore the platform">
+          <span class="agent-mode"><span class="dot"></span><span class="i18n" data-en="Delegated" data-pt="Delegado" data-es="Delegado" data-fr="Délégué">Delegated</span></span>
+          <h4 class="i18n" data-en="Acts on your authorisation." data-pt="Atua com a sua autorização." data-es="Actúa bajo su autorización." data-fr="Agit sur votre autorisation.">Acts on your authorisation.</h4>
+          <p class="i18n"
+             data-en="“Triage this batch by policy.” “Draft the response and queue it for review.” You authorise the scope, the Agent acts within it, the platform records every action."
+             data-pt="«Faz a triagem deste lote segundo as regras.» «Redige a resposta e deixa-a pendente de revisão.» O utilizador define o âmbito, o agente atua dentro dele e a plataforma regista cada ação."
+             data-es="«Triaje este lote según la política.» «Redacte la respuesta y encólela para revisión.» Usted autoriza el alcance, el Agente actúa dentro de él, la plataforma registra cada acción." data-fr="« Triez ce lot selon la politique. » « Rédigez la réponse et mettez-la en file d'attente pour révision. » Vous autorisez le périmètre, l'Agent agit dans ce cadre, la plateforme enregistre chaque action.">"Triage this batch by policy." "Draft the response and queue it for review." You authorise the scope, the Agent acts within it, the platform records every action.</p>
+        </a>
+        <a class="agent-card autonomous" href="./platform.html" aria-label="Autonomous AI Agents — explore the platform">
+          <span class="agent-mode"><span class="dot"></span><span class="i18n" data-en="Autonomous" data-pt="Autónomo" data-es="Autónomo" data-fr="Autonome">Autonomous</span></span>
+          <h4 class="i18n" data-en="Acts on schedule or trigger." data-pt="Atua por agendamento ou por evento." data-es="Actúa según programación o disparador." data-fr="Agit selon un calendrier ou un déclencheur.">Acts on schedule or trigger.</h4>
+          <p class="i18n"
+             data-en="An SLA monitor that escalates when a case stalls. A reconciliation agent that fires nightly. Opt-in per Actor and per transition — both flags must be set before an Agent acts unattended."
+             data-pt="Um monitor de SLA que escala o processo quando este fica parado. Um agente de reconciliação que corre todas as noites. A autonomia é ativada por ator e por transição — as duas opções têm de estar ligadas para um agente atuar sem supervisão."
+             data-es="Un monitor de SLA que escala cuando un caso se detiene. Un agente de conciliación que se ejecuta cada noche. Activación por Actor y por transición — ambos indicadores deben estar activos antes de que un Agente actúe de forma autónoma." data-fr="Un moniteur SLA qui escalade quand un cas est bloqué. Un agent de rapprochement qui se déclenche chaque nuit. Activation par Acteur et par transition — les deux indicateurs doivent être activés avant qu'un Agent agisse de façon autonome.">An SLA monitor that escalates when a case stalls. A reconciliation agent that fires nightly. Opt-in per Actor and per transition &mdash; both flags must be set before an Agent acts unattended.</p>
+        </a>
+      </div>
+
+      <p class="governed-note">
+        <span class="i18n"
+              data-en="Every Agent action is captured as a governed event."
+              data-pt="Cada ação de um agente fica registada como evento auditável."
+              data-es="Cada acción de un Agente queda capturada como un evento gobernado." data-fr="Chaque action d'un Agent est capturée comme un événement gouverné.">Every Agent action is captured as a governed event.</span> <strong class="i18n"
+              data-en="Same rigour, same audit trail, same compensating-transaction safety as a human action."
+              data-pt="Com o mesmo rigor, o mesmo registo de auditoria e a mesma garantia de reversão de uma ação humana."
+              data-es="El mismo rigor, el mismo rastro de auditoría, la misma seguridad de transacción compensatoria que una acción humana." data-fr="La même rigueur, la même piste d'audit, la même sécurité de transaction compensatoire qu'une action humaine.">Same rigour, same audit trail, same compensating-transaction safety as a human action.</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ——— H — Use Cases ——— -->
+  <section data-section="H" id="section-usecases">
+    <div class="container">
+      <div class="usecases-head">
+        <p class="kicker i18n" data-en="Use cases" data-pt="Casos de utilização" data-es="Casos de uso" data-fr="Cas d'usage">Use cases</p>
+        <h2 class="h-section i18n"
+            data-en="Anything transactional with a lifecycle."
+            data-pt="Qualquer processo com princípio, meio e fim."
+            data-es="Cualquier proceso transaccional con un ciclo de vida." data-fr="Tout ce qui est transactionnel avec un cycle de vie.">Anything transactional with a lifecycle.</h2>
+        <p class="lead-italic i18n"
+           data-en="People, things, money, documents — if it has a beginning, a middle, and an end, and someone might one day ask you to prove what happened, it belongs on CernoFlow. A few examples of what organisations and their partners can build."
+           data-pt="Pessoas, bens, dinheiro, documentos — se tem princípio, meio e fim, e alguém lhe pode um dia pedir que prove o que aconteceu, tem lugar no CernoFlow. Alguns exemplos do que as organizações e os seus parceiros podem construir."
+           data-es="Personas, cosas, dinero, documentos — si tiene un principio, un desarrollo y un final, y alguien podría algún día pedirle que demuestre lo ocurrido, pertenece a CernoFlow. Algunos ejemplos de lo que las organizaciones y sus socios pueden construir." data-fr="Personnes, choses, argent, documents — si cela a un début, un milieu et une fin, et que quelqu'un pourrait un jour vous demander de prouver ce qui s'est passé, cela appartient à CernoFlow. Quelques exemples de ce que les organisations et leurs partenaires peuvent construire.">
+          People, things, money, documents &mdash; if it has a beginning, a middle, and an end, and someone might one day ask you to prove what happened, it belongs on CernoFlow. A few examples of what organisations and their partners can build.
+        </p>
+      </div>
+
+      <div class="usecase-grid">
+        <a class="usecase active featured" href="./cases/mobility.html">
+          <p class="uc-category i18n" data-en="People · HR" data-pt="Pessoas · RH" data-es="Personas · RRHH" data-fr="Personnes · RH">People &middot; HR</p>
+          <span class="uc-tag"><span class="dot"></span><span class="i18n" data-en="Walkthrough" data-pt="Demonstração" data-es="Demostración" data-fr="Démonstration">Walkthrough</span></span>
+          <h4 class="i18n" data-en="Cross-border employee relocation" data-pt="Mobilidade internacional de colaboradores" data-es="Reubicación transfronteriza de empleados" data-fr="Relocalisation transfrontalière d'employés">Cross-border employee relocation</h4>
+          <p class="i18n"
+             data-en="Multi-stage approval, eIDAS qualified signatures, multilingual records, automatic payroll instructions to a French outsourcer."
+             data-pt="Aprovação em várias etapas, assinaturas qualificadas eIDAS, registos multilingues, instruções automáticas de processamento salarial para um prestador externo francês."
+             data-es="Aprobación en múltiples etapas, firmas cualificadas eIDAS, registros multilingües, instrucciones de nómina automáticas a un subcontratista francés." data-fr="Approbation en plusieurs étapes, signatures qualifiées eIDAS, enregistrements multilingues, instructions de paie automatiques à un prestataire français.">Multi-stage approval, eIDAS qualified signatures, multilingual records, automatic payroll instructions to a French outsourcer.</p>
+          <span class="uc-link"><span class="i18n" data-en="Watch the five-minute walkthrough" data-pt="Veja a demonstração de cinco minutos" data-es="Ver la demostración de cinco minutos" data-fr="Voir la démonstration de cinq minutes">Watch the five-minute walkthrough</span> <span class="arrow">→</span></span>
+        </a>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Local government · Licensing" data-pt="Autarquias · Licenciamento" data-es="Administración local · Licencias" data-fr="Collectivités · Autorisations">Local government · Licensing</p>
+          <h4 class="i18n" data-en="Permits, licences &amp; applications" data-pt="Licenciamentos, autorizações e candidaturas" data-es="Permisos, licencias y solicitudes" data-fr="Permis, licences et demandes">Permits, licences &amp; applications</h4>
+          <p class="i18n" data-en="Intake, assessment, exception handling, approval above set limits and signed decisions — defensible to the regulator." data-pt="Receção, avaliação, tratamento de exceções, aprovação acima de limites definidos e decisões assinadas — defensáveis perante o regulador." data-es="Recepción, evaluación, gestión de excepciones, aprobación por encima de límites definidos y decisiones firmadas — defendibles ante el regulador." data-fr="Réception, évaluation, gestion des exceptions, approbation au-delà de seuils définis et décisions signées — défendables devant le régulateur.">Intake, assessment, exception handling, approval above set limits and signed decisions — defensible to the regulator.</p>
+        </div>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Local government · Citizen service" data-pt="Autarquias · Atendimento" data-es="Administración local · Atención ciudadana" data-fr="Collectivités · Service aux citoyens">Local government · Citizen service</p>
+          <h4 class="i18n" data-en="Citizen requests &amp; complaints" data-pt="Pedidos e reclamações de munícipes" data-es="Solicitudes y reclamaciones ciudadanas" data-fr="Demandes et réclamations des citoyens">Citizen requests &amp; complaints</h4>
+          <p class="i18n" data-en="Request intake, triage, hand-offs between departments, SLAs and recorded decisions, with the citizen kept informed through the portal." data-pt="Receção de pedidos, triagem, encaminhamento entre serviços, SLAs e registo das decisões, com o munícipe informado através do portal." data-es="Recepción de solicitudes, triaje, traspasos entre departamentos, SLA y decisiones registradas, con el ciudadano informado a través del portal." data-fr="Réception des demandes, triage, transferts entre services, SLA et décisions enregistrées, avec le citoyen tenu informé via le portail.">Request intake, triage, hand-offs between departments, SLAs and recorded decisions, with the citizen kept informed through the portal.</p>
+        </div>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Compliance firms · Onboarding" data-pt="Conformidade · Integração de clientes" data-es="Cumplimiento · Incorporación de clientes" data-fr="Conformité · Intégration de clients">Compliance firms · Onboarding</p>
+          <h4 class="i18n" data-en="Client onboarding &amp; KYC" data-pt="Integração de clientes e KYC" data-es="Incorporación de clientes y KYC" data-fr="Intégration de clients et KYC">Client onboarding &amp; KYC</h4>
+          <p class="i18n" data-en="Application intake, document collection, sanctions screening and dual-control approval, all on the audit trail." data-pt="Receção de candidaturas, recolha de documentos, verificação de sanções e aprovação com dupla validação, tudo no registo de auditoria." data-es="Recepción de solicitudes, recogida de documentos, verificación de sanciones y aprobación de control dual, todo en el rastro de auditoría." data-fr="Réception des demandes, collecte de documents, vérification des sanctions et approbation à double contrôle, le tout dans la piste d'audit.">Application intake, document collection, sanctions screening and dual-control approval, all on the audit trail.</p>
+        </div>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Finance · Procurement" data-pt="Finanças · Compras" data-es="Finanzas · Compras" data-fr="Finance · Achats">Finance · Procurement</p>
+          <h4 class="i18n" data-en="Procurement exception approvals" data-pt="Aprovação de exceções nas compras" data-es="Aprobaciones de excepciones de compras" data-fr="Approbations d'exceptions d'achats">Procurement exception approvals</h4>
+          <p class="i18n" data-en="Out-of-policy spend, approval above set limits with dual control, and an exception log the auditor can read." data-pt="Despesa fora da política, aprovação acima de limites definidos com dupla validação e um registo de exceções que o auditor consegue ler." data-es="Gasto fuera de política, aprobación por encima de límites definidos con control dual y un registro de excepciones que el auditor puede leer." data-fr="Dépenses hors politique, approbation au-delà de seuils définis avec double contrôle et un journal d'exceptions lisible par l'auditeur.">Out-of-policy spend, approval above set limits with dual control, and an exception log the auditor can read.</p>
+        </div>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="People · HR and IT" data-pt="Pessoas · RH e TI" data-es="Personas · RRHH y TI" data-fr="Personnes · RH et IT">People · HR and IT</p>
+          <h4 class="i18n" data-en="Employee onboarding &amp; offboarding" data-pt="Integração e saída de colaboradores" data-es="Incorporación y salida de empleados" data-fr="Intégration et départ des employés">Employee onboarding &amp; offboarding</h4>
+          <p class="i18n" data-en="Document collection, equipment provisioning, access requests, exit checklist — auditable end to end across HR, IT and Finance." data-pt="Recolha de documentos, atribuição de equipamentos, pedidos de acesso, lista de verificação de saída — auditável de ponta a ponta entre RH, TI e Financeiro." data-es="Recogida de documentos, aprovisionamiento de equipos, solicitudes de acceso, lista de salida — auditable de extremo a extremo entre RRHH, TI y Finanzas." data-fr="Collecte de documents, fourniture d'équipements, demandes d'accès, liste de départ — auditable de bout en bout entre RH, IT et Finance.">Document collection, equipment provisioning, access requests, exit checklist — auditable end to end across HR, IT and Finance.</p>
+        </div>
+
+        <div class="usecase example">
+          <p class="uc-category i18n" data-en="Operations · Assets" data-pt="Operações · Ativos" data-es="Operaciones · Activos" data-fr="Opérations · Actifs">Operations · Assets</p>
+          <h4 class="i18n" data-en="Asset &amp; property maintenance" data-pt="Manutenção de ativos e imóveis" data-es="Mantenimiento de activos e inmuebles" data-fr="Maintenance des actifs et des biens immobiliers">Asset &amp; property maintenance</h4>
+          <p class="i18n" data-en="Inspections, service intervals, condition reports and repairs, with a full history for every asset." data-pt="Inspeções, intervalos de manutenção, relatórios de estado e reparações, com o histórico completo de cada ativo." data-es="Inspecciones, intervalos de servicio, informes de estado y reparaciones, con el historial completo de cada activo." data-fr="Inspections, intervalles de service, rapports d'état et réparations, avec l'historique complet de chaque actif.">Inspections, service intervals, condition reports and repairs, with a full history for every asset.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— I — Who this is for ——— -->
+  <section class="band" data-section="I" id="section-customers">
+    <div class="container">
+      <div class="audience-row">
+        <div class="audience-copy">
+          <p class="kicker i18n" data-en="Who it's for" data-pt="Para quem é" data-es="Para quién es" data-fr="Pour qui">Who it's for</p>
+          <h2 class="h-section i18n" data-en="For organisations that have to prove their work — and the partners who serve them." data-pt="Para quem tem de comprovar o seu trabalho — e para os parceiros que o servem." data-es="Para organizaciones que deben demostrar su trabajo — y los socios que las atienden." data-fr="Pour les organisations qui doivent prouver leur travail — et les partenaires qui les accompagnent.">For organisations that have to prove their work — and the partners who serve them.</h2>
+          <p class="lead-italic i18n" data-en="CernoFlow runs the processes that someone, one day, will ask you to justify. Whether you run it yourselves or through a partner, the governance is the same." data-pt="O CernoFlow conduz os processos que alguém, um dia, lhe vai pedir que justifique. Quer o utilize diretamente, quer através de um parceiro, a governação é a mesma." data-es="CernoFlow ejecuta los procesos que alguien, algún día, le pedirá que justifique. Tanto si lo utiliza directamente como a través de un socio, la gobernanza es la misma." data-fr="CernoFlow fait tourner les processus que quelqu'un, un jour, vous demandera de justifier. Que vous l'utilisiez vous-même ou par l'intermédiaire d'un partenaire, la gouvernance reste la même.">CernoFlow runs the processes that someone, one day, will ask you to justify. Whether you run it yourselves or through a partner, the governance is the same.</p>
+
+          <div class="audience-blocks">
+            <p class="ab-group i18n" data-en="Organisations" data-pt="Organizações" data-es="Organizaciones" data-fr="Organisations">Organisations</p>
+            <div class="ab">
+              <h3 class="h-eyebrow i18n" data-en="Local government." data-pt="Autarquias." data-es="Administración local." data-fr="Collectivités locales.">Local government.</h3>
+              <p class="i18n" data-en="Licensing, works, citizen requests, complaints: hundreds of processes run against strict rules and records requirements. CernoFlow lets your own analysts model them without code, with the audit trail and records declaration built in, designed for MoReq and DGLAB requirements. Built on twenty years of municipal process automation." data-pt="Licenciamentos, obras, pedidos de munícipes, reclamações: centenas de processos tratados com regras rigorosas e exigências de gestão documental. Com o CernoFlow, os próprios técnicos modelam esses processos sem código, com o registo de auditoria e a declaração de documentos de arquivo incluídos de raiz, pensados para os requisitos do MoReq e da DGLAB. Construído a partir de vinte anos de automatização de processos municipais." data-es="Licencias, obras, solicitudes ciudadanas, reclamaciones: cientos de procesos sujetos a normas estrictas y a requisitos de gestión documental. CernoFlow permite a sus propios técnicos modelarlos sin código, con el rastro de auditoría y la declaración de documentos de archivo integrados, pensados para los requisitos de MoReq y DGLAB. Construido sobre veinte años de automatización de procesos municipales." data-fr="Autorisations, travaux, demandes des citoyens, réclamations : des centaines de processus soumis à des règles strictes et à des exigences d'archivage. CernoFlow permet à vos propres analystes de les modéliser sans code, avec la piste d'audit et la déclaration d'archives intégrées, conçues pour les exigences de MoReq et de la DGLAB. Fondé sur vingt ans d'automatisation de processus municipaux.">Licensing, works, citizen requests, complaints: hundreds of processes run against strict rules and records requirements. CernoFlow lets your own analysts model them without code, with the audit trail and records declaration built in, designed for MoReq and DGLAB requirements. Built on twenty years of municipal process automation.</p>
+              <a class="link-secondary" href="mailto:sales@cernoflow.com?subject=Municipal%20Enquiry"><span class="i18n" data-en="Talk to us" data-pt="Fale connosco" data-es="Hable con nosotros" data-fr="Contactez-nous">Talk to us</span> <span class="arrow">→</span></a>
+            </div>
+            <div class="ab">
+              <h3 class="h-eyebrow i18n" data-en="Professional services and compliance firms." data-pt="Empresas de serviços profissionais e de conformidade." data-es="Empresas de servicios profesionales y de cumplimiento." data-fr="Cabinets de services professionnels et de conformité.">Professional services and compliance firms.</h3>
+              <p class="i18n" data-en="Accounting firms, payroll bureaux, compliance consultancies: you run onboarding, compliance or case work at volume, across many clients or inside a regulated function. Today it's a mix of Excel, email and manual re-keying into a system that was never designed for intake. With CernoFlow, clients submit through a portal, each submission moves through a configurable lifecycle, and every action is in the audit trail. No custom development each time the regulations change." data-pt="Gabinetes de contabilidade, empresas de processamento salarial, consultoras de conformidade: tratam processos de integração de clientes, conformidade ou gestão de casos em grande volume, para muitos clientes ou numa função interna regulada. Hoje, isso é uma mistura de Excel, email e introdução manual de dados num sistema que nunca foi pensado para receber pedidos. Com o CernoFlow, os clientes submetem os pedidos num portal, cada pedido avança num ciclo de vida configurável e cada ação fica no registo de auditoria. Sem desenvolvimento à medida a cada alteração regulamentar." data-es="Asesorías contables, gestorías de nóminas, consultoras de cumplimiento: gestionan procesos de incorporación, cumplimiento o casos a gran volumen, para muchos clientes o dentro de una función regulada. Hoy es una mezcla de Excel, correo electrónico y reintroducción manual de datos en un sistema que nunca se diseñó para recibir solicitudes. Con CernoFlow, los clientes envían sus solicitudes a través de un portal, cada solicitud avanza por un ciclo de vida configurable y cada acción queda en el rastro de auditoría. Sin desarrollo a medida cada vez que cambia la normativa." data-fr="Cabinets comptables, prestataires de paie, cabinets de conseil en conformité : vous traitez l'intégration de clients, la conformité ou la gestion de cas à grand volume, pour de nombreux clients ou au sein d'une fonction réglementée. Aujourd'hui, c'est un mélange d'Excel, d'e-mails et de ressaisie manuelle dans un système qui n'a jamais été conçu pour recevoir des demandes. Avec CernoFlow, les clients soumettent via un portail, chaque demande progresse dans un cycle de vie configurable et chaque action figure dans la piste d'audit. Pas de développement sur mesure à chaque évolution réglementaire.">Accounting firms, payroll bureaux, compliance consultancies: you run onboarding, compliance or case work at volume, across many clients or inside a regulated function. Today it's a mix of Excel, email and manual re-keying into a system that was never designed for intake. With CernoFlow, clients submit through a portal, each submission moves through a configurable lifecycle, and every action is in the audit trail. No custom development each time the regulations change.</p>
+              <a class="link-secondary" href="mailto:sales@cernoflow.com?subject=Governed%20Work%20Enquiry"><span class="i18n" data-en="Talk to us" data-pt="Fale connosco" data-es="Hable con nosotros" data-fr="Contactez-nous">Talk to us</span> <span class="arrow">→</span></a>
+            </div>
+            <p class="ab-group i18n" data-en="Partners" data-pt="Parceiros" data-es="Socios" data-fr="Partenaires">Partners</p>
+            <div class="ab">
+              <h3 class="h-eyebrow i18n" data-en="ERP and accounting implementers." data-pt="Implementadores de ERP e contabilidade." data-es="Implementadores de ERP y contabilidad." data-fr="Implémenteurs ERP et comptabilité.">ERP and accounting implementers.</h3>
+              <p class="i18n" data-en="You deliver client solutions where the operational process matters as much as the posting — whether your client runs Sage, Pastel Evolution or another ledger. CernoFlow runs the process from request to resolution; the ledger stays the system of record for the accounting. We don't replace your implementation skills — we give you a platform where that work is configurable, auditable and live in days." data-pt="Entrega soluções em que o processo operacional importa tanto como o lançamento contabilístico — quer o cliente utilize Sage, Pastel Evolution ou outro ERP. O CernoFlow conduz o processo do pedido à resolução; o ERP continua a ser o sistema de referência da contabilidade. Não substituímos a sua competência de implementação — damos-lhe uma plataforma em que esse trabalho é configurável, auditável e fica em produção em dias." data-es="Usted entrega soluciones a clientes donde el proceso operativo importa tanto como el asiento — ya utilice su cliente Sage, Pastel Evolution u otro sistema contable. CernoFlow ejecuta el proceso de la solicitud a la resolución; el sistema contable sigue siendo el sistema de referencia de la contabilidad. No reemplazamos sus habilidades de implementación — le damos una plataforma donde ese trabajo es configurable, auditable y está en producción en días." data-fr="Vous livrez des solutions client où le processus opérationnel compte autant que l'écriture — que votre client utilise Sage, Pastel Evolution ou un autre logiciel comptable. CernoFlow fait tourner le processus de la demande à la résolution ; le logiciel comptable reste le système de référence pour la comptabilité. Nous ne remplaçons pas vos compétences d'implémentation — nous vous donnons une plateforme où ce travail est configurable, auditable et en production en quelques jours.">You deliver client solutions where the operational process matters as much as the posting — whether your client runs Sage, Pastel Evolution or another ledger. CernoFlow runs the process from request to resolution; the ledger stays the system of record for the accounting. We don't replace your implementation skills — we give you a platform where that work is configurable, auditable and live in days.</p>
+              <a class="link-secondary" href="mailto:sales@cernoflow.com?subject=Partnership%20Enquiry%20%E2%80%94%20ERP"><span class="i18n" data-en="Talk to us about partnership" data-pt="Fale connosco sobre parceria" data-es="Hable con nosotros sobre asociación" data-fr="Parlez-nous de partenariat">Talk to us about partnership</span> <span class="arrow">→</span></a>
+            </div>
+            <div class="ab">
+              <h3 class="h-eyebrow i18n" data-en="M365 and IT service providers." data-pt="Prestadores de serviços M365 e de TI." data-es="Proveedores de servicios de M365 y TI." data-fr="Prestataires de services M365 et IT.">M365 and IT service providers.</h3>
+              <p class="i18n" data-en="You serve SME clients who can't justify enterprise platforms but still answer to regulators and auditors. CernoFlow lets you deliver governed processes — onboarding, case management, asset maintenance, contracts — without enterprise pricing or enterprise timelines." data-pt="Serve clientes PME que não justificam plataformas empresariais, mas que continuam a responder perante reguladores e auditores. O CernoFlow permite-lhe entregar processos com regras — integração de colaboradores, gestão de casos, manutenção de ativos, contratos — sem os preços nem os prazos das grandes plataformas." data-es="Usted atiende a clientes pymes que no pueden justificar plataformas empresariales pero que aún responden ante reguladores y auditores. CernoFlow le permite entregar procesos gobernados — incorporación, gestión de casos, mantenimiento de activos, contratos — sin precios ni plazos empresariales." data-fr="Vous servez des clients PME qui ne peuvent pas justifier des plateformes d'entreprise mais qui répondent encore aux régulateurs et aux auditeurs. CernoFlow vous permet de livrer des processus gouvernés — intégration, gestion des cas, maintenance des actifs, contrats — sans prix ni délais d'entreprise.">You serve SME clients who can't justify enterprise platforms but still answer to regulators and auditors. CernoFlow lets you deliver governed processes — onboarding, case management, asset maintenance, contracts — without enterprise pricing or enterprise timelines.</p>
+              <a class="link-secondary" href="mailto:sales@cernoflow.com?subject=Partnership%20Enquiry%20%E2%80%94%20M365"><span class="i18n" data-en="Talk to us about partnership" data-pt="Fale connosco sobre parceria" data-es="Hable con nosotros sobre asociación" data-fr="Parlez-nous de partenariat">Talk to us about partnership</span> <span class="arrow">→</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="editorial-graphic" aria-hidden="true">
+          <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#5B8AEC" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#5B8AEC" stop-opacity="0.15"/>
+              </linearGradient>
+              <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3FB9CC" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#3FB9CC" stop-opacity="0.15"/>
+              </linearGradient>
+            </defs>
+            <circle cx="220" cy="220" r="200" fill="none" stroke="rgba(184,196,220,0.10)" stroke-width="1"/>
+            <circle cx="220" cy="220" r="160" fill="none" stroke="rgba(184,196,220,0.08)" stroke-width="1" stroke-dasharray="2 4"/>
+            <path d="M 220 60 A 140 140 0 0 1 360 200" fill="none" stroke="url(#blueGrad)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M 220 380 A 140 140 0 0 1 80 240" fill="none" stroke="url(#tealGrad)" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="220" cy="60"  r="6" fill="#6D9BFF"/>
+            <circle cx="360" cy="200" r="6" fill="#6D9BFF"/>
+            <circle cx="220" cy="380" r="6" fill="#5DD3E8"/>
+            <circle cx="80"  cy="240" r="6" fill="#5DD3E8"/>
+            <circle cx="220" cy="220" r="18" fill="rgba(74,222,128,0.15)" stroke="rgba(74,222,128,0.55)" stroke-width="1.5"/>
+            <circle cx="220" cy="220" r="4" fill="#4ADE80"/>
+            <line x1="220" y1="60"  x2="220" y2="202" stroke="rgba(109,155,255,0.30)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="360" y1="200" x2="238" y2="220" stroke="rgba(109,155,255,0.30)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="220" y1="380" x2="220" y2="238" stroke="rgba(93,211,232,0.30)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="80"  y1="240" x2="202" y2="220" stroke="rgba(93,211,232,0.30)" stroke-width="1" stroke-dasharray="3 3"/>
+            <text class="i18n" data-en="PARTNER" data-pt="PARCEIRO" data-es="SOCIO" data-fr="PARTENAIRE" x="220" y="42"  text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2">PARTNER</text>
+            <text class="i18n" data-en="DOMAIN"      data-pt="DOMÍNIO" data-es="DOMINIO" data-fr="DOMAINE"       x="360" y="190" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2">DOMAIN</text>
+            <text class="i18n" data-en="CLIENT"      data-pt="CLIENTE" data-es="CLIENTE" data-fr="CLIENT"       x="220" y="406" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2">CLIENT</text>
+            <text class="i18n" data-en="PLATFORM"    data-pt="PLATAFORMA" data-es="PLATAFORMA" data-fr="PLATEFORME"    x="80"  y="266" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2">PLATFORM</text>
+            <text class="i18n" data-en="GOVERNED"    data-pt="GOVERNADO" data-es="GOBERNADO" data-fr="GOUVERNÉ"     x="220" y="262" text-anchor="middle" fill="#4ADE80" font-family="JetBrains Mono, monospace" font-size="8.5" letter-spacing="1.5" font-weight="600">GOVERNED</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— J — Differentiation ——— -->
+  <section data-section="J" id="section-why">
+    <div class="container">
+      <div class="diff-head">
+        <p class="kicker i18n" data-en="Why CernoFlow" data-pt="Porquê o CernoFlow" data-es="Por qué CernoFlow" data-fr="Pourquoi CernoFlow">Why CernoFlow</p>
+        <h2 class="h-section i18n"
+            data-en="Enterprise-grade governance, sized for SMEs."
+            data-pt="Governação de nível empresarial, à medida das PME."
+            data-es="Gobernanza de nivel empresarial, a la medida de las pymes." data-fr="Gouvernance de niveau entreprise, à la mesure des PME.">Enterprise-grade governance, sized for SMEs.</h2>
+        <p class="lead-italic i18n"
+           data-en="The case management platforms with the governance your client needs are priced for large enterprises, not for the regional manufacturer with 80 employees or the service provider with twenty. The no-code app builders that fit the budget can't defend a process to an auditor. CernoFlow is what fits."
+           data-pt="As plataformas de gestão de casos com o nível de governação de que o seu cliente precisa têm preços pensados para grandes empresas, não para o fabricante regional com 80 colaboradores ou o prestador de serviços com vinte. Os construtores no-code que cabem no orçamento não conseguem defender um processo perante um auditor. O CernoFlow é a resposta certa."
+           data-es="Las plataformas de gestión de casos con la gobernanza que su cliente necesita tienen precios pensados para grandes empresas, no para el fabricante regional con 80 empleados o el proveedor de servicios con veinte. Los constructores de aplicaciones sin código que se ajustan al presupuesto no pueden defender un proceso ante un auditor. CernoFlow es lo que encaja." data-fr="Les plateformes de gestion de cas dotées de la gouvernance dont votre client a besoin sont tarifées pour les grands groupes, pas pour le fabricant régional de 80 employés ou le prestataire de services de vingt personnes. Les constructeurs d'applications sans code qui correspondent au budget ne peuvent pas défendre un processus devant un auditeur. CernoFlow est ce qui convient.">
+          The case management platforms with the governance your client needs are priced for large enterprises, not for the regional manufacturer with 80 employees or the service provider with twenty. The no-code app builders that fit the budget can't defend a process to an auditor. CernoFlow is what fits.
+        </p>
+      </div>
+
+      <div class="price-table">
+        <div class="pt-header">&nbsp;</div>
+        <div class="pt-header i18n" data-en="Enterprise case platforms" data-pt="Plataformas empresariais de gestão de casos" data-es="Plataformas de casos empresariales" data-fr="Plateformes de cas d'entreprise">Enterprise case platforms</div>
+        <div class="pt-header i18n" data-en="No-code app builders" data-pt="Ferramentas no-code" data-es="Constructores de aplicaciones sin código" data-fr="Constructeurs d'applications sans code">No-code app builders</div>
+        <div class="pt-header us">CernoFlow</div>
+
+        <div class="pt-cell pt-row-label i18n" data-en="Typical comparator" data-pt="Comparador típico" data-es="Comparador típico" data-fr="Comparateur typique">Typical comparator</div>
+        <div class="pt-cell" data-col="Enterprise case platforms">ServiceNow, Pega, Appian</div>
+        <div class="pt-cell" data-col="No-code app builders">Power Apps, Mendix, OutSystems</div>
+        <div class="pt-cell us" data-col="CernoFlow"><strong class="i18n" data-en="Built for SMEs, local government and their partners" data-pt="Pensado para PME, autarquias e os seus parceiros" data-es="Pensado para pymes, administración local y sus socios" data-fr="Conçu pour les PME, les collectivités locales et leurs partenaires">Built for SMEs, local government and their partners</strong></div>
+
+        <div class="pt-cell pt-row-label i18n" data-en="Implementation" data-pt="Implementação" data-es="Implementación" data-fr="Implémentation">Implementation</div>
+        <div class="pt-cell i18n" data-en="6–18 months, large consulting team" data-pt="6–18 meses, com uma grande equipa de consultoria" data-es="6–18 meses, gran equipo consultor" data-fr="6–18 mois, grande équipe de conseil" data-col="Enterprise case platforms">6–18 months, large consulting team</div>
+        <div class="pt-cell i18n" data-en="Weeks, but governance built ad-hoc" data-pt="Semanas, mas com governação improvisada" data-es="Semanas, pero gobernanza construida ad-hoc" data-fr="Semaines, mais gouvernance construite ad-hoc" data-col="No-code app builders">Weeks, but governance built ad-hoc</div>
+        <div class="pt-cell us" data-col="CernoFlow"><strong class="i18n" data-en="Days, governance built in" data-pt="Dias, governação incluída de raiz" data-es="Días, gobernanza integrada" data-fr="Jours, governance intégrée">Days, governance built in</strong></div>
+
+        <div class="pt-cell pt-row-label i18n" data-en="Defends to a regulator" data-pt="Defensável perante um regulador" data-es="Se defiende ante un regulador" data-fr="Défendable devant un régulateur">Defends to a regulator</div>
+        <div class="pt-cell i18n" data-en="Yes, at enterprise scale" data-pt="Sim, à escala de grandes empresas" data-es="Sí, a escala empresarial" data-fr="Oui, à l'échelle entreprise" data-col="Enterprise case platforms">Yes, at enterprise scale</div>
+        <div class="pt-cell i18n" data-en="Only if your team builds the audit layer" data-pt="Só se a sua equipa construir a camada de auditoria" data-es="Solo si su equipo construye la capa de auditoría" data-fr="Seulement si votre équipe construit la couche d'audit" data-col="No-code app builders">Only if your team builds the audit layer</div>
+        <div class="pt-cell us" data-col="CernoFlow"><strong class="i18n" data-en="Built in — ISO 15489, eIDAS, MoReq" data-pt="De raiz — ISO 15489, eIDAS, MoReq" data-es="Integrada — ISO 15489, eIDAS, MoReq" data-fr="Intégrée — ISO 15489, eIDAS, MoReq">Built in — ISO 15489, eIDAS, MoReq</strong></div>
+
+        <div class="pt-cell pt-row-label row-bottom i18n" data-en="Works with what you already run" data-pt="Funciona com o que já utiliza" data-es="Funciona con lo que ya utiliza" data-fr="Fonctionne avec ce que vous utilisez déjà">Works with what you already run</div>
+        <div class="pt-cell row-bottom i18n" data-en="Usually replaces it" data-pt="Normalmente substitui-o" data-es="Normalmente lo sustituye" data-fr="Le remplace généralement" data-col="Enterprise case platforms">Usually replaces it</div>
+        <div class="pt-cell row-bottom i18n" data-en="Yes, but auditability is your problem" data-pt="Sim, mas a auditoria fica por sua conta" data-es="Sí, pero la auditabilidad es su problema" data-fr="Oui, mais l'auditabilité est votre problème" data-col="No-code app builders">Yes, but auditability is your problem</div>
+        <div class="pt-cell us row-bottom" data-col="CernoFlow"><strong class="i18n" data-en="Yes — runs alongside your ERP and Microsoft 365, not instead of them" data-pt="Sim — funciona ao lado do seu ERP e do Microsoft 365, sem os substituir" data-es="Sí — funciona junto a su ERP y Microsoft 365, sin sustituirlos" data-fr="Oui — fonctionne aux côtés de votre ERP et de Microsoft 365, sans les remplacer">Yes — runs alongside your ERP and Microsoft 365, not instead of them</strong></div>
+      </div>
+
+      <div class="diff-closer">
+        <p>
+          <span class="i18n"
+                data-en="CernoFlow is "
+                data-pt="O CernoFlow é "
+                data-es="CernoFlow es " data-fr="CernoFlow est ">CernoFlow is </span><em class="i18n"
+                data-en="the governed work platform"
+                data-pt="a plataforma de governação de processos"
+                data-es="la plataforma de trabajo gobernado" data-fr="la plateforme du travail gouverné">the governed work platform</em><span class="i18n"
+                data-en=" — built for the organisations that need governance but can't justify the platforms made for large enterprises."
+                data-pt=" — pensada para as organizações que precisam de governação, mas não justificam as plataformas feitas para grandes empresas."
+                data-es=" — pensada para las organizaciones que necesitan gobernanza pero no pueden justificar las plataformas creadas para grandes empresas." data-fr=" — pensée pour les organisations qui ont besoin de gouvernance mais ne peuvent pas justifier les plateformes conçues pour les grands groupes."> — built for the organisations that need governance but can't justify the platforms made for large enterprises.</span>
+        </p>
+        <a class="btn-primary" href="mailto:sales@cernoflow.com?subject=Pilot%20Enquiry">
+          <span class="i18n" data-en="Talk to us about a pilot" data-pt="Fale connosco sobre um projeto-piloto" data-es="Hable con nosotros sobre un proyecto piloto" data-fr="Parlez-nous d'un projet pilote">Talk to us about a pilot</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— About ——— -->
+  <section data-section="about" id="section-about">
+    <div class="container">
+      <div class="diff-head">
+        <p class="kicker i18n" data-en="About us" data-pt="Quem somos" data-es="Quiénes somos" data-fr="Qui sommes-nous">About us</p>
+        <p class="lead-italic i18n"
+           data-en="CernoFlow's founder has spent more than twenty years automating and improving the processes organisations can't afford to get wrong. In local government, that meant the work that revolves around land and property: rezoning, building permits, inspections, capital works projects, public events, health inspections, waste management (transporters and disposal operators), procurement and much more — every case tied to a place on the map, through integrations with GIS platforms such as ArcGIS Server and GeoServer. It also meant portals that brought external users into the process: homeowners requesting services and viewing their municipal bills, architects submitting building plans, construction firms delivering capital works, and citizens in general. Alongside that came professional services firms running global mobility, immigration and relocation programmes, and trade unions and bargaining councils. Along the way came the design of a case management platform used by more than sixty municipalities."
+           data-pt="O fundador do CernoFlow dedica-se há mais de vinte anos a automatizar e melhorar os processos que as organizações não podem falhar. Na administração local, isso significou o trabalho que gira em torno do território e dos imóveis: alterações de uso do solo, licenciamento de obras, fiscalizações, empreitadas de obras públicas, eventos públicos, inspeções sanitárias, gestão de resíduos (transportadores e operadores de tratamento), contratação pública e muito mais — cada processo associado a um local no mapa, através de integrações com plataformas SIG como o ArcGIS Server e o GeoServer. Significou também portais que trouxeram utilizadores externos para dentro do processo: proprietários que fazem pedidos e consultam as suas faturas municipais, gabinetes de arquitetura que submetem projetos, empresas de construção que executam empreitadas e os munícipes em geral. A par disso, trabalhou com empresas de serviços profissionais em programas de mobilidade internacional, imigração e apoio à relocalização, e com sindicatos e conselhos de negociação coletiva. Pelo caminho, concebeu uma plataforma de gestão de processos utilizada por mais de sessenta autarquias."
+           data-es="El fundador de CernoFlow lleva más de veinte años automatizando y mejorando los procesos en los que las organizaciones no pueden permitirse fallar. En la administración local, eso significó el trabajo que gira en torno al territorio y a los inmuebles: recalificaciones de suelo, licencias de obras, inspecciones, proyectos de obras públicas, eventos públicos, inspecciones sanitarias, gestión de residuos (transportistas y operadores de tratamiento), contratación pública y mucho más — cada caso vinculado a un lugar en el mapa, mediante integraciones con plataformas SIG como ArcGIS Server y GeoServer. También significó portales que incorporaron a usuarios externos al proceso: propietarios que solicitan servicios y consultan sus facturas municipales, estudios de arquitectura que presentan proyectos, empresas constructoras que ejecutan obras públicas y la ciudadanía en general. Junto a ello, trabajó con empresas de servicios profesionales en programas de movilidad internacional, inmigración y reubicación, y con sindicatos y consejos de negociación colectiva. Por el camino diseñó una plataforma de gestión de casos utilizada por más de sesenta ayuntamientos."
+           data-fr="Le fondateur de CernoFlow consacre depuis plus de vingt ans son travail à automatiser et à améliorer les processus sur lesquels les organisations ne peuvent pas se permettre d'échouer. Dans les collectivités locales, cela a signifié le travail lié au territoire et à l'immobilier : changements de zonage, permis de construire, contrôles, projets de travaux publics, événements publics, inspections sanitaires, gestion des déchets (transporteurs et opérateurs de traitement), marchés publics et bien plus encore — chaque dossier rattaché à un lieu sur la carte, grâce à des intégrations avec des plateformes SIG telles qu'ArcGIS Server et GeoServer. Cela a aussi signifié des portails qui ont fait entrer des utilisateurs externes dans le processus : des propriétaires qui demandent des services et consultent leurs factures municipales, des cabinets d'architectes qui déposent des projets, des entreprises de construction qui réalisent des travaux publics et les citoyens en général. Parallèlement, il a travaillé avec des cabinets de services professionnels sur des programmes de mobilité internationale, d'immigration et de relocalisation, ainsi qu'avec des syndicats et des conseils de négociation collective. En chemin, il a conçu une plateforme de gestion de cas utilisée par plus de soixante municipalités.">CernoFlow's founder has spent more than twenty years automating and improving the processes organisations can't afford to get wrong. In local government, that meant the work that revolves around land and property: rezoning, building permits, inspections, capital works projects, public events, health inspections, waste management (transporters and disposal operators), procurement and much more — every case tied to a place on the map, through integrations with GIS platforms such as ArcGIS Server and GeoServer. It also meant portals that brought external users into the process: homeowners requesting services and viewing their municipal bills, architects submitting building plans, construction firms delivering capital works, and citizens in general. Alongside that came professional services firms running global mobility, immigration and relocation programmes, and trade unions and bargaining councils. Along the way came the design of a case management platform used by more than sixty municipalities.</p>
+        <p class="lead-italic i18n"
+           data-en="That work showed, the hard way, where existing tools fall short: processes rebuilt for every new screen, audit trails pieced together after the fact, and rules that lived in people's heads instead of the system. CernoFlow is the platform that work called for: define the work once, govern it everywhere, and keep the proof as you go."
+           data-pt="Esse trabalho mostrou, da forma mais difícil, onde as ferramentas existentes ficam aquém: processos refeitos a cada novo ecrã, registos de auditoria montados depois do facto e regras que viviam na cabeça das pessoas em vez de estarem no sistema. O CernoFlow é a plataforma que esse trabalho pedia: definir o trabalho uma vez, aplicar as regras em todo o lado e guardar a prova à medida que se avança."
+           data-es="Ese trabajo demostró, por las malas, dónde se quedan cortas las herramientas existentes: procesos reconstruidos para cada nueva pantalla, rastros de auditoría recompuestos a posteriori y reglas que vivían en la cabeza de las personas en lugar de en el sistema. CernoFlow es la plataforma que ese trabajo pedía: definir el trabajo una vez, gobernarlo en todas partes y conservar la prueba sobre la marcha."
+           data-fr="Ce travail a montré, à la dure, où les outils existants sont insuffisants : des processus refaits pour chaque nouvel écran, des pistes d'audit reconstituées après coup et des règles qui vivaient dans la tête des gens plutôt que dans le système. CernoFlow est la plateforme que ce travail appelait : définir le travail une fois, le gouverner partout et conserver la preuve au fil de l'eau.">That work showed, the hard way, where existing tools fall short: processes rebuilt for every new screen, audit trails pieced together after the fact, and rules that lived in people's heads instead of the system. CernoFlow is the platform that work called for: define the work once, govern it everywhere, and keep the proof as you go.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— K — Brand close ——— -->
+  <section class="section-close" data-section="K">
+    <div class="container">
+      <svg class="wordmark-lg" viewBox="0 -69 870 73" xmlns="http://www.w3.org/2000/svg" aria-label="CernoFlow">
+        <path class="cerno-path" d="M99.500-26.700L125.500-26.700Q125-17.200 118.600-10.800Q112.200-4.400 99.750-1.200Q87.300 2 68.300 2L68.300 2Q53.800 2 42.300 0.450Q30.800-1.100 22.700-4.850Q14.600-8.600 10.300-15.100Q6-21.600 6-31.500L6-31.500Q6-41.400 10.300-48.050Q14.600-54.700 22.700-58.650Q30.800-62.600 42.300-64.300Q53.800-66 68.300-66L68.300-66Q87.300-66 99.800-62.550Q112.300-59.100 118.700-52.400Q125.100-45.700 125.600-36.100L125.600-36.100L99.600-36.100Q98.400-39.300 95.200-41.750Q92-44.200 85.600-45.600Q79.200-47 68.300-47L68.300-47Q55.500-47 47.500-45.450Q39.500-43.900 35.800-40.500Q32.100-37.100 32.100-31.500L32.100-31.500Q32.100-26.400 35.800-23.200Q39.500-20 47.500-18.500Q55.500-17 68.300-17L68.300-17Q79.200-17 85.550-18.300Q91.900-19.600 95.100-21.850Q98.300-24.100 99.500-26.700L99.500-26.700ZM201.900-17.600L201.900-17.600L225.500-17.600Q224.600-11.800 219.750-7.500Q214.900-3.200 205.650-0.850Q196.400 1.500 182.100 1.500L182.100 1.500Q167 1.500 156.050-0.900Q145.100-3.300 139.200-9Q133.300-14.700 133.300-24.400L133.300-24.400Q133.300-34 139.050-39.750Q144.800-45.500 155.700-48Q166.600-50.500 182.100-50.500L182.100-50.500Q197.300-50.500 207-47.800Q216.700-45.100 221.300-39.050Q225.900-33 225.700-22.700L225.700-22.700L157.700-22.700Q158.200-20.100 160.550-17.900Q162.900-15.700 167.850-14.350Q172.800-13 181.100-13L181.100-13Q189.700-13 195.250-14.200Q200.800-15.400 201.900-17.600ZM181.100-36L181.100-36Q170.500-36 164.950-33.700Q159.400-31.400 158.400-29.100L158.400-29.100L202.400-29.100Q201.700-31.700 196.800-33.850Q191.900-36 181.100-36ZM231.900 0L231.900-49L255.900-49L255.900-32Q256.100-32.500 256.300-33L256.300-33Q257.600-35.800 259.800-38.850Q262-41.900 265.200-44.550Q268.400-47.200 272.550-48.850Q276.700-50.500 281.700-50.500L281.700-50.500L281.700-30.500Q275.200-30.500 269.800-29.300Q264.400-28.100 260.600-26.500L260.600-26.500Q257.700-25.200 255.900-24L255.900-24L255.900 0L231.900 0ZM286.400 0L286.400-49L310.400-49L310.400-33.700Q311-34.800 312-36.100L312-36.100Q314.300-39.300 318.800-42.600Q323.300-45.900 330.150-48.200Q337-50.500 346.400-50.500L346.400-50.500Q352.300-50.500 357.800-49.250Q363.300-48 367.650-45Q372-42 374.600-36.800Q377.200-31.600 377.200-23.700L377.200-23.700L377.200 0L353.200 0L353.200-20.700Q353.200-28.200 349.300-31.350Q345.400-34.500 335.200-34.500L335.200-34.500Q329.800-34.500 324.750-33.300Q319.700-32.100 315.700-30.500L315.700-30.500Q312.500-29.100 310.400-27.800L310.400-27.800L310.400 0L286.400 0ZM430.900 1.500L430.900 1.500Q415 1.500 404.450-1.100Q393.900-3.700 388.650-9.400Q383.400-15.100 383.400-24.400L383.400-24.400Q383.400-33.700 388.650-39.450Q393.900-45.200 404.450-47.850Q415-50.500 430.900-50.500L430.900-50.500Q446.700-50.500 457.150-47.850Q467.600-45.200 472.800-39.450Q478-33.700 478-24.400L478-24.400Q478-15.100 472.800-9.400Q467.600-3.700 457.150-1.100Q446.700 1.500 430.900 1.500ZM430.900-13L430.900-13Q438.300-13 443.300-14.250Q448.300-15.500 450.900-18.050Q453.500-20.600 453.500-24.400L453.500-24.400Q453.500-28.200 450.950-30.800Q448.400-33.400 443.400-34.700Q438.400-36 430.900-36L430.900-36Q423.500-36 418.350-34.700Q413.200-33.400 410.550-30.850Q407.900-28.300 407.900-24.400L407.900-24.400Q407.900-20.600 410.500-18.050Q413.100-15.500 418.250-14.250Q423.400-13 430.900-13Z"/>
+        <path class="flow-path" d="M486.700-64L587.500-64L587.500-45L511.700-45L511.700-36.500L573.700-36.500L573.700-19.500L511.700-19.500L511.700 0L486.700 0L486.700-64ZM596.700 0L596.700-69L620.700-69L620.700 0L596.700 0ZM675.900 1.500L675.900 1.500Q660.000 1.500 649.450-1.100Q638.900-3.700 633.650-9.400Q628.400-15.100 628.400-24.400L628.400-24.400Q628.400-33.700 633.650-39.450Q638.900-45.200 649.450-47.850Q660.000-50.500 675.900-50.500L675.900-50.500Q691.700-50.500 702.150-47.850Q712.600-45.200 717.800-39.450Q723.000-33.700 723.000-24.400L723.000-24.400Q723.000-15.100 717.800-9.400Q712.600-3.700 702.150-1.100Q691.700 1.500 675.900 1.500ZM675.900-13L675.900-13Q683.300-13 688.300-14.250Q693.300-15.500 695.900-18.050Q698.500-20.600 698.500-24.400L698.500-24.400Q698.500-28.200 695.950-30.800Q693.400-33.400 688.400-34.700Q683.400-36 675.900-36L675.900-36Q668.500-36 663.350-34.700Q658.200-33.400 655.550-30.850Q652.900-28.300 652.900-24.400L652.900-24.400Q652.900-20.600 655.500-18.050Q658.100-15.500 663.250-14.250Q668.400-13 675.900-13ZM807.800-49L824.300-18.800L840.900-49L867.400-49L836.500 0L813.900 0L794.400-29.300L774.100 0L751.500 0L722.200-49L748.600-49L764.100-18.900L781.300-49L807.800-49Z"/>
+      </svg>
+      <p class="close-line i18n"
+         data-en="From unstructured complexity to governed clarity."
+         data-pt="Da complexidade à clareza, com tudo sob controlo."
+         data-es="De la complejidad no estructurada a la claridad gobernada." data-fr="De la complexité non structurée à la clarté gouvernée.">From unstructured complexity to governed clarity.</p>
+      <div class="close-ctas">
+        <a class="btn-primary" href="mailto:sales@cernoflow.com?subject=Governed%20Work%20Enquiry">
+          <span class="i18n" data-en="Talk to us" data-pt="Fale connosco" data-es="Hable con nosotros" data-fr="Contactez-nous">Talk to us</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="link-muted i18n" data-en="Watch the full Mobility case →" data-pt="Ver o caso Mobility completo →" data-es="Ver el caso completo de Movilidad →" data-fr="Voir le cas Mobilité complet →" href="./cases/mobility.html">Watch the full Mobility case →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  (function () {
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section[data-section]'));
+    sections.forEach(function (sec, i) {
+      setTimeout(function () { sec.classList.add('in'); }, 100 + i * 140);
+    });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -15% 0px', threshold: 0.05 });
+      sections.forEach(function (sec) { io.observe(sec); });
+    }
+  })();
+</script>
+
+</body>
+</html>
